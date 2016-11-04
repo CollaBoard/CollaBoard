@@ -1,8 +1,8 @@
-//
-// The main client file.
-// Replace this using the pult command. For example:
-//
-//    $ pult add mithril
-//
-// See all options here: https://github.com/Concatapult/pult
-//
+const React = require('react');
+const ReactDOM = require('react-dom');
+
+const App = () => (
+  <h1>It works!</h1>
+);
+
+ReactDOM.render(<App />, document.getElementById('app'));
