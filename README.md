@@ -1,4 +1,4 @@
-# collaboard
+# CollaBoard
 
 A new project in the making.
 
