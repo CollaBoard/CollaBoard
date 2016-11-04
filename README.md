@@ -1,6 +1,9 @@
 # CollaBoard
 
-A new project in the making.
+A collaborative space for teams to maximize their productivity. 
+
+The core of the product features both an innovative live HTML5-canvas based whiteboard and a robust live code editor. 
+
 
 ## Getting Started
 
