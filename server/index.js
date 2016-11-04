@@ -7,10 +7,6 @@ var routes = express.Router()
 //
 // Provide a browserified file at a specified path
 //
-var vendorLibs = []
-
-routes.get('/vendor-bundle.js', browserify(vendorLibs))
-
 routes.get('/app-bundle.js', browserify('./client/index.js', {
   external: vendorLibs
 }))
