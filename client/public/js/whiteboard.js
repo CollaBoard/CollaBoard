@@ -5,10 +5,12 @@ document.addEventListener('DOMContentLoaded', () => {
 }, false );
 
 const newCanvas = function(){
-  let canvas = '<canvas id="canvas" width="635" height="720"></canvas>';
-  let canvasClone = '<canvas id="canvasClone" width="635" height="720"></canvas>';
+  const content = document.getElementById('content');
+  let canvas = '<canvas id="canvas" width="1270" height="720"></canvas>';
+  // let canvasClone = '<canvas id="canvasClone" width="635" height="720"></canvas>';
   // let canvas = `<canvas id="canvas" width="${window.innerWidth}" height="${window.innerHeight - 90}"></canvas>`;
-	document.getElementById('content').innerHTML = canvas + canvasClone;
+  // document.getElementById('content').innerHTML = canvas + canvasClone;
+	content.innerHTML = canvas;
 
 	ctx = document.getElementById('canvas').getContext('2d');
 	ctx.strokeStyle = color;
@@ -41,18 +43,18 @@ const drawMouse = function() {
 	let start = function(e) {
 		clicked = true;
 		ctx.beginPath();
-		x = e.pageX;
-		y = e.pageY - 34;
+		x = e.pageX + content.scrollTop;
+		y = e.pageY - 34 + content.scrollTop;
 		ctx.moveTo(x, y);
 	};
 	let move = function(e) {
     if(e.shiftKey && clicked) {
-      x = e.pageX;
+      x = e.pageX + content.scrollLeft;
       ctx.lineTo(x, y);
       ctx.stroke();
     } else if (clicked){
-			x = e.pageX;
-			y = e.pageY - 34;
+			x = e.pageX + content.scrollLeft;
+			y = e.pageY - 34 + content.scrollTop;
 			ctx.lineTo(x, y);
 			ctx.stroke();
 		}
