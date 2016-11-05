@@ -1,0 +1,43 @@
+{
+  "env": {
+    "mocha": true,
+    "node": true
+  },
+  "globals": {
+    "TestHelper": true,
+    "TEST_HELPER": true,
+    "it_": true,
+    "xit_": true,
+    "before_": true,
+    "beforeEach_": true,
+    "__server": true,
+    "__test": true,
+    "__client": true,
+    "expect": true
+  },
+  "rules": {
+    "func-names": 0,
+    "no-console": 0,
+    "no-underscore-dangle": [
+      "error",
+      {
+        "allow": [
+          "it_",
+          "xit_",
+          "before_",
+          "beforeEach_",
+          "__server",
+          "__test",
+          "__client"
+        ]
+      }
+    ],
+    "import/no-extraneous-dependencies": [
+      "error",
+      {
+        "devDependencies": true
+      }
+    ],
+    "import/no-dynamic-require": 0
+  }
+}
