@@ -23,14 +23,14 @@ const newCanvas = function(){
 const drawTouch = function() {
 	let start = function(e) {
 		ctx.beginPath();
-		x = e.changedTouches[0].pageX;
-		y = e.changedTouches[0].pageY - 34;
+		x = e.changedTouches[0].pageX + content.scrollLeft;
+		y = e.changedTouches[0].pageY - 34 + content.scrollTop;
 		ctx.moveTo(x, y);
 	};
 	let move = function(e) {
 		e.preventDefault();
-		x = e.changedTouches[0].pageX;
-		y = e.changedTouches[0].pageY - 34;
+		x = e.changedTouches[0].pageX + content.scrollLeft;
+		y = e.changedTouches[0].pageY - 34 + content.scrollTop;
 		ctx.lineTo(x, y);
 		ctx.stroke();
 	};
