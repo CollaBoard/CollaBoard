@@ -1,14 +1,20 @@
 # CollaBoard
 
-A collaborative space for teams to maximize their productivity. 
+A collaborative space for teams to maximize their productivity.
 
-The core of the product features both an innovative live HTML5-canvas based whiteboard and a robust live code editor. 
+The core of the product features both an innovative live HTML5-canvas based whiteboard and a robust live code editor.
 
 
 ## Getting Started
 
-```
+Modify `knexfile.js` to match your local database settings, then run the following commands in the terminal
+
+```bash
 $ npm install
+$ createdb collaboard_dev       # Create dev database
+$ createdb collaboard_test      # Create test database
+$ npm run migrate               # Run migrations for dev environment
+$ NODE_ENV=test npm run migrate # Run migrations for test environment
 $ npm start
 ```
 
