@@ -1,18 +1,19 @@
 let ctx, color = '#000';
 
 document.addEventListener('DOMContentLoaded', () => {
-  newCanvas()
+  createCanvas()
 }, false );
 
-const newCanvas = function(){
+const createCanvas = function(){
   const content = document.getElementById('content');
-  let canvas = '<canvas id="canvas" width="1270" height="720"></canvas>';
+  const newCanvas = '<canvas id="canvas" width="1270" height="720"></canvas>';
   // let canvasClone = '<canvas id="canvasClone" width="635" height="720"></canvas>';
   // let canvas = `<canvas id="canvas" width="${window.innerWidth}" height="${window.innerHeight - 90}"></canvas>`;
   // document.getElementById('content').innerHTML = canvas + canvasClone;
-	content.innerHTML = canvas;
+	content.innerHTML = newCanvas;
+  const canvas = document.getElementById('canvas');
 
-	ctx = document.getElementById('canvas').getContext('2d');
+	ctx = canvas.getContext('2d');
 	ctx.strokeStyle = color;
 	ctx.lineWidth = 5;
 
@@ -34,8 +35,8 @@ const drawTouch = function() {
 		ctx.lineTo(x, y);
 		ctx.stroke();
 	};
-  document.getElementById('canvas').addEventListener('touchstart', startTouch, false);
-	document.getElementById('canvas').addEventListener('touchmove', moveTouch, false);
+  canvas.addEventListener('touchstart', startTouch, false);
+	canvas.addEventListener('touchmove', moveTouch, false);
 };
 
 const drawMouse = function() {
@@ -62,7 +63,8 @@ const drawMouse = function() {
 	const stopMouse = function(e) {
 		clicked = false;
 	};
-  document.getElementById('canvas').addEventListener('mousedown', startMouse, false);
-	document.getElementById('canvas').addEventListener('mousemove', moveMouse, false);
+  canvas.addEventListener('mousedown', startMouse, false);
+	canvas.addEventListener('mousemove', moveMouse, false);
+  canvas.addEventListener('mouseleave', stopMouse, false);
 	document.addEventListener('mouseup', stopMouse, false);
 };
