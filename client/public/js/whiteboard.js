@@ -21,33 +21,33 @@ const newCanvas = function(){
 }
 
 const drawTouch = function() {
-	let start = function(e) {
+	const startTouch = function(e) {
 		ctx.beginPath();
 		x = e.changedTouches[0].pageX + content.scrollLeft;
 		y = e.changedTouches[0].pageY - 34 + content.scrollTop;
 		ctx.moveTo(x, y);
 	};
-	let move = function(e) {
+	const moveTouch = function(e) {
 		e.preventDefault();
 		x = e.changedTouches[0].pageX + content.scrollLeft;
 		y = e.changedTouches[0].pageY - 34 + content.scrollTop;
 		ctx.lineTo(x, y);
 		ctx.stroke();
 	};
-  document.getElementById('canvas').addEventListener('touchstart', start, false);
-	document.getElementById('canvas').addEventListener('touchmove', move, false);
+  document.getElementById('canvas').addEventListener('touchstart', startTouch, false);
+	document.getElementById('canvas').addEventListener('touchmove', moveTouch, false);
 };
 
 const drawMouse = function() {
 	let clicked = false;
-	let start = function(e) {
+	const startMouse = function(e) {
 		clicked = true;
 		ctx.beginPath();
 		x = e.pageX + content.scrollLeft;
 		y = e.pageY - 34 + content.scrollTop;
 		ctx.moveTo(x, y);
 	};
-	let move = function(e) {
+	const moveMouse = function(e) {
     if(e.shiftKey && clicked) {
       x = e.pageX + content.scrollLeft;
       ctx.lineTo(x, y);
@@ -59,10 +59,10 @@ const drawMouse = function() {
 			ctx.stroke();
 		}
 	};
-	let stop = function(e) {
+	const stopMouse = function(e) {
 		clicked = false;
 	};
-  document.getElementById('canvas').addEventListener('mousedown', start, false);
-	document.getElementById('canvas').addEventListener('mousemove', move, false);
-	document.addEventListener('mouseup', stop, false);
+  document.getElementById('canvas').addEventListener('mousedown', startMouse, false);
+	document.getElementById('canvas').addEventListener('mousemove', moveMouse, false);
+	document.addEventListener('mouseup', stopMouse, false);
 };
