@@ -43,7 +43,7 @@ const drawMouse = function() {
 	let start = function(e) {
 		clicked = true;
 		ctx.beginPath();
-		x = e.pageX + content.scrollTop;
+		x = e.pageX + content.scrollLeft;
 		y = e.pageY - 34 + content.scrollTop;
 		ctx.moveTo(x, y);
 	};
