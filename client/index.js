@@ -1,17 +1,17 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import NavBar from './components/nav-bar';
-import SplashContainer from './components/splash-container';
-import Features from './components/features';
+import { Provider } from 'react-redux';
+import { createStore, applyMiddleware } from 'redux';
+import { Router, browserHistory } from 'react-router';
+import { promise } from 'redux-promise';
+import reducers from './src/reducers/'
+import routes from './src/routes'
 
-const App = () => (
-  <div>
-  	<NavBar />
-  	<SplashContainer />
-  	<Features />
-  </div>
+const createStoreWithMiddleware = applyMiddleware()(createStore);
 
-
+ReactDOM.render(
+	<Provider store={createStoreWithMiddleware(reducers)}> 
+		<Router history={browserHistory} routes={routes}/>
+	</Provider>
+	, document.getElementById('app')
 );
-
-ReactDOM.render(<App />, document.getElementById('app'));

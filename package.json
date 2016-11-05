@@ -20,16 +20,16 @@
     "body-parser": "^1.15.2",
     "browserify-middleware": "^7.1.0",
     "express": "^4.14.0",
-<<<<<<< 975048d23f4a5400f41d13f98b1d6b5cf2c63202
     "knex": "^0.12.5",
-=======
     "materialize-css": "^0.97.8",
->>>>>>> Update Splash Page - nav-bar & splash img w/overlay text
     "nodemon": "^1.11.0",
     "pg": "^6.1.0",
     "react": "^15.3.2",
     "react-dom": "^15.3.2",
-    "socket.io": "^1.5.1"
+    "socket.io": "^1.5.1",
+    "react-redux": "^4.4.5",
+    "react-router": "^3.0.0",
+    "redux": "^3.6.0",
   },
   "devDependencies": {
     "chai": "^3.5.0",

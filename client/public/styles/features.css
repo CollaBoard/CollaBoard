@@ -1,3 +1,25 @@
+.features-section {
+	margin-top: 20px;
+}
+
+.features-title, .features-subtitle {
+	font-family: Helvetica, Arial, sans-serif;
+	text-align: center;
+
+}
+
+.features-title {
+	font-size: 30px;
+	color: #4b4b4c;
+}
+
+.features-subtitle {
+	font-size: 14px;
+	color: #7d8485;
+	line-height: 1.6;
+	/*max-width: 600px;*/
+}
+
 .icon-access-anywhere {
 	display: inline-block;
 	vertical-align: middle;
