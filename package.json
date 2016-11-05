@@ -21,7 +21,9 @@
     "nodemon": "^1.11.0",
     "react": "^15.3.2",
     "react-dom": "^15.3.2",
-    "socket.io": "^1.5.1"
+    "socket.io": "^1.5.1",
+    "knex": "^0.12.5",
+    "pg": "*"
   },
   "devDependencies": {
     "chai": "^3.5.0",
@@ -36,5 +38,8 @@
     "pult-cli": "*",
     "supertest": "^2.0.0",
     "supertest-as-promised": "^4.0.0"
-  }
+  },
+  "addedPultModules": [
+    "knex"
+  ]
 }
