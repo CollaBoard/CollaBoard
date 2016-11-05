@@ -3,6 +3,10 @@ const express = require('express');
 const Path = require('path');
 const bodyParser = require('body-parser');
 
+const app = express();
+const wb = require('./wb');
+app.use('/wb', wb);
+
 const routes = express.Router();
 
 //
