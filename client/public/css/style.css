@@ -31,6 +31,10 @@ nav .brand-logo {
     font-size: 1.6rem;
 }
 
+.side-nav {
+  width: 150px;
+}
+
 #content {
     position: absolute;
     top: 34px;
