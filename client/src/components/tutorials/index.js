@@ -7,4 +7,4 @@ const Tutorials = () => (
   </div>
 );
 
-export default Tutorials;
+export default Tutorials;  

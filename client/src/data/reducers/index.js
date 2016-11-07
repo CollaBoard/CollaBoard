@@ -1,8 +1,12 @@
+
 import { combineReducers } from 'redux';
 
+import modal from './modals';
 
 const rootReducer = combineReducers({
-  state: (state = {}) => state
+  //this is default boilterplate: 
+  // state: (state = {}) => state
+  modal
 });
 
 export default rootReducer;

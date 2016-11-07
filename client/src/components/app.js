@@ -1,15 +1,32 @@
-import React from 'react';
+import React, { PropTypes } from 'react';
+import { browserHistory } from 'react-router';
 import NavBar from './shared/nav-bar';
+import { connect } from 'react-redux';
+import * as actions from '../data/actions';
 
-class App extends React.Component {
-  render() {
+//TODO: Abstract away app state logic to a Container
+
+const App = (props) => {
+
+	// Hides main Navbar when in either Whiteboard or Text Editor views
+	const showNavbar = () => {
+		return !(props.location.pathname === '/whiteboard' || props.location.pathname === '/texteditor');
+	}
+
 	  return (
 		  <div>
-		  	<NavBar />
-		  	{this.props.children}
+		  	{ showNavbar() && <NavBar props={ props } /> }
+		  	{ props.children }
 		  </div>
 	 	);
-	}
-}
+};
 
-export default App;
+App.propTypes = {
+	showModal: PropTypes.func.isRequired
+};
+
+const bindDispatchToProps = () => ({
+	showModal: actions.showModal
+})
+
+export default connect(null, bindDispatchToProps)(App);

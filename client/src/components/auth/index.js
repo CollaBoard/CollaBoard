@@ -1,21 +1,40 @@
-import React from 'react';
-
+//Only include React in CONTAINER if you are rendering to Virtual DOM
+// import React from 'react';
+import { connect } from 'react-redux';
+import { showModal, hideModal } from '../../data/actions/';
 import SignInModal from './sign-in';
-import SignUpModal from './sign-up';
 
+//passing pieces of state to container
+const mapStateToProps = (state, ownProps) => {
+	console.log(state);
+	console.log(props);
+	return { showModal: state.showModal };
+}
 
-const Auth = props => (
- switch (props.currentModal) {
+// passing action creators to props
+const mapDispatchToProps = (dispatch) => {
+	return {
+		showModal: () => {
+			dispatch( showModal() );
+		},
+		hideModal: () => {
+			dispatch( hideModal() );
+		}
+	}
+}
+
+const Auth = props => {
+ // switch (props.currentModal) {
  	
- 	case 'SIGN_IN':
- 		return <SignInModal {...props} />;
+ 	// case 'SIGN_IN':
+ 		// return <SignInModal {...props} />;
+	return <SignInModal />
  	
- 	case 'SIGN_UP':
- 		return <SignUp {..props} />;
- 	
- 	default: 
- 		return null;
+ 	// default: 
+ 		// return null;
  
- }
+ // }
 
-export default Auth;
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Auth);
