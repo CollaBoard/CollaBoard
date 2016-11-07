@@ -22,18 +22,24 @@ const createCanvas = function(){
 }
 
 const drawTouch = function() {
+
 	const startTouch = function(e) {
-		ctx.beginPath();
-		x = e.changedTouches[0].pageX + content.scrollLeft;
-		y = e.changedTouches[0].pageY - 34 + content.scrollTop;
-		ctx.moveTo(x, y);
+    if (e.targetTouches.length < 3) {
+      // e.preventDefault();
+  		ctx.beginPath();
+  		x = e.changedTouches[0].pageX + content.scrollLeft;
+  		y = e.changedTouches[0].pageY - 34 + content.scrollTop;
+  		ctx.moveTo(x, y);
+    }
 	};
 	const moveTouch = function(e) {
-		e.preventDefault();
-		x = e.changedTouches[0].pageX + content.scrollLeft;
-		y = e.changedTouches[0].pageY - 34 + content.scrollTop;
-		ctx.lineTo(x, y);
-		ctx.stroke();
+    if (e.targetTouches.length < 3) {
+      e.preventDefault();
+      x = e.changedTouches[0].pageX + content.scrollLeft;
+      y = e.changedTouches[0].pageY - 34 + content.scrollTop;
+      ctx.lineTo(x, y);
+      ctx.stroke();
+    }
 	};
   canvas.addEventListener('touchstart', startTouch, false);
 	canvas.addEventListener('touchmove', moveTouch, false);
