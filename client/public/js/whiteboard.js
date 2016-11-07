@@ -1,4 +1,12 @@
 let ctx, color = '#000';
+let canvasState = true;
+const moveCanvas = function() {
+  if (canvasState) {
+    canvasState = false;
+  } else {
+    canvasState = true;
+  }
+}
 
 document.addEventListener('DOMContentLoaded', () => {
   createCanvas()
@@ -24,23 +32,26 @@ const createCanvas = function(){
 const drawTouch = function() {
 
 	const startTouch = function(e) {
-    if (e.targetTouches.length < 3) {
+    // if (e.targetTouches.length < 2) {
       // e.preventDefault();
   		ctx.beginPath();
   		x = e.changedTouches[0].pageX + content.scrollLeft;
   		y = e.changedTouches[0].pageY - 34 + content.scrollTop;
   		ctx.moveTo(x, y);
-    }
+    // }
 	};
 	const moveTouch = function(e) {
-    if (e.targetTouches.length < 3) {
+    // if (e.targetTouches.length < 2) {
+    if (canvasState) {
       e.preventDefault();
       x = e.changedTouches[0].pageX + content.scrollLeft;
       y = e.changedTouches[0].pageY - 34 + content.scrollTop;
       ctx.lineTo(x, y);
       ctx.stroke();
     }
+    // }
 	};
+
   canvas.addEventListener('touchstart', startTouch, false);
 	canvas.addEventListener('touchmove', moveTouch, false);
 };
