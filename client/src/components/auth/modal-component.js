@@ -1,12 +1,4 @@
-import { Component, PropTypes } from 'react';
-
-import Panel from '../Panel/Panel.jsx';
-
-import {
-  COLORS,
-  KEYS,
-  Z_INDEXES,
-} from '../../constants.js';
+import React, { Component, PropTypes } from 'react';
 
 const styles = {
   back: {
@@ -16,10 +8,6 @@ const styles = {
     justifyContent: 'center',
     alignItems: 'center',
     top: 0,
-
-
-    0
-    .
     left: 0,
     width: '100%',
     height: '100%',
@@ -60,7 +48,7 @@ class PageModalWrapper extends Component {
   }
 
   render() {
-    const {props} = this;
+    const { props } = this;
 
     const handleBackgroundClick = e => {
       if (e.target !== e.currentTarget) return;
@@ -70,11 +58,8 @@ class PageModalWrapper extends Component {
 
     return (
       <div style={styles.back} onClick={handleBackgroundClick}>
-        <div style={styles.panelAboveSpacer}></div>
-
-        <Panel {...props}>{props.children}</Panel>
-
-        <div style={styles.panelBelowSpacer}></div>
+        <div style={styles.panelAboveSpacer} />
+        <div style={styles.panelBelowSpacer} />
       </div>
 
     );
