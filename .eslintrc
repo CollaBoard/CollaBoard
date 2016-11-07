@@ -1,12 +1,14 @@
 {
   "extends": "airbnb",
   "rules": {
-      "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],
-      "new-cap": [
-        "error",
-        {
-          "capIsNew": false
-        }
-      ]
-    }
+    "new-cap": [
+      "error",
+      {
+        "capIsNew": false
+      }
+    ]
+  },
+  "env": {
+    "node": true
+  }
 }
