@@ -1,6 +1,6 @@
 import React, { PropTypes } from 'react';
 import { browserHistory } from 'react-router';
-import NavBar from './shared/nav-bar';
+import NavBar from './nav-bar';
 import { connect } from 'react-redux';
 import * as actions from '../data/actions';
 
@@ -12,13 +12,13 @@ const App = (props) => {
 	const showNavbar = () => {
 		return !(props.location.pathname === '/whiteboard' || props.location.pathname === '/texteditor');
 	}
-
-	  return (
-		  <div>
-		  	{ showNavbar() && <NavBar props={ props } /> }
-		  	{ props.children }
-		  </div>
-	 	);
+	
+	return (
+	  <div>
+	  	{ showNavbar() && <NavBar props={ props } /> }
+	  	{ props.children }
+	  </div>
+		);
 };
 
 App.propTypes = {

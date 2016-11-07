@@ -6,8 +6,8 @@ const ProductSelect = () => {
 	return (
 
 		<div className="product-select-container">
-			<span className="product-select-link"><Link to="/whiteboard" className="waves-effect waves-light btn-large product-select-link">Whiteboard</Link></span>
-			<span className="product-select-link"><Link to="/texteditor" className="waves-effect waves-light btn-large  product-select-link">Text Editor</Link></span>
+			<Link to="/whiteboard" className="product-select-link waves-effect waves-light btn-large product-select-link">Whiteboard</Link>
+			<Link to="/texteditor" className="product-select-link waves-effect waves-light btn-large  product-select-link">Text Editor</Link>
 		</div>
 
 	);
