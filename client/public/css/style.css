@@ -31,13 +31,18 @@ nav .brand-logo {
     font-size: 1.6rem;
 }
 
+.side-nav {
+  width: 150px;
+}
+
 #content {
     position: absolute;
     top: 34px;
     left: 0px;
     right: 0px;
-    overflow: hidden;
+    overflow: auto;
     background-color: #ddd;
+    height: 100%;
 }
 
 #canvas {
