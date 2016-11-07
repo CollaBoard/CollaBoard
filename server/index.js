@@ -44,7 +44,7 @@ if (process.env.NODE_ENV !== 'test') {
   // We're in development or production mode;
   // create and run a real server.
   //
-  const app = express();
+  // const app = express();
 
   // Parse incoming request bodies as JSON
   app.use(bodyParser.json());

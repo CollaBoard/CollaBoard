@@ -5,7 +5,7 @@ class Features extends React.Component {
     return (
       
       <div className="features-section">
-            <img src="../img/cloud-icon.png"/>
+            <img src="../../../public/assets/img/cloud-icon.png"/>
         <hr/>
         <h3 className="features-title">
           Start getting more done in less time
@@ -14,15 +14,15 @@ class Features extends React.Component {
         <div className="productivity-icons">  
           
           <div className="icon-access-anywhere"> 
-            <img src="../img/cloud-icon.png"/>
+            <img src="../../../public/assets/img/cloud-icon.png"/>
           </div>
           
           <div className="icon-collab">
-            <img src="../img/cloud-icon.png"/>
+            <img src="../../../public/assets/img/cloud-icon.png"/>
           </div>
           
           <div className="icon-distraction-free">
-            <img src="../img/cloud-icon.png"/>
+            <img src="../../../public/assets/img/cloud-icon.png"/>
           </div>
         
         </div>
