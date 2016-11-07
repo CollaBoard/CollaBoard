@@ -1,7 +1,7 @@
 let ctx, color = '#000';
 let canvasState = true;
 const moveCanvas = function() {
-  canvasState ^= true;
+  canvasState = !canvasState;
 }
 
 document.addEventListener('DOMContentLoaded', () => {
