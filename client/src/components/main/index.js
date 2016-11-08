@@ -5,9 +5,9 @@ import ProductSelect from './product-select';
 
 const Main = () => (
   <div>
-	 	<SplashContainer />
-  	<ProductSelect />
-  	<Features />
+    <SplashContainer />
+    <ProductSelect />
+    <Features />
   </div>
 
 
