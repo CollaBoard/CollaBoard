@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 
+// TODO: Move ALL styles into sass. No css in javascript.
 const styles = {
   back: {
     position: 'fixed',
@@ -11,7 +12,7 @@ const styles = {
     left: 0,
     width: '100%',
     height: '100%',
-    backgroundColor: rgba(0, 0, 0, 0.618),
+    backgroundColor: 'rgba(0, 0, 0, 0.618)',
     zIndex: 5,
     cursor: 'default',
   },
@@ -42,7 +43,7 @@ class PageModalWrapper extends Component {
   }
 
   onKeyUp(e) {
-    if (e.keyCode === KEYS.ESC) {
+    if (e.keyCode === 27) {
       this.props.hideModal();
     }
   }
@@ -50,9 +51,8 @@ class PageModalWrapper extends Component {
   render() {
     const { props } = this;
 
-    const handleBackgroundClick = e => {
+    const handleBackgroundClick = (e) => {
       if (e.target !== e.currentTarget) return;
-
       props.hideModal();
     };
 
@@ -61,18 +61,19 @@ class PageModalWrapper extends Component {
         <div style={styles.panelAboveSpacer} />
         <div style={styles.panelBelowSpacer} />
       </div>
-
     );
   }
 }
 
 PageModalWrapper.propTypes = {
   // props
-  children: PropTypes.oneOfType([
-    PropTypes.array,
-    PropTypes.element,
-    PropTypes.string,
-  ]).isRequired,
+  // UNCOMMENT WHEN WE HAVE THIS DONE
+  //
+  // children: PropTypes.oneOfType([
+  //   PropTypes.array,
+  //   PropTypes.element,
+  //   PropTypes.string,
+  // ]).isRequired,
 
   // methods
   hideModal: PropTypes.func.isRequired,
