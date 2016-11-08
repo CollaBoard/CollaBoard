@@ -1,11 +1,20 @@
+<<<<<<< 37f2e6243b62a4aa6ce6da02febc2216ae55b8bf
 // This file uses modules draft-js-code and draft-js-prism by Samy Pessé, https://github.com/SamyPesse, originally released under the Apache License, Version 2.0.
 // See LICENSE in the module directory (added here as a module) for full license.
+=======
+// This file and the contents of this directory modified by the CollaBoard team
+// (see package.json file for full list of names) from the original by Samy Pessé,
+// https://github.com/SamyPesse, originally released under the Apache License, Version 2.0. See LICENSE in this directory for full license.
+// There are minor modifications throughout to comply with AirBnB ESLint style.
+// Substantive modifications are marked by comments beginning with 'COLLABOARD:'.
+>>>>>>> notice files committed and changes marked
 
 import Draft, {
   Editor,
   RichUtils,
 } from 'draft-js';
 import React from 'react';
+<<<<<<< 37f2e6243b62a4aa6ce6da02febc2216ae55b8bf
 import CodeUtils from 'draft-js-code';
 // COLLABOARD: see forked repository https://github.com/CollaBoard/draft-js-prism for changes
 import PrismDraftDecorator from 'draft-js-prism';
@@ -29,6 +38,13 @@ function getBlockStyle(block) {
     default: return null;
   }
 }
+=======
+// COLLABOARD: File structure changed to include lib directories
+// from both draft-js-code and draft-js-prism
+import CodeUtils from './codelib';
+import PrismDraftDecorator from './prismlib';
+// import StyleButton from './StyleButton';
+>>>>>>> notice files committed and changes marked
 
 class TextEditor extends React.Component {
   constructor(props) {
@@ -172,6 +188,26 @@ class TextEditor extends React.Component {
   }
 }
 
+<<<<<<< 37f2e6243b62a4aa6ce6da02febc2216ae55b8bf
+=======
+// Custom overrides for "code" style.
+const styleMap = {
+  CODE: {
+    backgroundColor: 'rgba(0, 0, 0, 0.05)',
+    fontFamily: '"Inconsolata", "Menlo", "Consolas", monospace',
+    fontSize: 16,
+    padding: 2,
+  },
+};
+
+function getBlockStyle(block) {
+  switch (block.getType()) {
+    case 'blockquote': return 'RichEditor-blockquote';
+    default: return null;
+  }
+}
+
+>>>>>>> notice files committed and changes marked
 // COLLABOARD: languages array
 const LANGUAGES = [
   { label: 'Javascript', style: 'language-Javascript' },
