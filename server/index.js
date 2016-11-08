@@ -5,6 +5,19 @@ const bodyParser = require('body-parser');
 
 const app = express();
 
+// Setting up socket.io
+const http = require('http').Server(app);
+const io = require('socket.io')(http);
+
+// Basic socket.io setup
+io.on('connection', function(socket) {
+  socket.emit('news', {hello: 'world'});
+  socket.on('my other event', function(data) {
+    console.log(data);
+  })
+});
+
+
 const routes = express.Router();
 
 //
