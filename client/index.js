@@ -1,8 +1,16 @@
-const React = require('react');
-const ReactDOM = require('react-dom');
+import React from 'react';
+import ReactDOM from 'react-dom';
+import { Provider } from 'react-redux';
+import { Router, browserHistory } from 'react-router';
+import { promise } from 'redux-promise';
+import routes from './src/routes';
+import store from './src/data/store'
 
-const App = () => (
-  <h1>It works!</h1>
+
+
+ReactDOM.render(
+	<Provider store={ store }> 
+		<Router history={ browserHistory } routes={ routes } />
+	</Provider>
+	, document.getElementById('app')
 );
-
-ReactDOM.render(<App />, document.getElementById('app'));
