@@ -1,8 +1,16 @@
+// This file and the contents of this directory modified by the CollaBoard team
+// (see package.json file for full list of names) from the original by Samy Pessé,
+// https://github.com/SamyPesse, originally released under the Apache License, Version 2.0. See LICENSE in this directory for full license.
+// There are minor modifications throughout to comply with AirBnB ESLint style.
+// Substantive modifications are marked by comments beginning with 'COLLABOARD:'.
+
 import Draft, {
   Editor,
   RichUtils,
 } from 'draft-js';
 import React from 'react';
+// COLLABOARD: File structure changed to include lib directories
+// from both draft-js-code and draft-js-prism
 import CodeUtils from './codelib';
 import PrismDraftDecorator from './prismlib';
 // import StyleButton from './StyleButton';
@@ -163,13 +171,13 @@ function getBlockStyle(block) {
   }
 }
 
-// languages array
+// COLLABOARD: languages array
 const LANGUAGES = [
   { label: 'Javascript', style: 'language-Javascript' },
   { label: 'HTML', style: 'language-HTML' },
   { label: 'CSS', style: 'language-CSS' },
 ];
-// my little component
+// COLLABOARD: language button component
 // class CodeButtons extends React.Component {
 //   constructor() {
 //     super();
@@ -214,11 +222,13 @@ const BlockStyleControls = (props) => {
     .getCurrentContent()
     .getBlockForKey(selection.getStartKey())
     .getType();
+    // COLLABOARD: adding language variable to track current language of code block
   // const lang = editorState
   //   .getCurrentContent()
   //   .getBlockForKey(selection.getStartKey())
   //   .getSyntax();
 
+// COLLABOARD: mapping language buttons next to block types
   return (
     <div className="RichEditor-controls">
       {BLOCK_TYPES.map(type =>
