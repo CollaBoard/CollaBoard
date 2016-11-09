@@ -22,6 +22,7 @@
     "detect-indent": "^5.0.0",
     "detect-newline": "^2.1.0",
     "draft-js": "^0.9.1",
+    "draft-js-code": "git+https://github.com/CollaBoard/draft-js-code.git",
     "ends-with": "^0.2.0",
     "express": "^4.14.0",
     "immutable": "^3.8.1",
