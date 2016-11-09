@@ -212,8 +212,6 @@ class TextEditor extends React.Component {
     );
   }
 
-}
-
 // COLLABOARD: languages array
 const LANGUAGES = [
   { label: 'Javascript', style: 'language-Javascript' },
