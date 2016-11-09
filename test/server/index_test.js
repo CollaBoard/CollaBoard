@@ -2,7 +2,7 @@ require(TEST_HELPER); // <--- This must be at the top of every test file.
 
 const request = require('supertest-as-promised');
 
-const routes = require(`${__server}/app.js`);
+const routes = require(`${__server}/index.js`);
 
 describe('The Server', () => {
   const app = TestHelper.createApp();
