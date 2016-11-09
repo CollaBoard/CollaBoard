@@ -1,6 +1,11 @@
 const browserify = require('browserify-middleware');
 const express = require('express');
 const bodyParser = require('body-parser');
+const socket = require('socket.io-client')('http://localhost');
+
+socket.on('connect', () => {});
+socket.on('event', () => {});
+socket.on('disconnect', () => {});
 
 const app = express();
 
