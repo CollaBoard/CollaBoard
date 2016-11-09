@@ -54,8 +54,11 @@ const Canvas = function Canvas(element, options) {
   };
 
   const endFigure = function endFigure() {
-    currentFigure.finalize();
-    this.trigger('figureEnd', currentFigure);
+    if (currentFigure) {
+      currentFigure.finalize();
+      this.trigger('figureEnd', currentFigure);
+      currentFigure = null;
+    }
   }.bind(this);
 
   this.on = function on(eventName, func) {
@@ -138,13 +141,18 @@ const Canvas = function Canvas(element, options) {
   });
 
   this.el.addEventListener('mousemove', (e) => {
-    if (clicked) {
+    if (currentFigure && clicked) {
       const { x, y } = getCoordinates(e);
       currentFigure.move(x, y, e);
     }
   });
 
   this.el.addEventListener('mouseup', () => {
+    clicked = false;
+    endFigure();
+  });
+
+  this.el.addEventListener('mouseleave', () => {
     clicked = false;
     endFigure();
   });
