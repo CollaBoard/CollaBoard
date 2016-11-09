@@ -1,6 +1,6 @@
-var detectNewline = require('detect-newline');
+import detectNewline from 'detect-newline';
 
-var DEFAULT = '\n';
+const DEFAULT = '\n';
 
 /**
  * Detect the dominant newline character of a string
@@ -8,7 +8,7 @@ var DEFAULT = '\n';
  * @return {String}
  */
 function getNewLine(text) {
-    return detectNewline(text) || DEFAULT;
+  return detectNewline(text) || DEFAULT;
 }
 
 module.exports = getNewLine;

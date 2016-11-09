@@ -1,6 +1,6 @@
-var detectIndent = require('detect-indent');
+import detectIndent from 'detect-indent';
 
-var DEFAULT_INDENTATION = '    ';
+const DEFAULT_INDENTATION = '    ';
 
 /**
  * Detect indentation in a text
@@ -8,8 +8,8 @@ var DEFAULT_INDENTATION = '    ';
  * @return {String}
  */
 function getIndentation(text) {
-    var result = detectIndent(text);
-    return result.indent || DEFAULT_INDENTATION;
+  const result = detectIndent(text);
+  return result.indent || DEFAULT_INDENTATION;
 }
 
 module.exports = getIndentation;

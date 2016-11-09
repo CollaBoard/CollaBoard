@@ -1,4 +1,4 @@
-var detectIndent = require('detect-indent');
+import detectIndent from 'detect-indent';
 
 /**
  * Return indentation of a line
@@ -6,7 +6,7 @@ var detectIndent = require('detect-indent');
  * @return {String}
  */
 function getIndentForLine(line) {
-    return detectIndent(line).indent || '';
+  return detectIndent(line).indent || '';
 }
 
 module.exports = getIndentForLine;

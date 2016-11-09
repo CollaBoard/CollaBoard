@@ -1,5 +1,5 @@
-var Immutable = require('immutable');
-var getNewLine = require('./getNewLine');
+import Immutable from 'immutable';
+import getNewLine from './getNewLine';
 
 /**
  * Return a list of line in this text
@@ -8,8 +8,8 @@ var getNewLine = require('./getNewLine');
  * @return {List<String>}
  */
 function getLines(text, sep) {
-    sep = sep || getNewLine(text);
-    return Immutable.List(text.split(sep));
+  const sep2 = sep || getNewLine(text);
+  return Immutable.List(text.split(sep2));
 }
 
 module.exports = getLines;

@@ -1,21 +1,17 @@
-var Immutable = require('immutable');
-var getNewLine = require('./getNewLine');
+import Immutable from 'immutable';
+import getNewLine from './getNewLine';
 
-var LineAnchor = Immutable.Record({
+const LineAnchor = Immutable.Record({
     // Index of the current line
-    line:   Number(0),
+  line: Number(0),
 
     // Offset in current line
-    offset: Number(0)
+  offset: Number(0),
 });
 
-LineAnchor.prototype.getLine = function() {
-    return this.get('line');
-};
+LineAnchor.prototype.getLine = () => this.get('line');
 
-LineAnchor.prototype.getOffset = function() {
-    return this.get('offset');
-};
+LineAnchor.prototype.getOffset = () => this.get('offset');
 
 
 /**
@@ -27,23 +23,23 @@ LineAnchor.prototype.getOffset = function() {
  * @return {LineAnchor}
  */
 function getLineAnchorForOffset(text, offset, sep) {
-    sep = sep || getNewLine(text);
+  const sep2 = sep || getNewLine(text);
 
-    var lineIndex = 0;
-    var nextLineIndex = 0;
-    var lastLineIndex = 0;
+  let lineIndex = 0;
+  let nextLineIndex = 0;
+  let lastLineIndex = 0;
 
-    while (nextLineIndex >= 0 && nextLineIndex < offset) {
-        lineIndex++;
+  while (nextLineIndex >= 0 && nextLineIndex < offset) {
+    lineIndex += 1;
 
-        lastLineIndex = nextLineIndex;
-        nextLineIndex = text.indexOf(sep, nextLineIndex + sep.length);
-    }
+    lastLineIndex = nextLineIndex;
+    nextLineIndex = text.indexOf(sep2, nextLineIndex + sep2.length);
+  }
 
-    return new LineAnchor({
-        line:   (lineIndex - 1),
-        offset: (offset - lastLineIndex)
-    });
+  return new LineAnchor({
+    line: (lineIndex - 1),
+    offset: (offset - lastLineIndex),
+  });
 }
 
 module.exports = getLineAnchorForOffset;

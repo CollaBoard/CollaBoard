@@ -1,4 +1,4 @@
-var removeIndent = require('./removeIndent');
+import removeIndent from './removeIndent';
 
 /**
  * Handle key command for code blocks
@@ -8,9 +8,9 @@ var removeIndent = require('./removeIndent');
  * @return {Boolean}
  */
 function handleKeyCommand(editorState, command) {
-    if (command === 'backspace') {
-        return removeIndent(editorState);
-    }
+  if (command === 'backspace') {
+    return removeIndent(editorState);
+  }
 }
 
 module.exports = handleKeyCommand;
