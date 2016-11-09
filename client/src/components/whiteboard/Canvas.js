@@ -37,8 +37,6 @@ const Canvas = function Canvas(element, options) {
   let currentFigure = null;
   let selectedFigure = 'line';
 
-  let clicked = false;
-
   const newFigure = function newFigure(x, y) {
     // empty the stack of undos
     undone = [];
@@ -135,25 +133,25 @@ const Canvas = function Canvas(element, options) {
   });
 
   this.el.addEventListener('mousedown', (e) => {
-    clicked = true;
     const { x, y } = getCoordinates(e);
     newFigure(x, y);
   });
 
   this.el.addEventListener('mousemove', (e) => {
-    if (currentFigure && clicked) {
+    if (e.buttons === 1) {
       const { x, y } = getCoordinates(e);
+      if (!currentFigure) {
+        newFigure(x, y);
+      }
       currentFigure.move(x, y, e);
     }
   });
 
   this.el.addEventListener('mouseup', () => {
-    clicked = false;
     endFigure();
   });
 
   this.el.addEventListener('mouseleave', () => {
-    clicked = false;
     endFigure();
   });
 
