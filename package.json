@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "description": "The next big thing, created with Concatapult.",
   "repository": "https://github.com/collaboard/collaboard",
-  "main": "server/app.js",
+  "main": "server/index.js",
   "scripts": {
     "start": "nodemon server/ --ignore client/",
     "test": "./test/run.sh",
