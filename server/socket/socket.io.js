@@ -1,5 +1,10 @@
-// const socket = require('socket.io');
+const socket = require('socket.io');
 
-// socket.on('connect', () => {});
-// socket.on('event', () => {});
-// socket.on('disconnect', () => {});
+let io;
+module.exports.listen = (http) => {
+  io = socket.listen(http);
+  io.on('connection', () => {
+    console.log('Socket connected!');
+  });
+  module.exports.io = io;
+};
