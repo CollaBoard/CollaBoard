@@ -33,7 +33,7 @@
 
 	<script src="/socket.io/socket.io.js" type="text/javascript"></script>
 	<script>
-		var socket = io('http://localhost');
+		let socket = io('http://localhost');
 		socket.on('connect', function() {});
 		socket.on('event', function(data) {});
 		socket.on('disconnect', function() {});
