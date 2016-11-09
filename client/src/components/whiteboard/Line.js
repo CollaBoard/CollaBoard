@@ -1,15 +1,26 @@
-const Line = function Line(startX = 0, startY = 0, options) {
-  this.type = 'Line';
-  this.finalized = false;
-  const defaults = {
-    lineWidth: 5,
-    color: '#000',
-    lineCap: 'round',
-  };
-  const config = Object.assign({}, options, defaults);
+const Line = function Line(...args) {
+  let startX = 0;
+  let startY = 0;
+  let config = {};
   let points = [];
-
-  points.push({ x: startX, y: startY });
+  let options = {};
+  if (args.length === 1) {
+    this.finalized = args[0].finalized;
+    ({ startX, startY, points, config } = args[0]);
+  } else {
+    options = args[2];
+    startX = args[0];
+    startY = args[1];
+    this.finalized = false;
+    const defaults = {
+      lineWidth: 5,
+      color: '#000',
+      lineCap: 'round',
+    };
+    config = Object.assign({}, options, defaults);
+    points.push({ x: startX, y: startY });
+  }
+  this.type = 'line';
 
   this.draw = function draw(context) {
     if (!context) {
@@ -40,7 +51,9 @@ const Line = function Line(startX = 0, startY = 0, options) {
   };
 
   this.serialize = function serialize() {
-    return Object.assign({ type: this.type, points }, config);
+    return Object.assign({
+      type: this.type, startX, startY, finalized: this.finalized, points,
+    }, { config });
   };
 };
 

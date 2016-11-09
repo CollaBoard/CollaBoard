@@ -49,6 +49,10 @@ const Canvas = function Canvas(element, options) {
     this.trigger('figureStart', currentFigure);
   }.bind(this);
 
+  this.addFigure = function addFigure(figure) {
+    renderables.push(new figures[figure.type](figure));
+  };
+
   const endFigure = function endFigure() {
     currentFigure.finalize();
     this.trigger('figureEnd', currentFigure);

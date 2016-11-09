@@ -11,10 +11,16 @@ class Whiteboard extends React.Component {
 
   canvasLoaded1(canvas) {
     this.canvas1 = new Canvas(canvas, {});
+    this.canvas1.on('figureEnd', (figure) => {
+      this.canvas2.addFigure(figure.serialize());
+    });
   }
 
   canvasLoaded2(canvas) {
     this.canvas2 = new Canvas(canvas, {});
+    this.canvas2.on('figureEnd', (figure) => {
+      this.canvas1.addFigure(figure.serialize());
+    });
   }
 
   render() {
