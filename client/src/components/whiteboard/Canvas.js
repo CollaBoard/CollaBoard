@@ -28,6 +28,12 @@ const Canvas = function Canvas(element, options) {
     line: Line,
   };
 
+  const events = {
+    figureStart: [],
+    figureEnd: [],
+    step: [],
+  };
+
   let currentFigure = null;
   let selectedFigure = 'line';
 
@@ -40,8 +46,29 @@ const Canvas = function Canvas(element, options) {
     // last object is a configuration object
     currentFigure = new figures[selectedFigure](x, y, {});
     renderables.push(currentFigure);
+    this.trigger('figureStart', currentFigure);
+  }.bind(this);
+
+  const endFigure = function endFigure() {
+    currentFigure.finalize();
+    this.trigger('figureEnd', currentFigure);
+  }.bind(this);
+
+  this.on = function on(eventName, func) {
+    if (typeof func !== 'function') {
+      return false;
+    }
+    if (!events[eventName]) {
+      events[eventName] = [];
+    }
+    return events[eventName].push(func);
   };
 
+  this.trigger = function trigger(eventName, ...args) {
+    if (events[eventName]) {
+      events[eventName].forEach(func => func(...args));
+    }
+  };
 
   this.draw = function draw() {
     renderables.forEach((figure) => {
@@ -59,6 +86,7 @@ const Canvas = function Canvas(element, options) {
   this.step = () => {
     this.clear();
     this.draw();
+    this.trigger('step');
     requestAnimationFrame(this.step);
   };
 
@@ -95,6 +123,10 @@ const Canvas = function Canvas(element, options) {
     currentFigure.move(x, y, e);
   });
 
+  this.el.addEventListener('touchend', () => {
+    endFigure();
+  });
+
   this.el.addEventListener('mousedown', (e) => {
     clicked = true;
     const { x, y } = getCoordinates(e);
@@ -110,7 +142,7 @@ const Canvas = function Canvas(element, options) {
 
   this.el.addEventListener('mouseup', () => {
     clicked = false;
-    currentFigure.finalize();
+    endFigure();
   });
 
   this.undo = function undo() {
