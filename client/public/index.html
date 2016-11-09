@@ -33,11 +33,10 @@
 
 	<script src="/socket.io/socket.io.js" type="text/javascript"></script>
 	<script>
-		let socket = io.connect('http://localhost');
-		socket.on('news', function(data) {
-			console.log(data);
-			socket.emit('my other event', {my: 'data'});
-		});
+		let socket = io('http://localhost');
+		socket.on('connect', function() {});
+		socket.on('event', function(data) {});
+		socket.on('disconnect', function() {});
 
 	</script>
 
