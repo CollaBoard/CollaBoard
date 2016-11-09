@@ -1,7 +1,7 @@
 const browserify = require('browserify-middleware');
 const express = require('express');
 const bodyParser = require('body-parser');
-const socket = require('./socket/socket.io.js');
+const socket = require('./socket/index.js');
 const http = require('http');
 
 
