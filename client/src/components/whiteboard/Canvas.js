@@ -149,6 +149,12 @@ const Canvas = function Canvas(element, options) {
     endFigure();
   });
 
+  this.el.addEventListener('mouseleave', () => {
+    clicked = false;
+    endFigure();
+    currentFigure = null;
+  });
+
   this.undo = function undo() {
     undone.push(renderables.pop());
   };
