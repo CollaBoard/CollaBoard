@@ -10,7 +10,7 @@ import CodeUtils from 'draft-js-code';
 // COLLABOARD: see forked repository https://github.com/CollaBoard/draft-js-prism for changes
 import PrismDraftDecorator from 'draft-js-prism';
 import StyleButton from './StyleButton';
-import TextEditor from 'draft-js-code';
+// import TextEditor from 'draft-js-code';
 // import TextEditor from './../../../../draft-js-code/demo/main';
 
 // Custom overrides for "code" style.
