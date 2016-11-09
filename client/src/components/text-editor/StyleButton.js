@@ -23,4 +23,11 @@ class StyleButton extends React.Component {
   }
 }
 
+StyleButton.propTypes = {
+  onToggle: React.PropTypes.func,
+  active: React.PropTypes.bool,
+  style: React.PropTypes.string,
+  label: React.PropTypes.string,
+};
+
 export default StyleButton;

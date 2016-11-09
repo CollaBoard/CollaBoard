@@ -1,6 +1,7 @@
 // This file and the contents of this directory modified by the CollaBoard team
 // (see package.json file for full list of names) from the original by Samy Pessé,
-// https://github.com/SamyPesse, originally released under the Apache License, Version 2.0. See LICENSE in this directory for full license.
+// https://github.com/SamyPesse, originally released under the Apache License, Version 2.0.
+// See NOTICE in this directory for full license.
 // There are minor modifications throughout to comply with AirBnB ESLint style.
 // Substantive modifications are marked by comments beginning with 'COLLABOARD:'.
 
@@ -13,7 +14,25 @@ import React from 'react';
 // from both draft-js-code and draft-js-prism
 import CodeUtils from './codelib';
 import PrismDraftDecorator from './prismlib';
-// import StyleButton from './StyleButton';
+import StyleButton from './StyleButton';
+
+
+// Custom overrides for "code" style.
+const styleMap = {
+  CODE: {
+    backgroundColor: 'rgba(0, 0, 0, 0.05)',
+    fontFamily: '"Inconsolata", "Menlo", "Consolas", monospace',
+    fontSize: 16,
+    padding: 2,
+  },
+};
+
+function getBlockStyle(block) {
+  switch (block.getType()) {
+    case 'blockquote': return 'RichEditor-blockquote';
+    default: return null;
+  }
+}
 
 class TextEditor extends React.Component {
   constructor(props) {
@@ -24,18 +43,20 @@ class TextEditor extends React.Component {
       editorState: Draft.EditorState.createEmpty(decorator),
     };
 
-    this.focus = () => this.refs.editor.focus();
+    this.focus = () => this.editor.focus();
     this.onChange = editorState => this.setState({ editorState });
 
-    this.handleKeyCommand = (command) => this._handleKeyCommand(command);
-    this.keyBindingFn = (e) => this._keyBindingFn(e);
-    this.toggleBlockType = (type) => this._toggleBlockType(type);
-    this.toggleInlineStyle = (style) => this._toggleInlineStyle(style);
-    this.onTab = (e) => this._onTab(e);
-    this.onReturn = (e) => this._onReturn(e);
+// COLLABOARD: original underscore-prefaced changed to i-prefaced to comply
+// with AirBnB style, 'i' chosen here for 'immutable'
+    this.handleKeyCommand = command => this.iHandleKeyCommand(command);
+    this.keyBindingFn = e => this.iKeyBindingFn(e);
+    this.toggleBlockType = type => this.iToggleBlockType(type);
+    this.toggleInlineStyle = style => this.iToggleInlineStyle(style);
+    this.onTab = e => this.iOnTab(e);
+    this.onReturn = e => this.iOnReturn(e);
   }
 
-  _onTab(e) {
+  iOnTab(e) {
     const editorState = this.state.editorState;
 
     if (!CodeUtils.hasSelectionInBlock(editorState)) {
@@ -47,7 +68,7 @@ class TextEditor extends React.Component {
     );
   }
 
-  _onReturn(e) {
+  iOnReturn(e) {
     const editorState = this.state.editorState;
 
     if (!CodeUtils.hasSelectionInBlock(editorState)) {
@@ -57,10 +78,10 @@ class TextEditor extends React.Component {
     this.onChange(
         CodeUtils.handleReturn(e, editorState)
     );
-    return true;
+    return;
   }
 
-  _toggleInlineStyle(inlineStyle) {
+  iToggleInlineStyle(inlineStyle) {
     this.onChange(
       RichUtils.toggleInlineStyle(
         this.state.editorState,
@@ -69,7 +90,7 @@ class TextEditor extends React.Component {
     );
   }
 
-  _keyBindingFn(e) {
+  iKeyBindingFn(e) {
     const editorState = this.state.editorState;
     let command;
 
@@ -83,7 +104,7 @@ class TextEditor extends React.Component {
     return Draft.getDefaultKeyBinding(e);
   }
 
-  _toggleBlockType(blockType) {
+  iToggleBlockType(blockType) {
     this.onChange(
       RichUtils.toggleBlockType(
         this.state.editorState,
@@ -92,7 +113,7 @@ class TextEditor extends React.Component {
     );
   }
 
-  _handleKeyCommand(command) {
+  iHandleKeyCommand(command) {
     const { editorState } = this.state;
     let newState;
 
@@ -134,8 +155,9 @@ class TextEditor extends React.Component {
           editorState={editorState}
           onToggle={this.toggleInlineStyle}
         />
-        <div className={className} onClick={this.focus}>
+        <div className={className}>
           <Editor
+            onClick={this.focus}
             blockStyleFn={getBlockStyle}
             customStyleMap={styleMap}
             editorState={editorState}
@@ -143,31 +165,14 @@ class TextEditor extends React.Component {
             keyBindingFn={this.keyBindingFn}
             onChange={this.onChange}
             placeholder="Tell a story..."
-            ref="editor"
-            spellCheck={true}
+            ref={(ref) => { this.editor = ref; }}
+            spellCheck
             handleReturn={this.onReturn}
             onTab={this.onTab}
           />
         </div>
       </div>
     );
-  }
-}
-
-// Custom overrides for "code" style.
-const styleMap = {
-  CODE: {
-    backgroundColor: 'rgba(0, 0, 0, 0.05)',
-    fontFamily: '"Inconsolata", "Menlo", "Consolas", monospace',
-    fontSize: 16,
-    padding: 2,
-  },
-};
-
-function getBlockStyle(block) {
-  switch (block.getType()) {
-    case 'blockquote': return 'RichEditor-blockquote';
-    default: return null;
   }
 }
 
@@ -277,27 +282,51 @@ const InlineStyleControls = (props) => {
   );
 };
 
-class StyleButton extends React.Component {
-  constructor() {
-    super();
-    this.onToggle = (e) => {
-      e.preventDefault();
-      this.props.onToggle(this.props.style);
-    };
-  }
+// class StyleButton extends React.Component {
+//   constructor() {
+//     super();
+//     this.onToggle = (e) => {
+//       e.preventDefault();
+//       this.props.onToggle(this.props.style);
+//     };
+//   }
+//
+//   render() {
+//     let className = 'RichEditor-styleButton';
+//     if (this.props.active) {
+//       className += ' RichEditor-activeButton';
+//     }
+//
+//     return (
+//       <span className={className} onMouseDown={this.onToggle}>
+//         {this.props.label}
+//       </span>
+//     );
+//   }
+// }
 
-  render() {
-    let className = 'RichEditor-styleButton';
-    if (this.props.active) {
-      className += ' RichEditor-activeButton';
-    }
+BlockStyleControls.propTypes = {
+  editorState: React.PropTypes.node,
+  onToggle: React.PropTypes.func,
+};
 
-    return (
-      <span className={className} onMouseDown={this.onToggle}>
-        {this.props.label}
-      </span>
-    );
-  }
-}
+InlineStyleControls.propTypes = {
+  editorState: React.PropTypes.node,
+  onToggle: React.PropTypes.func,
+};
+
+StyleButton.propTypes = {
+  onToggle: React.PropTypes.func,
+  active: React.PropTypes.bool,
+  style: React.PropTypes.string,
+  label: React.PropTypes.string,
+};
+
+TextEditor.propTypes = {
+  active: React.PropTypes.bool,
+  onToggle: React.PropTypes.func,
+  editorState: React.PropTypes.node,
+  style: React.PropTypes.string,
+};
 
 export default TextEditor;
