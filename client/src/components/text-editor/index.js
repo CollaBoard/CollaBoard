@@ -51,12 +51,12 @@ class TextEditor extends React.Component {
     };
 
     this.focus = () => this.editor.focus();
-    // COLLABOARD: Emitting change event on state update
+    // COLLABOARD: Emitting change event on editor change
     this.onChange = (editorState) => {
-      this.setState({ editorState });
-      console.log('emitting change event:', convertToRaw(this.state.editorState.getCurrentContent()));
-
-      socket.emit('text change', convertToRaw(this.state.editorState.getCurrentContent()));
+      this.setState({ editorState }, function emitChange() {
+        console.log('emitting change event:', convertToRaw(this.state.editorState.getCurrentContent()));
+        socket.emit('text change', convertToRaw(this.state.editorState.getCurrentContent()));
+      });
     };
 
 // COLLABOARD: original underscore-prefaced changed to i-prefaced to comply
@@ -169,7 +169,6 @@ class TextEditor extends React.Component {
         className += ' RichEditor-hidePlaceholder';
       }
     }
-
     return (
       <div className="RichEditor-root">
         <BlockStyleControls
