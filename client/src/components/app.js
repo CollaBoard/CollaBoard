@@ -33,11 +33,12 @@ const App = (props) => {
 };
 
 App.propTypes = {
-  children: PropTypes.element,
   location: PropTypes.shape({
-    pathname: PropTypes.string,
-  }),
+    pathname: PropTypes.string.isRequired,
+  }).isRequired,
+  children: PropTypes.node.isRequired,
 };
+
 
 const bindDispatchToProps = () => ({
   showModal: actions.showModal,
