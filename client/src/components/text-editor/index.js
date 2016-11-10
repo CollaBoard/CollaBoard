@@ -13,6 +13,8 @@ import React from 'react';
 import CodeUtils from 'draft-js-code';
 // COLLABOARD: see forked repository https://github.com/CollaBoard/draft-js-prism for changes
 import PrismDraftDecorator from 'draft-js-prism';
+// COLLABOARD: Adding socket.io
+import io from 'socket.io-client';
 import StyleButton from './StyleButton';
 // import TextEditor from 'draft-js-code';
 // import TextEditor from './../../../../draft-js-code/demo/main';
@@ -34,6 +36,9 @@ function getBlockStyle(block) {
   }
 }
 
+// COLLABOARD: initializing socket
+const socket = io();
+
 class TextEditor extends React.Component {
   constructor(props) {
     super(props);
@@ -47,7 +52,7 @@ class TextEditor extends React.Component {
     this.onChange = editorState => this.setState({ editorState });
 
 // COLLABOARD: original underscore-prefaced changed to i-prefaced to comply
-// with AirBnB style, 'i' chosen here for 'immutable'
+// with AirBnB style for no hanging underscores, 'i' chosen here for 'immutable'
     this.handleKeyCommand = command => this.iHandleKeyCommand(command);
     this.keyBindingFn = e => this.iKeyBindingFn(e);
     this.toggleBlockType = type => this.iToggleBlockType(type);
@@ -113,6 +118,20 @@ class TextEditor extends React.Component {
     );
   }
 
+  // COLLABOARD: Listening to socket after component mount
+  componentDidMount() {
+    socket.on('text change', (newEditorState) => {
+      console.log('setting state from change');
+      this.setState({ editorState: newEditorState });
+    });
+  }
+
+  // COLLABOARD: Emitting change event on state update
+  componentDidUpdate() {
+    console.log('emitting change event');
+    socket.emit('text change');
+  }
+
   iHandleKeyCommand(command) {
     const { editorState } = this.state;
     let newState;
@@ -174,6 +193,7 @@ class TextEditor extends React.Component {
       </div>
     );
   }
+
 }
 
 // COLLABOARD: languages array
@@ -228,10 +248,10 @@ const BlockStyleControls = (props) => {
     .getBlockForKey(selection.getStartKey())
     .getType();
     // COLLABOARD: adding language variable to track current language of code block
-  const lang = editorState
-    .getCurrentContent()
-    .getBlockForKey(selection.getStartKey())
-    .getSyntax();
+  // const lang = editorState
+  //   .getCurrentContent()
+  //   .getBlockForKey(selection.getStartKey());
+  // console.log(lang);
 
 // COLLABOARD: mapping language buttons next to block types
   return (
@@ -248,7 +268,7 @@ const BlockStyleControls = (props) => {
       {LANGUAGES.map(type =>
         <StyleButton
           key={type.label}
-          active={type.syntax === lang}
+          active={type.syntax === blockType}
           label={type.label}
           onToggle={props.onToggle}
           style={type.style}
@@ -306,26 +326,26 @@ const InlineStyleControls = (props) => {
 // }
 
 BlockStyleControls.propTypes = {
-  editorState: React.PropTypes.node,
+  // editorState: React.PropTypes.node,
   onToggle: React.PropTypes.func,
 };
 
 InlineStyleControls.propTypes = {
-  editorState: React.PropTypes.node,
+  // editorState: React.PropTypes.node,
   onToggle: React.PropTypes.func,
 };
 
-StyleButton.propTypes = {
-  onToggle: React.PropTypes.func,
-  active: React.PropTypes.bool,
-  style: React.PropTypes.string,
-  label: React.PropTypes.string,
-};
+// StyleButton.propTypes = {
+//   onToggle: React.PropTypes.func,
+//   active: React.PropTypes.bool,
+//   style: React.PropTypes.string,
+//   label: React.PropTypes.string,
+// };
 
 TextEditor.propTypes = {
   active: React.PropTypes.bool,
   onToggle: React.PropTypes.func,
-  editorState: React.PropTypes.node,
+  // editorState: React.PropTypes.node,
   style: React.PropTypes.string,
 };
 
