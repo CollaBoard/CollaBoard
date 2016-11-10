@@ -19,13 +19,12 @@ const ProductSelect = () => (
     <Link
       to="/texteditor"
       className="
-      grey darken-3
-      nav-text
-      product-select-link
-      waves-effect
-      waves-light
-      btn-large
-      product-select-link"
+        grey darken-3
+        nav-text
+        waves-effect
+        waves-light
+        btn-large
+        product-select-link"
     >Text Editor</Link>
 
   </div>

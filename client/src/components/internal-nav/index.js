@@ -2,11 +2,11 @@ import React, { PropTypes } from 'react';
 import { Link } from 'react-router';
 
 
-const InternalNav = ({ location }) => {
+const InternalNav = (props) => {
   let linkText = 'Text Editor';
   let linkRoute = '/texteditor';
 
-  if (location.pathname === '/texteditor') {
+  if (props.location.pathname === '/texteditor') {
     linkText = 'Whiteboard';
     linkRoute = '/whiteboard';
   }
@@ -86,5 +86,7 @@ const InternalNav = ({ location }) => {
 export default InternalNav;
 
 InternalNav.propTypes = {
-  location: PropTypes.shape(),
+  location: PropTypes.shape({
+    pathname: PropTypes.string.isRequired,
+  }).isRequired,
 };

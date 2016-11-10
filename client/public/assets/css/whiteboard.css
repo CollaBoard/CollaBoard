@@ -46,6 +46,7 @@
   border-top: none;
   width: 55px;
   font-size: 14px;
+  height: 64px;
 
 
 
@@ -54,7 +55,7 @@
 .internal-nav-button p {
   line-height: 15px;
   padding-top: -15px;
-  margin-top: -20px;
+  margin-top: -5px;
   margin-bottom: 0;
 }
 
