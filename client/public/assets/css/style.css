@@ -54,6 +54,16 @@ nav .brand-logo {
     background-color: #d6d6d6;
 }
 
+.context-menu {
+  display: none;
+  position: absolute;
+  z-index: 10;
+}
+
+.context-menu--active {
+  display: block;
+}
+
 @media only screen and (min-width: 601px){
     nav, nav .nav-wrapper i, nav a.button-collapse, nav a.button-collapse i {
         height: 34px;

@@ -17,7 +17,7 @@ const Line = function Line(...args) {
       color: '#000',
       lineCap: 'round',
     };
-    config = Object.assign({}, options, defaults);
+    config = Object.assign({}, defaults, options);
     points.push({ x: startX, y: startY });
   }
   this.type = 'line';

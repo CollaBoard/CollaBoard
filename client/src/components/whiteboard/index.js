@@ -45,6 +45,24 @@ class Whiteboard extends React.Component {
         >
           {'It appears your browser doesn\'t support HTML5 Canvas'}
         </canvas>
+        <div className="context-menu" id="context-menu">
+          <ul className="context-menu-items">
+            <li className="context-menu-item">
+              <a
+                className="btn-floating waves-effect waves-light white"
+                id="eraser"
+                onClick={() => { this.canvas1.prop('color', 'white'); }}
+              />
+            </li>
+            <li className="context-menu-item">
+              <a
+                className="btn-floating waves-effect waves-light black"
+                id="black"
+                onClick={() => { this.canvas1.prop('color', 'white'); }}
+              />
+            </li>
+          </ul>
+        </div>
       </div>
     );
   }

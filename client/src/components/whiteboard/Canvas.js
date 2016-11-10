@@ -42,7 +42,7 @@ const Canvas = function Canvas(element, options) {
     undone = [];
     // create a new figure based on the one that is selected
     // last object is a configuration object
-    currentFigure = new figures[selectedFigure](x, y, {});
+    currentFigure = new figures[selectedFigure](x, y, currentConfig);
     renderables.push(currentFigure);
     this.trigger('figureStart', currentFigure);
   }.bind(this);
@@ -117,6 +117,17 @@ const Canvas = function Canvas(element, options) {
     };
   };
 
+  const ContextMenu = function ContextMenu(x, y) {
+    const menu = document.querySelector('#context-menu');
+    let menuState = 0;
+    if (menuState !== 1) {
+      menuState = 1;
+      menu.style.left = `${x}px`;
+      menu.style.top = `${y}px`;
+      menu.classList.add('context-menu--active');
+    }
+  };
+
   this.el.addEventListener('touchstart', (e) => {
     const { x, y } = getCoordinates(e);
     newFigure(x, y);
@@ -155,6 +166,12 @@ const Canvas = function Canvas(element, options) {
     endFigure();
   });
 
+  this.el.addEventListener('contextmenu', (e) => {
+    e.preventDefault();
+    const { x, y } = getCoordinates(e);
+    ContextMenu(x, y);
+  });
+
   this.undo = function undo() {
     undone.push(renderables.pop());
   };
@@ -164,6 +181,7 @@ const Canvas = function Canvas(element, options) {
       return currentConfig[prop];
     }
     currentConfig[prop] = val;
+    console.log(currentConfig);
     return currentConfig[prop];
   };
 
