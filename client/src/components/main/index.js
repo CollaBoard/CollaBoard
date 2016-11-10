@@ -9,8 +9,6 @@ const Main = () => (
     <ProductSelect />
     <Features />
   </div>
-
-
 );
 
 export default Main;

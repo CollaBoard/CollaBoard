@@ -1,0 +1,78 @@
+.utility-bar-side {
+  background-color: grey;
+  height: 100vh;
+  right: 0;
+  position: absolute;
+  top: 0;
+  z-index: 1;
+  width: 20%;
+  min-width: 300px;
+  vertical-align: middle;
+  text-align: center;
+/*  -webkit-transition: width 1s, height 1s, background-color 1s, -webkit-transform 1s;
+  transition: width 1s, height 1s, background-color 1s, transform 1s;
+  transition-timing-function: linear;*/
+   /*transition: all 0.5s ease;*/
+}
+
+.utility-bar-side:hover {
+  /*width: 30%;*/
+  /*min-width: 300px;*/
+/*  right: -0px;*/
+  /*-webkit-transition: width 2s, height 2s, background-color 2s, -webkit-transform 2s;
+  transition: width 2s, height 2s, background-color 2s, transform 2s;*/
+}
+
+
+.internal-nav {
+  height: 64px !important;
+}
+
+.internal-nav-button {
+  /*line-height: 20px;*/
+  padding: 0 0 7px 0 !important;
+  border-radius: 5px;
+  padding: 5px 10px;
+  background-color: grey;
+  color: lightgrey;
+  font-weight: 600;
+  border-color: #616161;
+  background-color: #424242;
+  border-radius: 0;
+  font-family: Roboto;
+  font-weight: 100;
+  border-bottom: 1px;
+  border-right: 1px;
+  border-top: none;
+  width: 55px;
+  font-size: 14px;
+
+
+
+}
+
+.internal-nav-button p {
+  line-height: 15px;
+  padding-top: -15px;
+  margin-top: -20px;
+  margin-bottom: 0;
+}
+
+.internal-nav-button img {
+  height: 23px;
+  width: auto;
+}
+
+.internal-nav-button:hover {
+  background-color: #292828;
+}
+
+.nav-logo img {
+  width: 200px;
+  margin-top: 7px !important;
+  margin-left: 15px;
+}
+
+.internal-nav-button-last {
+  border-right: 1px solid #616161;
+}

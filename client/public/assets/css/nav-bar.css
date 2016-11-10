@@ -1,5 +1,15 @@
 .nav-wrapper {
 	background-color: #0058e8;
+  z-index: 2;
+}
+
+nav ul a, .nav-text {
+  font-family: "Roboto", "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif; 
+  font-weight: 100;
+  font-size: 17px !important;
 }
 
 
+ .nav-button {
+  cursor: pointer;
+ }
