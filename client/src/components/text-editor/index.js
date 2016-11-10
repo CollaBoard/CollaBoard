@@ -8,6 +8,8 @@
 import Draft, {
   Editor,
   RichUtils,
+  convertFromRaw,
+  convertToRaw,
 } from 'draft-js';
 import React from 'react';
 import CodeUtils from 'draft-js-code';
@@ -49,7 +51,13 @@ class TextEditor extends React.Component {
     };
 
     this.focus = () => this.editor.focus();
-    this.onChange = editorState => this.setState({ editorState });
+    // COLLABOARD: Emitting change event on state update
+    this.onChange = (editorState) => {
+      this.setState({ editorState });
+      console.log('emitting change event:', convertToRaw(this.state.editorState.getCurrentContent()));
+
+      socket.emit('text change', convertToRaw(this.state.editorState.getCurrentContent()));
+    };
 
 // COLLABOARD: original underscore-prefaced changed to i-prefaced to comply
 // with AirBnB style for no hanging underscores, 'i' chosen here for 'immutable'
@@ -60,6 +68,18 @@ class TextEditor extends React.Component {
     this.onTab = e => this.iOnTab(e);
     this.onReturn = e => this.iOnReturn(e);
   }
+
+  // COLLABOARD: Listening to socket after component mount
+  componentDidMount() {
+    socket.on('serve text', (rawEditorState) => {
+      console.log('receiving raw state: ', rawEditorState);
+      const newContentState = convertFromRaw(rawEditorState);
+      const editorStateToSet = Draft.EditorState.push(this.state.editorState, newContentState);
+      console.log('setting state from change: ', editorStateToSet);
+      this.setState({ editorState: editorStateToSet });
+    });
+  }
+
 
   iOnTab(e) {
     const editorState = this.state.editorState;
@@ -116,20 +136,6 @@ class TextEditor extends React.Component {
         blockType
       )
     );
-  }
-
-  // COLLABOARD: Listening to socket after component mount
-  componentDidMount() {
-    socket.on('text change', (newEditorState) => {
-      console.log('setting state from change');
-      this.setState({ editorState: newEditorState });
-    });
-  }
-
-  // COLLABOARD: Emitting change event on state update
-  componentDidUpdate() {
-    console.log('emitting change event');
-    socket.emit('text change');
   }
 
   iHandleKeyCommand(command) {
