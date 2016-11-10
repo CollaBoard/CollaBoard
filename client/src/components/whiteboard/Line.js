@@ -8,9 +8,9 @@ const Line = function Line(...args) {
     this.finalized = args[0].finalized;
     ({ startX, startY, points, config } = args[0]);
   } else {
-    options = args[2];
     startX = args[0];
     startY = args[1];
+    options = args[2];
     this.finalized = false;
     const defaults = {
       lineWidth: 5,
