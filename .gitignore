@@ -4,3 +4,4 @@ yarn.lock
 .npmignore
 *.DS_Store
 npm-debug.log
+.idea
