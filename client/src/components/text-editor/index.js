@@ -54,7 +54,6 @@ class TextEditor extends React.Component {
     // COLLABOARD: Emitting change event on editor change
     this.onChange = (editorState) => {
       this.setState({ editorState }, function emitChange() {
-        console.log('emitting change event:', convertToRaw(this.state.editorState.getCurrentContent()));
         socket.emit('text change', convertToRaw(this.state.editorState.getCurrentContent()));
       });
     };
@@ -69,13 +68,11 @@ class TextEditor extends React.Component {
     this.onReturn = e => this.iOnReturn(e);
   }
 
-  // COLLABOARD: Listening to socket after component mount
+  // COLLABOARD: Listening to socket and updating content after component mount
   componentDidMount() {
     socket.on('serve text', (rawEditorState) => {
-      console.log('receiving raw state: ', rawEditorState);
       const newContentState = convertFromRaw(rawEditorState);
       const editorStateToSet = Draft.EditorState.push(this.state.editorState, newContentState);
-      console.log('setting state from change: ', editorStateToSet);
       this.setState({ editorState: editorStateToSet });
     });
   }
@@ -169,14 +166,30 @@ class TextEditor extends React.Component {
         className += ' RichEditor-hidePlaceholder';
       }
     }
+
+    const selection = editorState.getSelection();
+    const blockType = editorState
+      .getCurrentContent()
+      .getBlockForKey(selection.getStartKey())
+      .getType();
+
+    const inlineStyle = editorState.getCurrentInlineStyle();
+    const activeStyles = {
+      BOLD: inlineStyle.has('BOLD'),
+      ITALIC: inlineStyle.has('ITALIC'),
+      UNDERLINE: inlineStyle.has('UNDERLINE'),
+      CODE: inlineStyle.has('CODE'),
+    };
+
     return (
       <div className="RichEditor-root">
         <BlockStyleControls
-          editorState={editorState}
+          selection={selection}
+          blockType={blockType}
           onToggle={this.toggleBlockType}
         />
         <InlineStyleControls
-          editorState={editorState}
+          activeStyles={activeStyles}
           onToggle={this.toggleInlineStyle}
         />
         <div className={className}>
@@ -246,12 +259,8 @@ const BLOCK_TYPES = [
 ];
 
 const BlockStyleControls = (props) => {
-  const { editorState } = props;
-  const selection = editorState.getSelection();
-  const blockType = editorState
-    .getCurrentContent()
-    .getBlockForKey(selection.getStartKey())
-    .getType();
+  const { blockType } = props;
+
     // COLLABOARD: adding language variable to track current language of code block
   // const lang = editorState
   //   .getCurrentContent()
@@ -291,13 +300,13 @@ const INLINE_STYLES = [
 ];
 
 const InlineStyleControls = (props) => {
-  const currentStyle = props.editorState.getCurrentInlineStyle();
+  const activeStyles = props.activeStyles;
   return (
     <div className="RichEditor-controls">
       {INLINE_STYLES.map(type =>
         <StyleButton
           key={type.label}
-          active={currentStyle.has(type.style)}
+          active={activeStyles[type.style]}
           label={type.label}
           onToggle={props.onToggle}
           style={type.style}
@@ -331,12 +340,12 @@ const InlineStyleControls = (props) => {
 // }
 
 BlockStyleControls.propTypes = {
-  // editorState: React.PropTypes.node,
+  blockType: React.PropTypes.string,
   onToggle: React.PropTypes.func,
 };
 
 InlineStyleControls.propTypes = {
-  // editorState: React.PropTypes.node,
+  activeStyles: React.PropTypes.objectOf(React.PropTypes.bool),
   onToggle: React.PropTypes.func,
 };
 
