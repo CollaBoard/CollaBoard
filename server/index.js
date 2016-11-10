@@ -6,8 +6,9 @@ const http = require('http');
 
 
 const app = express();
+const server = http.Server(app);
 // make socket listen
-socket.listen(http.Server(app));
+socket.listen(server);
 
 const routes = require('./routes');
 
@@ -27,8 +28,8 @@ app.use('/', routes);
 
 // Start the server!
 const port = process.env.PORT || 4000;
-app.listen(port, () => {
+server.listen(port, () => {
   console.log(`Server listening on port ${port}`);
 });
 
-module.exports = app;
+module.exports = server;
