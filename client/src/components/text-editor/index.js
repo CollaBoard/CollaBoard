@@ -85,8 +85,8 @@ class TextEditor extends React.Component {
         const editorStateToSet = Draft.EditorState.push(this.state.editorState, newContentState);
         this.setState({ editorState: editorStateToSet });
       });
-    }).catch((err) => {
-      console.log('Error creating namespace:', err);
+    }).catch(() => {
+      // console.log('Error creating namespace:', err);
     });
   }
 
@@ -224,6 +224,7 @@ class TextEditor extends React.Component {
       </div>
     );
   }
+}
 
 // COLLABOARD: languages array
 const LANGUAGES = [
