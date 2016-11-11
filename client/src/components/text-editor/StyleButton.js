@@ -1,4 +1,4 @@
-import React from 'react';
+const React = require('react');
 
 class StyleButton extends React.Component {
   constructor() {
@@ -22,7 +22,6 @@ class StyleButton extends React.Component {
     );
   }
 }
-
 
 StyleButton.propTypes = {
   onToggle: React.PropTypes.func,

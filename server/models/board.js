@@ -28,7 +28,7 @@ Board.create = function create(type) {
       return { uid, type };
     })
     .catch((err) => {
-      console.error(err);
+      // console.error(err);
       throw err;
     });
 };
