@@ -123,7 +123,7 @@ const Canvas = function Canvas(element, options) {
 
   const contextMenu = function contextMenu(x, y) {
     ctxMenu.style.left = `${x - 65}px`;
-    ctxMenu.style.top = `${y - 65}px`;
+    ctxMenu.style.top = `${y - 32}px`;
     for (let i = 0, l = items.length; i < l; i += 1) {
       items[i].style.left = `${(50 - (35 * Math.cos((-0.5 * Math.PI) - (2 * (1 / l) * i * Math.PI)))).toFixed(4)}%`;
       items[i].style.top = `${(50 + (35 * Math.sin((-0.5 * Math.PI) - (2 * (1 / l) * i * Math.PI)))).toFixed(4)}%`;
