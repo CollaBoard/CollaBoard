@@ -8,7 +8,7 @@ body {
     -moz-user-select: none;
     -ms-user-select: none;
     -ms-touch-action: none;
-    -webkit-tap-highlight-color: rgba(0,0,0,0);
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }
 
 nav {
@@ -31,7 +31,7 @@ nav .brand-logo {
 }
 
 .side-nav {
-  width: 150px;
+    width: 150px;
 }
 
 #content {
@@ -44,17 +44,84 @@ nav .brand-logo {
     height: 100%;
 }
 
-#canvas {
+#whiteboard {
     cursor: crosshair;
-    background-color: #fff;
 }
 
-#canvasClone {
-    cursor: crosshair;
-    background-color: #d6d6d6;
+.circular-menu {
+    width: 130px;
+    height: 130px;
+    margin: 0 auto;
+    position: absolute;
+    z-index: 10;
 }
 
-@media only screen and (min-width: 601px){
+.circle a i {
+    text-shadow: 0px 0px 5px #000;
+}
+
+.circle a i:hover {
+    cursor: pointer;
+    text-shadow: 0px 0px 10px #000;
+}
+
+.redBubble {
+    color: red;
+}
+
+.orangeBubble {
+    color: orange;
+}
+
+.yellowBubble {
+    color: yellow;
+}
+
+.greenBubble {
+    color: green;
+}
+
+.blueBubble {
+    color: blue;
+}
+
+.purpleBubble {
+    color: purple;
+}
+
+.blackBubble {
+    color: black;
+}
+
+.whiteBubble {
+    color: white;
+}
+
+.circle {
+    width: 130px;
+    height: 130px;
+    opacity: 0;
+    transform: scale(0);
+    transition: all 0.2s ease-out;
+}
+
+.open.circle {
+    opacity: 1;
+    transform: scale(1);
+}
+
+.material-icons {
+    font-size: 3rem;
+}
+
+.circle a {
+    display: block;
+    margin-left: -20px;
+    margin-top: -20px;
+    position: absolute;
+}
+
+@media only screen and (min-width: 601px) {
     nav, nav .nav-wrapper i, nav a.button-collapse, nav a.button-collapse i {
         height: 34px;
         line-height: 34px;
