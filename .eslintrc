@@ -10,8 +10,5 @@
   },
   "env": {
     "node": true
-  },
-  "globals": {
-    "$": true
-    }
+  }
 }
