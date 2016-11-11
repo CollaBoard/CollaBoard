@@ -11,9 +11,10 @@ class SignInLink extends React.Component {
   }
 
   render() {
+    // const props = this.props;
     // const state = store.getState();
     const dispatchModalState = () => {
-      console.log('log in clicked!');
+      // prompt('Please enter your login credentials');
       store.dispatch({
         type: 'SHOW_MODAL',
         currentModal: 'SIGN_IN',
@@ -21,10 +22,12 @@ class SignInLink extends React.Component {
     };
     return (
       <li>
-        <a onClick={dispatchModalState}>Log In</a>
+        <a onClick={dispatchModalState} className="nav-button">Log In</a>
       </li>
     );
   }
 }
 
+
 export default SignInLink;
+

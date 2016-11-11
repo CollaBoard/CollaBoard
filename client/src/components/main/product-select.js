@@ -3,18 +3,29 @@ import { Link } from 'react-router';
 
 const ProductSelect = () => (
   <div className="product-select-container">
+
     <Link
       to="/whiteboard"
-      className="product-select-link waves-effect waves-light btn-large"
-    >
-      Whiteboard
-    </Link>
+      className="
+        grey darken-3
+        nav-text
+        product-select-link
+        waves-effect
+        waves-light
+        btn-large"
+    >Whiteboard</Link>
+
     <Link
       to="/texteditor"
-      className="product-select-link waves-effect waves-light btn-large"
-    >
-      Text Editor
-    </Link>
+      className="
+        grey darken-3
+        nav-text
+        waves-effect
+        waves-light
+        btn-large
+        product-select-link"
+    >Text Editor</Link>
+
   </div>
 );
 

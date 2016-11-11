@@ -1,55 +1,64 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
 
-const ModalWrapper = (props) => {
-  const handleBackgroundClick = (e) => {
-    if (e.target === e.currentTarget) {
-      props.hideModal();
-    }
-  };
+const ModalWrapper = () => (
+  <div />
+);
 
-  const onOk = () => {
-    props.onOk();
-    props.hideModal();
-  };
+//   const handleBackgroundClick = (e) => {
+//     if (e.target === e.currentTarget) {
+//       props.hideModal();
+//     }
+//   };
 
-  const button = (
-    <button onClick={onOk} disabled={props.okDisabled}>
-      {props.okText}
-    </button>
-  );
+//   const onOk = () => {
+//     props.onOk();
+//     props.hideModal();
+//   };
 
-  const okButton = props.showOk() ? button : null;
+//   const button = (
+//     <button onClick={onOk} disabled={props.okDisabled}>
+//       {props.okText}
+//     </button>
+//   );
 
-  return (
-    <div onClick={handleBackgroundClick}>
-      <header>
-        <h1>{props.title}</h1>
-        <button onClick={props.hideModal}>Close</button>
-      </header>
-      {props.children}
-      {okButton}
-    </div>
-  );
-};
+//   const okButton = props.showOk() ? button : null;
 
-ModalWrapper.propTypes = {
-  // props
-  title: PropTypes.string,
-  showOk: PropTypes.bool,
-  okText: PropTypes.string,
-  okDisabled: PropTypes.bool,
-  // width: PropTypes.number,
-  // style: PropTypes.object,
-  children: PropTypes.oneOfType([
-    PropTypes.array,
-    PropTypes.element,
-    PropTypes.string,
-  ]).isRequired,
+//   return (
+//     <div onClick={handleBackgroundClick}>
+//       <header>
+//           <h1>{props.title}</h1>
+//           <button onClick={props.hideModal}>Close</button>
+//       </header>
+
+//       {props.children}
+
+//       {okButton}
+
+//     </div>
+
+//   );
+
+// };
+
+// ModalWrapper.propTypes = {
+//   // props
+//   title: PropTypes.string,
+//   showOk: PropTypes.bool,
+//   okText: PropTypes.string,
+//   okDisabled: PropTypes.bool,
+//   width: PropTypes.number,
+//   style: PropTypes.object,
+//   children: PropTypes.oneOfType([
+//     PropTypes.array,
+//     PropTypes.element,
+//     PropTypes.string,
+//   ]).isRequired,
 
 
-  // methods
-  hideModal: PropTypes.func,
-  onOk: () => {},
-};
+//   // methods
+//   hideModal: PropTypes.func,
+//   onOk: () => {}
+
+// };
 
 export default ModalWrapper;

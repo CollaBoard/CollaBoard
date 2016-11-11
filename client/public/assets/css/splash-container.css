@@ -13,7 +13,6 @@
 
 .splash-container {
 	/*background-color: lightgrey;*/
-	background-image: url('http://bsnscb.com/data/out/22/27230051-blackboard-wallpapers.jpg');
 	background-size: cover;
 	/*background: no-repeat;*/
 	/*: auto;*/
@@ -23,15 +22,20 @@
 }
 
 .splash-container img {
-	width: 100%;
-	position: absolute;
+	width: 50%;
+	/*position: absolute;*/
 	top: 0;
 	left: 0;
 	overflow: hidden;
+	text-align: center;
 }
 
 .splash-overlay {
 	position: relative;
-	padding-top: 30%;
+	padding-top: 10%;
 	text-align: center;
+}
+
+.title-image {
+	
 }
