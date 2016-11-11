@@ -118,14 +118,16 @@ const Canvas = function Canvas(element, options) {
   };
 
   const ContextMenu = function ContextMenu(x, y) {
-    const menu = document.querySelector('#context-menu');
-    let menuState = 0;
-    if (menuState !== 1) {
-      menuState = 1;
-      menu.style.left = `${x}px`;
-      menu.style.top = `${y}px`;
-      menu.classList.add('context-menu--active');
+    const items = document.querySelectorAll('.circle a');
+    const circle = document.getElementById('circle');
+    const contextMenu = document.getElementById('context-menu');
+    contextMenu.style.left = `${x - 65}px`;
+    contextMenu.style.top = `${y - 65}px`;
+    for (let i = 0, l = items.length; i < l; i += 1) {
+      items[i].style.left = `${(50 - (35 * Math.cos((-0.5 * Math.PI) - (2 * (1 / l) * i * Math.PI)))).toFixed(4)}%`;
+      items[i].style.top = `${(50 + (35 * Math.sin((-0.5 * Math.PI) - (2 * (1 / l) * i * Math.PI)))).toFixed(4)}%`;
     }
+    circle.classList.toggle('open');
   };
 
   this.el.addEventListener('touchstart', (e) => {

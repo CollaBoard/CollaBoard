@@ -44,14 +44,82 @@ nav .brand-logo {
     height: 100%;
 }
 
-#canvas {
+#whiteboard {
     cursor: crosshair;
-    background-color: #fff;
 }
 
-#canvasClone {
-    cursor: crosshair;
-    background-color: #d6d6d6;
+.circular-menu {
+  width: 130px;
+  height: 130px;
+  margin: 0 auto;
+  position: absolute;
+  z-index: 10;
+}
+
+.circle a i {
+  text-shadow: 0px 0px 5px #000;
+}
+
+.circle a i:hover {
+  text-shadow: 0px 0px 10px #000;
+}
+
+.redBubble {
+  color: red;
+}
+
+.orangeBubble {
+  color: orange;
+}
+
+.yellowBubble {
+  color: yellow;
+}
+
+.greenBubble {
+  color: green;
+}
+
+.blueBubble {
+  color: blue;
+}
+
+.purpleBubble {
+  color: purple;
+}
+
+.blackBubble {
+  color: black;
+}
+
+.whiteBubble {
+  color: white;
+}
+
+.circle {
+  width: 130px;
+  height: 130px;
+  opacity: 0;
+  transform: scale(0);
+  transition: all 0.2s ease-out;
+}
+
+.open.circle {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.material-icons {
+  font-size: 3rem;
+}
+
+.circle a {
+  text-decoration: none;
+  color: white;
+  display: block;
+  margin-left: -20px;
+  margin-top: -20px;
+  position: absolute;
 }
 
 .context-menu {

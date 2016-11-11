@@ -45,23 +45,25 @@ class Whiteboard extends React.Component {
         >
           {'It appears your browser doesn\'t support HTML5 Canvas'}
         </canvas>
-        <div className="context-menu" id="context-menu">
-          <ul className="context-menu-items">
-            <li className="context-menu-item">
-              <a
-                className="btn-floating waves-effect waves-light white"
-                id="eraser"
-                onClick={() => { this.canvas1.prop('color', 'white'); }}
-              />
-            </li>
-            <li className="context-menu-item">
-              <a
-                className="btn-floating waves-effect waves-light black"
-                id="black"
-                onClick={() => { this.canvas1.prop('color', 'white'); }}
-              />
-            </li>
-          </ul>
+        <div className="circular-menu" id="context-menu">
+          <div className="circle" id="circle">
+            <a onClick={() => { this.canvas1.prop('color', 'red'); }}>
+              <i className="material-icons redBubble">lens</i></a>
+            <a onClick={() => { this.canvas1.prop('color', 'orange'); }}>
+              <i className="material-icons orangeBubble">lens</i></a>
+            <a onClick={() => { this.canvas1.prop('color', 'yellow'); }}>
+              <i className="material-icons yellowBubble">lens</i></a>
+            <a onClick={() => { this.canvas1.prop('color', 'green'); }}>
+              <i className="material-icons greenBubble">lens</i></a>
+            <a onClick={() => { this.canvas1.prop('color', 'blue'); }}>
+              <i className="material-icons blueBubble">lens</i></a>
+            <a onClick={() => { this.canvas1.prop('color', 'purple'); }}>
+              <i className="material-icons purpleBubble">lens</i></a>
+            <a onClick={() => { this.canvas1.prop('color', 'black'); }}>
+              <i className="material-icons blackBubble">lens</i></a>
+            <a onClick={() => { this.canvas1.prop('color', 'white'); }}>
+              <i className="material-icons whiteBubble">lens</i></a>
+          </div>
         </div>
       </div>
     );
