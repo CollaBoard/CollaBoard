@@ -9,6 +9,10 @@ module.exports.listen = (http) => {
       console.log('sending new text');
       thisSocket.broadcast.emit('serve text', newText);
     });
+    thisSocket.on('add figure', (figure) => {
+      console.log('sending new shape event:', figure);
+      thisSocket.broadcast.emit('add figure', figure);
+    });
   });
   module.exports.io = io;
 };
