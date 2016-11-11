@@ -1,6 +1,6 @@
 const Puid = require('puid');
 const db = require('../lib/knex-driver');
-const io = require('../socket').io;
+const Namespace = require('./namespace');
 
 const puid = new Puid(false);
 const Board = module.exports;
@@ -11,8 +11,11 @@ Board.find = function find(boardId) {
       if (!rows.length) {
         throw new Error(`Board ${boardId} was not found`);
       }
-      // TODO: create the namespace if it doesn't exist already
-      return rows[0];
+
+      const board = rows[0];
+      // will only create namespace if it doesn't already exist
+      Namespace.create(board.uid);
+      return board;
     });
 };
 
@@ -20,11 +23,8 @@ Board.create = function create(type) {
   const uid = puid.generate();
   return db('boards').insert({ uid, type })
     .then(() => {
-      // TODO: move this into a constructor function of some sort
-      const socket = io.of(`/${uid}`);
-      socket.on('connection', () => {
-        console.log('Connection on ', uid);
-      });
+      // create a namespace for the new room
+      Namespace.create(uid);
       return { uid, type };
     })
     .catch((err) => {
