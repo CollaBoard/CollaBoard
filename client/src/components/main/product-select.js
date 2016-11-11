@@ -12,8 +12,7 @@ const ProductSelect = () => (
         product-select-link
         waves-effect
         waves-light
-        btn-large
-        product-select-link"
+        btn-large"
     >Whiteboard</Link>
 
     <Link
