@@ -70,10 +70,23 @@ class TextEditor extends React.Component {
 
   // COLLABOARD: Listening to socket and updating content after component mount
   componentDidMount() {
-    socket.on('serve text', (rawEditorState) => {
-      const newContentState = convertFromRaw(rawEditorState);
-      const editorStateToSet = Draft.EditorState.push(this.state.editorState, newContentState);
-      this.setState({ editorState: editorStateToSet });
+    $.ajax({
+      type: 'POST',
+      url: '/api/boards',
+      data: {
+        type: 'TextEditor',
+      },
+      contentType: 'JSON',
+    }).then((board) => {
+      const socketPath = `/${board.uid}`;
+      const thisSocket = io(socketPath);
+      thisSocket.on('serve text', (rawEditorState) => {
+        const newContentState = convertFromRaw(rawEditorState);
+        const editorStateToSet = Draft.EditorState.push(this.state.editorState, newContentState);
+        this.setState({ editorState: editorStateToSet });
+      });
+    }).catch((err) => {
+      console.log('Error creating namespace:', err);
     });
   }
 
