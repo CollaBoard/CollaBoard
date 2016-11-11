@@ -117,18 +117,26 @@ const Canvas = function Canvas(element, options) {
     };
   };
 
-  const ContextMenu = function ContextMenu(x, y) {
-    const items = document.querySelectorAll('.circle a');
-    const circle = document.getElementById('circle');
-    const contextMenu = document.getElementById('context-menu');
-    contextMenu.style.left = `${x - 65}px`;
-    contextMenu.style.top = `${y - 65}px`;
+  const ctxMenu = document.getElementById('context-menu');
+  const circle = document.getElementById('circle');
+  const items = document.querySelectorAll('.circle a');
+
+  const contextMenu = function contextMenu(x, y) {
+    ctxMenu.style.left = `${x - 65}px`;
+    ctxMenu.style.top = `${y - 65}px`;
     for (let i = 0, l = items.length; i < l; i += 1) {
       items[i].style.left = `${(50 - (35 * Math.cos((-0.5 * Math.PI) - (2 * (1 / l) * i * Math.PI)))).toFixed(4)}%`;
       items[i].style.top = `${(50 + (35 * Math.sin((-0.5 * Math.PI) - (2 * (1 / l) * i * Math.PI)))).toFixed(4)}%`;
     }
-    circle.classList.toggle('open');
+    circle.classList.add('open');
   };
+
+  circle.addEventListener('click', () => {
+    circle.classList.remove('open');
+    setTimeout(() => {
+      ctxMenu.style.display = 'none';
+    }, 200);
+  });
 
   this.el.addEventListener('touchstart', (e) => {
     const { x, y } = getCoordinates(e);
@@ -146,8 +154,10 @@ const Canvas = function Canvas(element, options) {
   });
 
   this.el.addEventListener('mousedown', (e) => {
-    const { x, y } = getCoordinates(e);
-    newFigure(x, y);
+    if (e.buttons === 1) {
+      const { x, y } = getCoordinates(e);
+      newFigure(x, y);
+    }
   });
 
   this.el.addEventListener('mousemove', (e) => {
@@ -170,8 +180,9 @@ const Canvas = function Canvas(element, options) {
 
   this.el.addEventListener('contextmenu', (e) => {
     e.preventDefault();
+    ctxMenu.style.display = null;
     const { x, y } = getCoordinates(e);
-    ContextMenu(x, y);
+    contextMenu(x, y);
   });
 
   this.undo = function undo() {
@@ -183,7 +194,6 @@ const Canvas = function Canvas(element, options) {
       return currentConfig[prop];
     }
     currentConfig[prop] = val;
-    console.log(currentConfig);
     return currentConfig[prop];
   };
 

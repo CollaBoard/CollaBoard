@@ -8,7 +8,7 @@ body {
     -moz-user-select: none;
     -ms-user-select: none;
     -ms-touch-action: none;
-    -webkit-tap-highlight-color: rgba(0,0,0,0);
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }
 
 nav {
@@ -31,7 +31,7 @@ nav .brand-logo {
 }
 
 .side-nav {
-  width: 150px;
+    width: 150px;
 }
 
 #content {
@@ -49,90 +49,79 @@ nav .brand-logo {
 }
 
 .circular-menu {
-  width: 130px;
-  height: 130px;
-  margin: 0 auto;
-  position: absolute;
-  z-index: 10;
+    width: 130px;
+    height: 130px;
+    margin: 0 auto;
+    position: absolute;
+    z-index: 10;
 }
 
 .circle a i {
-  text-shadow: 0px 0px 5px #000;
+    text-shadow: 0px 0px 5px #000;
 }
 
 .circle a i:hover {
-  text-shadow: 0px 0px 10px #000;
+    cursor: pointer;
+    text-shadow: 0px 0px 10px #000;
 }
 
 .redBubble {
-  color: red;
+    color: red;
 }
 
 .orangeBubble {
-  color: orange;
+    color: orange;
 }
 
 .yellowBubble {
-  color: yellow;
+    color: yellow;
 }
 
 .greenBubble {
-  color: green;
+    color: green;
 }
 
 .blueBubble {
-  color: blue;
+    color: blue;
 }
 
 .purpleBubble {
-  color: purple;
+    color: purple;
 }
 
 .blackBubble {
-  color: black;
+    color: black;
 }
 
 .whiteBubble {
-  color: white;
+    color: white;
 }
 
 .circle {
-  width: 130px;
-  height: 130px;
-  opacity: 0;
-  transform: scale(0);
-  transition: all 0.2s ease-out;
+    width: 130px;
+    height: 130px;
+    opacity: 0;
+    transform: scale(0);
+    transition: all 0.2s ease-out;
 }
 
 .open.circle {
-  opacity: 1;
-  transform: scale(1);
+    opacity: 1;
+    transform: scale(1);
 }
 
 .material-icons {
-  font-size: 3rem;
+    font-size: 3rem;
 }
 
 .circle a {
-  text-decoration: none;
-  color: white;
-  display: block;
-  margin-left: -20px;
-  margin-top: -20px;
-  position: absolute;
+    display: block;
+    margin-left: -20px;
+    margin-top: -20px;
+    position: absolute;
 }
 
-.context-menu {
-  display: none;
-  position: absolute;
-  z-index: 10;
-}
-
-.context-menu--active {
-  display: block;
-}
-
-@media only screen and (min-width: 601px){
+@media only screen and (min-width: 601px) {
     nav, nav .nav-wrapper i, nav a.button-collapse, nav a.button-collapse i {
         height: 34px;
         line-height: 34px;
