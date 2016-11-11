@@ -1,14 +1,22 @@
-// This file uses modules draft-js-code and draft-js-prism by Samy Pessé, https://github.com/SamyPesse, originally released under the Apache License, Version 2.0.
+// This file uses modules draft-js-code and draft-js-prism by Samy Pessé,
+// https://github.com/SamyPesse, originally released under the Apache License, Version 2.0.
 // See LICENSE in the module directory (added here as a module) for full license.
+// There are minor modifications from original suggested configuration throughout
+// to comply with AirBnB ESLint style.
+// Substantive modifications are marked by comments beginning with 'COLLABOARD:'.
 
 import Draft, {
   Editor,
   RichUtils,
+  convertFromRaw,
+  convertToRaw,
 } from 'draft-js';
 import React from 'react';
 import CodeUtils from 'draft-js-code';
 // COLLABOARD: see forked repository https://github.com/CollaBoard/draft-js-prism for changes
 import PrismDraftDecorator from 'draft-js-prism';
+// COLLABOARD: Adding socket.io
+import io from 'socket.io-client';
 import StyleButton from './StyleButton';
 // import TextEditor from 'draft-js-code';
 // import TextEditor from './../../../../draft-js-code/demo/main';
@@ -30,6 +38,9 @@ function getBlockStyle(block) {
   }
 }
 
+// COLLABOARD: initializing socket
+const socket = io();
+
 class TextEditor extends React.Component {
   constructor(props) {
     super(props);
@@ -40,10 +51,15 @@ class TextEditor extends React.Component {
     };
 
     this.focus = () => this.editor.focus();
-    this.onChange = editorState => this.setState({ editorState });
+    // COLLABOARD: Emitting change event on editor change
+    this.onChange = (editorState) => {
+      this.setState({ editorState }, function emitChange() {
+        socket.emit('text change', convertToRaw(this.state.editorState.getCurrentContent()));
+      });
+    };
 
 // COLLABOARD: original underscore-prefaced changed to i-prefaced to comply
-// with AirBnB style, 'i' chosen here for 'immutable'
+// with AirBnB style for no hanging underscores, 'i' chosen here for 'immutable'
     this.handleKeyCommand = command => this.iHandleKeyCommand(command);
     this.keyBindingFn = e => this.iKeyBindingFn(e);
     this.toggleBlockType = type => this.iToggleBlockType(type);
@@ -51,6 +67,16 @@ class TextEditor extends React.Component {
     this.onTab = e => this.iOnTab(e);
     this.onReturn = e => this.iOnReturn(e);
   }
+
+  // COLLABOARD: Listening to socket and updating content after component mount
+  componentDidMount() {
+    socket.on('serve text', (rawEditorState) => {
+      const newContentState = convertFromRaw(rawEditorState);
+      const editorStateToSet = Draft.EditorState.push(this.state.editorState, newContentState);
+      this.setState({ editorState: editorStateToSet });
+    });
+  }
+
 
   iOnTab(e) {
     const editorState = this.state.editorState;
@@ -141,14 +167,29 @@ class TextEditor extends React.Component {
       }
     }
 
+    const selection = editorState.getSelection();
+    const blockType = editorState
+      .getCurrentContent()
+      .getBlockForKey(selection.getStartKey())
+      .getType();
+
+    const inlineStyle = editorState.getCurrentInlineStyle();
+    const activeStyles = {
+      BOLD: inlineStyle.has('BOLD'),
+      ITALIC: inlineStyle.has('ITALIC'),
+      UNDERLINE: inlineStyle.has('UNDERLINE'),
+      CODE: inlineStyle.has('CODE'),
+    };
+
     return (
       <div className="RichEditor-root">
         <BlockStyleControls
-          editorState={editorState}
+          selection={selection}
+          blockType={blockType}
           onToggle={this.toggleBlockType}
         />
         <InlineStyleControls
-          editorState={editorState}
+          activeStyles={activeStyles}
           onToggle={this.toggleInlineStyle}
         />
         <div className={className}>
@@ -170,6 +211,7 @@ class TextEditor extends React.Component {
       </div>
     );
   }
+
 }
 
 // COLLABOARD: languages array
@@ -217,17 +259,13 @@ const BLOCK_TYPES = [
 ];
 
 const BlockStyleControls = (props) => {
-  const { editorState } = props;
-  const selection = editorState.getSelection();
-  const blockType = editorState
-    .getCurrentContent()
-    .getBlockForKey(selection.getStartKey())
-    .getType();
+  const { blockType } = props;
+
     // COLLABOARD: adding language variable to track current language of code block
   // const lang = editorState
   //   .getCurrentContent()
-  //   .getBlockForKey(selection.getStartKey())
-  //   .getSyntax();
+  //   .getBlockForKey(selection.getStartKey());
+  // console.log(lang);
 
 // COLLABOARD: mapping language buttons next to block types
   return (
@@ -244,7 +282,7 @@ const BlockStyleControls = (props) => {
       {LANGUAGES.map(type =>
         <StyleButton
           key={type.label}
-          active={type.style === blockType}
+          active={type.syntax === blockType}
           label={type.label}
           onToggle={props.onToggle}
           style={type.style}
@@ -262,13 +300,13 @@ const INLINE_STYLES = [
 ];
 
 const InlineStyleControls = (props) => {
-  const currentStyle = props.editorState.getCurrentInlineStyle();
+  const activeStyles = props.activeStyles;
   return (
     <div className="RichEditor-controls">
       {INLINE_STYLES.map(type =>
         <StyleButton
           key={type.label}
-          active={currentStyle.has(type.style)}
+          active={activeStyles[type.style]}
           label={type.label}
           onToggle={props.onToggle}
           style={type.style}
@@ -302,26 +340,26 @@ const InlineStyleControls = (props) => {
 // }
 
 BlockStyleControls.propTypes = {
-  editorState: React.PropTypes.node,
+  blockType: React.PropTypes.string,
   onToggle: React.PropTypes.func,
 };
 
 InlineStyleControls.propTypes = {
-  editorState: React.PropTypes.node,
+  activeStyles: React.PropTypes.objectOf(React.PropTypes.bool),
   onToggle: React.PropTypes.func,
 };
 
-StyleButton.propTypes = {
-  onToggle: React.PropTypes.func,
-  active: React.PropTypes.bool,
-  style: React.PropTypes.string,
-  label: React.PropTypes.string,
-};
+// StyleButton.propTypes = {
+//   onToggle: React.PropTypes.func,
+//   active: React.PropTypes.bool,
+//   style: React.PropTypes.string,
+//   label: React.PropTypes.string,
+// };
 
 TextEditor.propTypes = {
   active: React.PropTypes.bool,
   onToggle: React.PropTypes.func,
-  editorState: React.PropTypes.node,
+  // editorState: React.PropTypes.node,
   style: React.PropTypes.string,
 };
 
