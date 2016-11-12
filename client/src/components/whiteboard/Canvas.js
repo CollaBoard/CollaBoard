@@ -120,6 +120,7 @@ const Canvas = function Canvas(element, options) {
   const ctxMenu = document.getElementById('context-menu');
   const circle = document.getElementById('circle');
   const items = document.querySelectorAll('.circle a');
+  let ctxOpen = false;
 
   const contextMenu = function contextMenu(x, y) {
     ctxMenu.style.left = `${x - 65}px`;
@@ -128,11 +129,13 @@ const Canvas = function Canvas(element, options) {
       items[i].style.left = `${(50 - (35 * Math.cos((-0.5 * Math.PI) - (2 * (1 / l) * i * Math.PI)))).toFixed(4)}%`;
       items[i].style.top = `${(50 + (35 * Math.sin((-0.5 * Math.PI) - (2 * (1 / l) * i * Math.PI)))).toFixed(4)}%`;
     }
+    ctxOpen = true;
     circle.classList.add('open');
   };
 
   circle.addEventListener('click', () => {
     circle.classList.remove('open');
+    ctxOpen = false;
     setTimeout(() => {
       ctxMenu.style.display = 'none';
     }, 200);
@@ -155,8 +158,16 @@ const Canvas = function Canvas(element, options) {
 
   this.el.addEventListener('mousedown', (e) => {
     if (e.buttons === 1) {
-      const { x, y } = getCoordinates(e);
-      newFigure(x, y);
+      if (!ctxOpen) {
+        const { x, y } = getCoordinates(e);
+        newFigure(x, y);
+      } else {
+        ctxOpen = false;
+        circle.classList.remove('open');
+        setTimeout(() => {
+          ctxMenu.style.display = 'none';
+        }, 200);
+      }
     }
   });
 
