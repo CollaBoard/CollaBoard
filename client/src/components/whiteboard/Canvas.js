@@ -142,8 +142,10 @@ const Canvas = function Canvas(element, options) {
   });
 
   this.el.addEventListener('touchstart', (e) => {
-    const { x, y } = getCoordinates(e);
-    newFigure(x, y);
+    if (e.touches.length > 1) {
+      const { x, y } = getCoordinates(e);
+      newFigure(x, y);
+    }
   });
 
   document.body.addEventListener('touchmove', (e) => {
