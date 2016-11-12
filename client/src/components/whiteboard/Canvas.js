@@ -146,10 +146,12 @@ const Canvas = function Canvas(element, options) {
     newFigure(x, y);
   });
 
-  this.el.addEventListener('touchmove', (e) => {
-    e.preventDefault();
-    const { x, y } = getCoordinates(e);
-    currentFigure.move(x, y, e);
+  document.body.addEventListener('touchmove', (e) => {
+    if (e.target === this.el && e.touches.length === 1) {
+      e.preventDefault();
+      const { x, y } = getCoordinates(e);
+      currentFigure.move(x, y, e);
+    }
   });
 
   this.el.addEventListener('touchend', () => {
