@@ -18,38 +18,38 @@ const InternalNav = (props) => {
       <div className="nav-wrapper grey darken-3 nav-text internal-nav">
 
         <button className="internal-nav-button">
-          <img src="./assets/img/undo.png" alt="Undo button" />
+          <i className="material-icons">undo</i>
           <p>Undo</p>
         </button>
 
         <button className="internal-nav-button">
-          <img src="./assets/img/undo-1.png" alt="Redo button" />
+          <i className="material-icons">redo</i>
           <p>Redo</p>
         </button>
 
         <button className="internal-nav-button">
-          <img src="./assets/img/save.png" alt="Save button" />
+          <i className="material-icons">save</i>
           <p>Save</p>
         </button>
 
 
         <button className="internal-nav-button">
-          <img src="./assets/img/rubbish-bin.png" alt="Delete button" />
+          <i className="material-icons">delete</i>
           <p>Delete</p>
         </button>
 
         <button className="internal-nav-button">
-          <img src="./assets/img/printer.png" alt="Print button" />
+          <i className="material-icons">print</i>
           <p>Print</p>
         </button>
 
         <button className="internal-nav-button">
-          <img src="./assets/img/unlink.png" alt="Hyperlink button" />
+          <i className="material-icons">link</i>
           <p>Link</p>
         </button>
 
         <button className="internal-nav-button internal-nav-button-last">
-          <img src="./assets/img/question.png" alt="Help button" />
+          <i className="material-icons">help</i>
           <p>Help</p>
         </button>
 
