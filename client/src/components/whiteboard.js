@@ -1,5 +1,4 @@
 const React = require('react');
-const Canvas = require('./whiteboard/Canvas');
 
 class Whiteboard extends React.Component {
   constructor(props) {
@@ -52,11 +51,10 @@ class Whiteboard extends React.Component {
   }
 }
 Whiteboard.propTypes = {
-  socket: React.PropTypes.shape({
-    on: React.PropTypes.func.isRequired,
-    emit: React.PropTypes.func.isRequired,
+  canvasState: React.PropTypes.shape({
+    attachToElement: React.PropTypes.func.isRequired,
+    detachElement: React.PropTypes.func.isRequired,
   }).isRequired,
-  canvasState: React.PropTypes.object.isRequired,
 };
 
 export default Whiteboard;
