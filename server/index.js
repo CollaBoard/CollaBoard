@@ -15,7 +15,7 @@ const routes = require('./routes');
 //
 // Provide a browserified file at a specified path
 //
-app.use('/app-bundle.js', browserify('./client/index.js', {
+app.use('/app-bundle.js', browserify('./client/src/index.js', {
   transform: [
     ['babelify', { presets: ['es2015', 'react'] }],
   ],

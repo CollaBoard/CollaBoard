@@ -1,25 +1,26 @@
 const React = require('react');
-const io = require('socket.io-client');
-const Canvas = require('./Canvas');
+const Canvas = require('./whiteboard/Canvas');
 
 class Whiteboard extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      socket: io(),
+      canvas: null,
     };
-
-    this.state.socket.on('add figure', (figure) => {
-      this.canvas.addFigure(figure);
+    props.socket.on('add figure', (figure) => {
+      this.state.canvas.addFigure(figure);
     });
     this.canvasLoaded = this.canvasLoaded.bind(this);
   }
 
   canvasLoaded(canvas) {
-    this.canvas = new Canvas(canvas, {});
-    this.canvas.on('figureEnd', (figure) => {
-      this.state.socket.emit('add figure', figure.serialize());
-    });
+    if (canvas) {
+      const c = new Canvas(canvas, {});
+      c.on('figureEnd', (figure) => {
+        this.props.socket.emit('add figure', figure.serialize());
+      });
+      this.setState({ canvas: c });
+    }
   }
 
   render() {
@@ -57,4 +58,5 @@ class Whiteboard extends React.Component {
     );
   }
 }
-module.exports = Whiteboard;
+
+export default Whiteboard;
