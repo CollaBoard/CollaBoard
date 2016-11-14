@@ -5,6 +5,7 @@ import page from 'page';
 import API from '../lib/api';
 import Whiteboard from './whiteboard';
 import TextEditor from './text-editor';
+import Link from './link';
 
 class Board extends React.Component {
   constructor(props) {
@@ -32,7 +33,42 @@ class Board extends React.Component {
   }
 
   render() {
-    return this.state.display;
+    return (
+      <div>
+        <nav>
+          <div className="nav-wrapper">
+            <a href="/boards" className="brand-logo">
+              CollaBoard
+            </a>
+            <ul className="right">
+              <li>
+                <a
+                  onClick={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    this.setState({
+                      display: <TextEditor socket={this.state.socket} />,
+                    });
+                  }}
+                >Text Editor</a>
+              </li>
+              <li>
+                <a
+                  onClick={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    this.setState({
+                      display: <Whiteboard socket={this.state.socket} />,
+                    });
+                  }}
+                >Whiteboard</a>
+              </li>
+            </ul>
+          </div>
+        </nav>
+        {this.state.display}
+      </div>
+    );
   }
 }
 
