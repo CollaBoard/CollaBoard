@@ -4,22 +4,15 @@ const Canvas = require('./whiteboard/Canvas');
 class Whiteboard extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      canvas: null,
-    };
-    props.socket.on('add figure', (figure) => {
-      this.state.canvas.addFigure(figure);
-    });
     this.canvasLoaded = this.canvasLoaded.bind(this);
   }
 
   canvasLoaded(canvas) {
     if (canvas) {
-      const c = new Canvas(canvas, {});
-      c.on('figureEnd', (figure) => {
-        this.props.socket.emit('add figure', figure.serialize());
-      });
-      this.setState({ canvas: c });
+      console.log(this.props.canvasState);
+      this.props.canvasState.attachToElement(canvas);
+    } else {
+      this.props.canvasState.detachElement();
     }
   }
 
@@ -63,6 +56,7 @@ Whiteboard.propTypes = {
     on: React.PropTypes.func.isRequired,
     emit: React.PropTypes.func.isRequired,
   }).isRequired,
+  canvasState: React.PropTypes.object.isRequired,
 };
 
 export default Whiteboard;
