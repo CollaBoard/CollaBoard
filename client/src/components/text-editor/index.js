@@ -107,13 +107,13 @@ class TextEditor extends React.Component {
     const editorState = this.state.editorState;
 
     if (!CodeUtils.hasSelectionInBlock(editorState)) {
-      return;
+      return false;
     }
 
     this.onChange(
         CodeUtils.handleReturn(e, editorState)
     );
-    return;
+    return true;
   }
 
   iToggleInlineStyle(inlineStyle) {
