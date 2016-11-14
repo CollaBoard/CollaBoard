@@ -15,12 +15,8 @@ const Canvas = function Canvas(element, options) {
   const config = Object.assign({}, defaults, options || {});
   const currentConfig = Object.assign({}, config);
 
-  this.el = element;
-  let ctx = this.el.getContext('2d');
-
-  ctx.lineCap = config.lineCap;
-  ctx.lineWidth = config.lineWidth;
-  ctx.strokeStyle = config.color;
+  let ctx;
+  this.el = null;
 
   const renderables = [];
   let undone = [];
@@ -84,6 +80,7 @@ const Canvas = function Canvas(element, options) {
     ctx.lineWidth = currentConfig.lineWidth;
     ctx.strokeStyle = currentConfig.color;
   };
+
   this.clear = function clear() {
     ctx.clearRect(0, 0, this.el.width, this.el.height);
   };
@@ -175,6 +172,14 @@ const Canvas = function Canvas(element, options) {
     this.el = el;
     ctx = this.el.getContext('2d');
 
+    this.el = element;
+    ctx = this.el.getContext('2d');
+
+    ctx.lineCap = currentConfig.lineCap;
+    ctx.lineWidth = currentConfig.lineWidth;
+    ctx.strokeStyle = currentConfig.color;
+
+
     this.el.addEventListener('touchstart', (e) => {
       if (e.touches.length === 1) {
         const { x, y } = getCoordinates(e);
@@ -231,6 +236,10 @@ const Canvas = function Canvas(element, options) {
     this.el = null;
     ctx = null;
   };
+
+  if (element) {
+    this.attachToElement(element);
+  }
 
   this.step();
 };
