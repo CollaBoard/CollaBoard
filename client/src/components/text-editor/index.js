@@ -108,7 +108,6 @@ class TextEditor extends React.Component {
 
   // COLLABOARD: Defining undo and redo functions, to work on nav bar clicks
   iOnUndo() {
-    console.log('undo');
     const editorState = this.state.editorState;
 
     this.onChange(
@@ -117,8 +116,6 @@ class TextEditor extends React.Component {
   }
 
   iOnRedo() {
-    console.log('redo');
-
     const editorState = this.state.editorState;
 
     this.onChange(
