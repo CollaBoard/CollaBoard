@@ -5,7 +5,6 @@ import page from 'page';
 import API from '../lib/api';
 import Whiteboard from './whiteboard';
 import TextEditor from './text-editor';
-import Link from './link';
 
 class Board extends React.Component {
   constructor(props) {
@@ -14,22 +13,32 @@ class Board extends React.Component {
       display: <div />,
       socket: null,
     };
-  }
 
-  componentDidMount() {
-    if (this.props.uid) {
-      API.getBoard(this.props.uid)
-        .then(() => {
-          const socket = io(`/${this.props.uid}`);
-          this.setState({ socket, display: <Whiteboard socket={socket} /> });
-        })
-        .catch(console.err);
-    } else {
-      API.createBoard()
-        .then((board) => {
-          page(`/boards/${board.uid}`);
-        });
-    }
+    this.componentDidMount = this.componentWillReceiveProps = (newProps) => {
+      if (!this.state.socket) {
+        const uid = this.props.uid || (newProps && newProps.uid) || null;
+        if (uid) {
+          API.getBoard(uid)
+          .then(() => {
+            const socket = io(`/${uid}`);
+            const whiteboard = <Whiteboard socket={socket} />;
+            const texteditor = <TextEditor socket={socket} />;
+            this.setState({
+              display: whiteboard,
+              socket,
+              whiteboard,
+              texteditor,
+            });
+          })
+          .catch(console.err);
+        } else {
+          API.createBoard()
+          .then((board) => {
+            page(`/boards/${board.uid}`);
+          });
+        }
+      }
+    };
   }
 
   render() {
@@ -46,9 +55,11 @@ class Board extends React.Component {
                   onClick={(e) => {
                     e.preventDefault();
                     e.stopPropagation();
-                    this.setState({
-                      display: <TextEditor socket={this.state.socket} />,
-                    });
+                    if (this.state.socket) {
+                      this.setState({
+                        display: this.state.texteditor,
+                      });
+                    }
                   }}
                 >Text Editor</a>
               </li>
@@ -57,16 +68,20 @@ class Board extends React.Component {
                   onClick={(e) => {
                     e.preventDefault();
                     e.stopPropagation();
-                    this.setState({
-                      display: <Whiteboard socket={this.state.socket} />,
-                    });
+                    if (this.state.socket) {
+                      this.setState({
+                        display: this.state.whiteboard,
+                      });
+                    }
                   }}
                 >Whiteboard</a>
               </li>
             </ul>
           </div>
         </nav>
-        {this.state.display}
+        <div className="workspace">
+          {this.state.display}
+        </div>
       </div>
     );
   }
