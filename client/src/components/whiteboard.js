@@ -1,25 +1,26 @@
 const React = require('react');
-const io = require('socket.io-client');
-const Canvas = require('./Canvas');
+const Canvas = require('./whiteboard/Canvas');
 
 class Whiteboard extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      socket: io(),
+      canvas: null,
     };
-
-    this.state.socket.on('add figure', (figure) => {
-      this.canvas.addFigure(figure);
+    props.socket.on('add figure', (figure) => {
+      this.state.canvas.addFigure(figure);
     });
     this.canvasLoaded = this.canvasLoaded.bind(this);
   }
 
   canvasLoaded(canvas) {
-    this.canvas = new Canvas(canvas, {});
-    this.canvas.on('figureEnd', (figure) => {
-      this.state.socket.emit('add figure', figure.serialize());
-    });
+    if (canvas) {
+      const c = new Canvas(canvas, {});
+      c.on('figureEnd', (figure) => {
+        this.props.socket.emit('add figure', figure.serialize());
+      });
+      this.setState({ canvas: c });
+    }
   }
 
   render() {
@@ -35,21 +36,21 @@ class Whiteboard extends React.Component {
         </canvas>
         <div className="circular-menu" id="context-menu">
           <div className="circle" id="circle">
-            <a onClick={() => { this.canvas.prop('color', 'red'); }}>
+            <a onClick={() => { this.state.canvas.prop('color', 'red'); }}>
               <i className="material-icons redBubble">lens</i></a>
-            <a onClick={() => { this.canvas.prop('color', 'orange'); }}>
+            <a onClick={() => { this.state.canvas.prop('color', 'orange'); }}>
               <i className="material-icons orangeBubble">lens</i></a>
-            <a onClick={() => { this.canvas.prop('color', 'yellow'); }}>
+            <a onClick={() => { this.state.canvas.prop('color', 'yellow'); }}>
               <i className="material-icons yellowBubble">lens</i></a>
-            <a onClick={() => { this.canvas.prop('color', 'green'); }}>
+            <a onClick={() => { this.state.canvas.prop('color', 'green'); }}>
               <i className="material-icons greenBubble">lens</i></a>
-            <a onClick={() => { this.canvas.prop('color', 'blue'); }}>
+            <a onClick={() => { this.state.canvas.prop('color', 'blue'); }}>
               <i className="material-icons blueBubble">lens</i></a>
-            <a onClick={() => { this.canvas.prop('color', 'purple'); }}>
+            <a onClick={() => { this.state.canvas.prop('color', 'purple'); }}>
               <i className="material-icons purpleBubble">lens</i></a>
-            <a onClick={() => { this.canvas.prop('color', 'black'); }}>
+            <a onClick={() => { this.state.canvas.prop('color', 'black'); }}>
               <i className="material-icons blackBubble">lens</i></a>
-            <a onClick={() => { this.canvas.prop('color', 'white'); }}>
+            <a onClick={() => { this.state.canvas.prop('color', 'white'); }}>
               <i className="material-icons whiteBubble">lens</i></a>
           </div>
         </div>
@@ -57,4 +58,11 @@ class Whiteboard extends React.Component {
     );
   }
 }
-module.exports = Whiteboard;
+Whiteboard.propTypes = {
+  socket: React.PropTypes.shape({
+    on: React.PropTypes.func.isRequired,
+    emit: React.PropTypes.func.isRequired,
+  }).isRequired,
+};
+
+export default Whiteboard;

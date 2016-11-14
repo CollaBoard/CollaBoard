@@ -16,7 +16,7 @@ const Canvas = function Canvas(element, options) {
   const currentConfig = Object.assign({}, config);
 
   this.el = element;
-  const ctx = this.el.getContext('2d');
+  let ctx = this.el.getContext('2d');
 
   ctx.lineCap = config.lineCap;
   ctx.lineWidth = config.lineWidth;
@@ -89,9 +89,12 @@ const Canvas = function Canvas(element, options) {
   };
 
   this.step = () => {
-    this.clear();
-    this.draw();
-    this.trigger('step');
+    if (this.el) {
+      this.clear();
+      this.draw();
+      this.trigger('step');
+    }
+
     requestAnimationFrame(this.step);
   };
 
@@ -102,7 +105,7 @@ const Canvas = function Canvas(element, options) {
   };
 
   const getCoordinates = function getCoordinates(event) {
-    const rect = element.getBoundingClientRect();
+    const rect = this.el.getBoundingClientRect();
     let x;
     let y;
     if (event.touches) {
@@ -141,63 +144,12 @@ const Canvas = function Canvas(element, options) {
     }, 200);
   });
 
-  this.el.addEventListener('touchstart', (e) => {
-    if (e.touches.length === 1) {
-      const { x, y } = getCoordinates(e);
-      newFigure(x, y);
-    }
-  });
-
   document.body.addEventListener('touchmove', (e) => {
-    if (e.target === this.el && e.touches.length === 1) {
+    if (this.el && e.target === this.el && e.touches.length === 1) {
       e.preventDefault();
       const { x, y } = getCoordinates(e);
       currentFigure.move(x, y, e);
     }
-  });
-
-  this.el.addEventListener('touchend', () => {
-    endFigure();
-  });
-
-  this.el.addEventListener('mousedown', (e) => {
-    if (e.buttons === 1) {
-      if (!ctxOpen) {
-        const { x, y } = getCoordinates(e);
-        newFigure(x, y);
-      } else {
-        ctxOpen = false;
-        circle.classList.remove('open');
-        setTimeout(() => {
-          ctxMenu.style.display = 'none';
-        }, 200);
-      }
-    }
-  });
-
-  this.el.addEventListener('mousemove', (e) => {
-    if (e.buttons === 1) {
-      const { x, y } = getCoordinates(e);
-      if (!currentFigure) {
-        newFigure(x, y);
-      }
-      currentFigure.move(x, y, e);
-    }
-  });
-
-  this.el.addEventListener('mouseup', () => {
-    endFigure();
-  });
-
-  this.el.addEventListener('mouseleave', () => {
-    endFigure();
-  });
-
-  this.el.addEventListener('contextmenu', (e) => {
-    e.preventDefault();
-    ctxMenu.style.display = null;
-    const { x, y } = getCoordinates(e);
-    contextMenu(x, y);
   });
 
   this.undo = function undo() {
@@ -218,6 +170,68 @@ const Canvas = function Canvas(element, options) {
     }
     return selectedFigure;
   };
+
+  this.attachToElement = function attachToElement(el) {
+    this.el = el;
+    ctx = this.el.getContext('2d');
+
+    this.el.addEventListener('touchstart', (e) => {
+      if (e.touches.length === 1) {
+        const { x, y } = getCoordinates(e);
+        newFigure(x, y);
+      }
+    });
+
+    this.el.addEventListener('touchend', () => {
+      endFigure();
+    });
+
+    this.el.addEventListener('mousedown', (e) => {
+      if (e.buttons === 1) {
+        if (!ctxOpen) {
+          const { x, y } = getCoordinates(e);
+          newFigure(x, y);
+        } else {
+          ctxOpen = false;
+          circle.classList.remove('open');
+          setTimeout(() => {
+            ctxMenu.style.display = 'none';
+          }, 200);
+        }
+      }
+    });
+
+    this.el.addEventListener('mousemove', (e) => {
+      if (e.buttons === 1) {
+        const { x, y } = getCoordinates(e);
+        if (!currentFigure) {
+          newFigure(x, y);
+        }
+        currentFigure.move(x, y, e);
+      }
+    });
+
+    this.el.addEventListener('mouseup', () => {
+      endFigure();
+    });
+
+    this.el.addEventListener('mouseleave', () => {
+      endFigure();
+    });
+
+    this.el.addEventListener('contextmenu', (e) => {
+      e.preventDefault();
+      ctxMenu.style.display = null;
+      const { x, y } = getCoordinates(e);
+      contextMenu(x, y);
+    });
+  };
+
+  this.detachElement = function detachElement() {
+    this.el = null;
+    ctx = null;
+  };
+
   this.step();
 };
 
