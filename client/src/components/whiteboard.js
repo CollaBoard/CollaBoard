@@ -8,7 +8,6 @@ class Whiteboard extends React.Component {
 
   canvasLoaded(canvas) {
     if (canvas) {
-      console.log(this.props.canvasState);
       this.props.canvasState.attachToElement(canvas);
     } else {
       this.props.canvasState.detachElement();
@@ -20,7 +19,7 @@ class Whiteboard extends React.Component {
       <div className="canvasWrapper">
         <canvas
           ref={this.canvasLoaded}
-          className="whiteboard"
+          id="whiteboard"
           width="1280"
           height="740"
         >

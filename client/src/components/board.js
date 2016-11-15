@@ -52,11 +52,24 @@ class Board extends React.Component {
   }
 
   render() {
+    const exportCanvas = function exportCanvas() {
+      const exportedImage = document.getElementById('whiteboard').toDataURL();
+      window.open(exportedImage);
+    };
+    $(document).ready(() => {
+      $('.dropdown-button').dropdown();
+    });
     return (
       <div>
+        <ul id="dropdown1" className="dropdown-content">
+          <li><a href="#!"><i className="material-icons">undo</i></a></li>
+          <li><a href="#!"><i className="material-icons">redo</i></a></li>
+          <li><a href="#!"><i className="material-icons">link</i></a></li>
+          <li><a onClick={exportCanvas}><i className="material-icons">save</i></a></li>
+        </ul>
         <nav>
           <div className="nav-wrapper">
-            <a href="/boards" className="brand-logo">
+            <a href="/boards" className="brand-logo left hide-on-small-and-down">
               CollaBoard
             </a>
             <ul className="right">
@@ -86,6 +99,12 @@ class Board extends React.Component {
                   }}
                 >Whiteboard</a>
               </li>
+              <li><a
+                className="dropdown-button"
+                href="#!"
+                data-activates="dropdown1"
+                data-beloworigin="true"
+              ><i className="material-icons">arrow_drop_down</i></a></li>
             </ul>
           </div>
         </nav>
