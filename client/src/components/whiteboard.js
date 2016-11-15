@@ -17,7 +17,7 @@ class Whiteboard extends React.Component {
 
   render() {
     return (
-      <div>
+      <div id="canvasWrapper">
         <canvas
           ref={this.canvasLoaded}
           id="whiteboard"

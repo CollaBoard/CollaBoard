@@ -140,13 +140,13 @@ const Canvas = function Canvas(element, options) {
   //   }, 200);
   // });
 
-  document.body.addEventListener('touchmove', (e) => {
-    if (this.el && e.target === this.el && e.touches.length === 1) {
-      e.preventDefault();
-      const { x, y } = getCoordinates(e);
-      currentFigure.move(x, y, e);
-    }
-  });
+  // document.getElementById('canvasWrapper').addEventListener('touchmove', (e) => {
+  //   if (this.el && e.target === this.el && e.touches.length === 1) {
+  //     e.preventDefault();
+  //     const { x, y } = getCoordinates(e);
+  //     currentFigure.move(x, y, e);
+  //   }
+  // });
 
   this.undo = function undo() {
     undone.push(renderables.pop());
@@ -179,6 +179,14 @@ const Canvas = function Canvas(element, options) {
       if (e.touches.length === 1) {
         const { x, y } = getCoordinates(e);
         newFigure(x, y);
+      }
+    });
+
+    this.el.addEventListener('touchmove', (e) => {
+      if (e.touches.length === 1) {
+        e.preventDefault();
+        const { x, y } = getCoordinates(e);
+        currentFigure.move(x, y, e);
       }
     });
 
