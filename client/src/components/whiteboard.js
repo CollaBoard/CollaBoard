@@ -1,25 +1,17 @@
 const React = require('react');
-const Canvas = require('./whiteboard/Canvas');
 
 class Whiteboard extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      canvas: null,
-    };
-    props.socket.on('add figure', (figure) => {
-      this.state.canvas.addFigure(figure);
-    });
     this.canvasLoaded = this.canvasLoaded.bind(this);
   }
 
   canvasLoaded(canvas) {
     if (canvas) {
-      const c = new Canvas(canvas, {});
-      c.on('figureEnd', (figure) => {
-        this.props.socket.emit('add figure', figure.serialize());
-      });
-      this.setState({ canvas: c });
+      console.log(this.props.canvasState);
+      this.props.canvasState.attachToElement(canvas);
+    } else {
+      this.props.canvasState.detachElement();
     }
   }
 
@@ -59,9 +51,9 @@ class Whiteboard extends React.Component {
   }
 }
 Whiteboard.propTypes = {
-  socket: React.PropTypes.shape({
-    on: React.PropTypes.func.isRequired,
-    emit: React.PropTypes.func.isRequired,
+  canvasState: React.PropTypes.shape({
+    attachToElement: React.PropTypes.func.isRequired,
+    detachElement: React.PropTypes.func.isRequired,
   }).isRequired,
 };
 

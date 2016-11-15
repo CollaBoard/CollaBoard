@@ -1,9 +1,6 @@
 const Line = require('./Line');
 
 const Canvas = function Canvas(element, options) {
-  if (!element || !(element instanceof HTMLCanvasElement)) {
-    throw new Error('A canvas DOM element is required');
-  }
   // establish default values for common properties
   const defaults = {
     lineWidth: 5,
@@ -15,12 +12,8 @@ const Canvas = function Canvas(element, options) {
   const config = Object.assign({}, defaults, options || {});
   const currentConfig = Object.assign({}, config);
 
-  this.el = element;
-  let ctx = this.el.getContext('2d');
-
-  ctx.lineCap = config.lineCap;
-  ctx.lineWidth = config.lineWidth;
-  ctx.strokeStyle = config.color;
+  let ctx;
+  this.el = null;
 
   const renderables = [];
   let undone = [];
@@ -84,6 +77,7 @@ const Canvas = function Canvas(element, options) {
     ctx.lineWidth = currentConfig.lineWidth;
     ctx.strokeStyle = currentConfig.color;
   };
+
   this.clear = function clear() {
     ctx.clearRect(0, 0, this.el.width, this.el.height);
   };
@@ -118,31 +112,33 @@ const Canvas = function Canvas(element, options) {
     return {
       x, y,
     };
-  };
+  }.bind(this);
+  //
+  // const ctxMenu = document.getElementById('context-menu');
+  // const circle = document.getElementById('circle');
+  // const items = document.querySelectorAll('.circle a');
+  // let ctxOpen = false;
+  //
+  // const contextMenu = function contextMenu(x, y) {
+  //   ctxMenu.style.left = `${x - 65}px`;
+  //   ctxMenu.style.top = `${y - 32}px`;
+  //   for (let i = 0, l = items.length; i < l; i += 1) {
+  //     items[i].style.left = `${(50 - (35 * Math.cos((-0.5 * Math.PI) -
+  // (2 * (1 / l) * i * Math.PI)))).toFixed(4)}%`;
+  //     items[i].style.top = `${(50 + (35 * Math.sin((-0.5 * Math.PI) -
+  // (2 * (1 / l) * i * Math.PI)))).toFixed(4)}%`;
+  //   }
+  //   ctxOpen = true;
+  //   circle.classList.add('open');
+  // };
 
-  const ctxMenu = document.getElementById('context-menu');
-  const circle = document.getElementById('circle');
-  const items = document.querySelectorAll('.circle a');
-  let ctxOpen = false;
-
-  const contextMenu = function contextMenu(x, y) {
-    ctxMenu.style.left = `${x - 65}px`;
-    ctxMenu.style.top = `${y - 32}px`;
-    for (let i = 0, l = items.length; i < l; i += 1) {
-      items[i].style.left = `${(50 - (35 * Math.cos((-0.5 * Math.PI) - (2 * (1 / l) * i * Math.PI)))).toFixed(4)}%`;
-      items[i].style.top = `${(50 + (35 * Math.sin((-0.5 * Math.PI) - (2 * (1 / l) * i * Math.PI)))).toFixed(4)}%`;
-    }
-    ctxOpen = true;
-    circle.classList.add('open');
-  };
-
-  circle.addEventListener('click', () => {
-    circle.classList.remove('open');
-    ctxOpen = false;
-    setTimeout(() => {
-      ctxMenu.style.display = 'none';
-    }, 200);
-  });
+  // circle.addEventListener('click', () => {
+  //   circle.classList.remove('open');
+  //   ctxOpen = false;
+  //   setTimeout(() => {
+  //     ctxMenu.style.display = 'none';
+  //   }, 200);
+  // });
 
   document.body.addEventListener('touchmove', (e) => {
     if (this.el && e.target === this.el && e.touches.length === 1) {
@@ -175,6 +171,10 @@ const Canvas = function Canvas(element, options) {
     this.el = el;
     ctx = this.el.getContext('2d');
 
+    ctx.lineCap = currentConfig.lineCap;
+    ctx.lineWidth = currentConfig.lineWidth;
+    ctx.strokeStyle = currentConfig.color;
+
     this.el.addEventListener('touchstart', (e) => {
       if (e.touches.length === 1) {
         const { x, y } = getCoordinates(e);
@@ -188,16 +188,16 @@ const Canvas = function Canvas(element, options) {
 
     this.el.addEventListener('mousedown', (e) => {
       if (e.buttons === 1) {
-        if (!ctxOpen) {
-          const { x, y } = getCoordinates(e);
-          newFigure(x, y);
-        } else {
-          ctxOpen = false;
-          circle.classList.remove('open');
-          setTimeout(() => {
-            ctxMenu.style.display = 'none';
-          }, 200);
-        }
+        // if (!ctxOpen) {
+        const { x, y } = getCoordinates(e);
+        newFigure(x, y);
+        // } else {
+        //   ctxOpen = false;
+        //   circle.classList.remove('open');
+        //   setTimeout(() => {
+        //     ctxMenu.style.display = 'none';
+        //   }, 200);
+        // }
       }
     });
 
@@ -218,19 +218,23 @@ const Canvas = function Canvas(element, options) {
     this.el.addEventListener('mouseleave', () => {
       endFigure();
     });
-
-    this.el.addEventListener('contextmenu', (e) => {
-      e.preventDefault();
-      ctxMenu.style.display = null;
-      const { x, y } = getCoordinates(e);
-      contextMenu(x, y);
-    });
+  //
+  //   this.el.addEventListener('contextmenu', (e) => {
+  //     e.preventDefault();
+  //     ctxMenu.style.display = null;
+  //     const { x, y } = getCoordinates(e);
+  //     contextMenu(x, y);
+  //   });
   };
 
   this.detachElement = function detachElement() {
     this.el = null;
     ctx = null;
   };
+
+  if (element) {
+    this.attachToElement(element);
+  }
 
   this.step();
 };
