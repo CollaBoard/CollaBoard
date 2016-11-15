@@ -52,23 +52,20 @@ class Board extends React.Component {
   }
 
   render() {
-    const url = window.location.href;
+    const copyToClipboard = function copyToClipboard() {
+      document.getElementById('urlInput').value = window.location.href;
+      document.querySelector('#urlInput').select();
+      document.execCommand('copy');
+    };
     $(document).ready(() => {
       $('.dropdown-button').dropdown();
-      $('.link').click(() => {
-        $('.url').val(url);
-        console.log('URL Copied');
-        document.querySelector('.url').select();
-        document.execCommand('copy');
-      });
     });
     return (
       <div>
         <ul id="dropdown1" className="dropdown-content">
           <li><a href="#!"><i className="material-icons">undo</i></a></li>
           <li><a href="#!"><i className="material-icons">redo</i></a></li>
-          <li><a href="#!"><input className="url" />
-            <i className="material-icons link">link</i></a></li>
+          <li><a onClick={copyToClipboard}><i className="material-icons">link</i></a></li>
           <li><a href="#!"><i className="material-icons">save</i></a></li>
         </ul>
         <nav>
@@ -115,6 +112,7 @@ class Board extends React.Component {
         <div className="workspace">
           {this.state.display}
         </div>
+        <input id="urlInput" />
       </div>
     );
   }
