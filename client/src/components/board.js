@@ -52,11 +52,28 @@ class Board extends React.Component {
   }
 
   render() {
+    const url = window.location.href;
+    $(document).ready(() => {
+      $('.dropdown-button').dropdown();
+      $('.link').click(() => {
+        $('.url').val(url);
+        console.log('URL Copied');
+        document.querySelector('.url').select();
+        document.execCommand('copy');
+      });
+    });
     return (
       <div>
+        <ul id="dropdown1" className="dropdown-content">
+          <li><a href="#!"><i className="material-icons">undo</i></a></li>
+          <li><a href="#!"><i className="material-icons">redo</i></a></li>
+          <li><a href="#!"><input className="url" />
+            <i className="material-icons link">link</i></a></li>
+          <li><a href="#!"><i className="material-icons">save</i></a></li>
+        </ul>
         <nav>
           <div className="nav-wrapper">
-            <a href="/boards" className="brand-logo">
+            <a href="/boards" className="brand-logo left hide-on-small-and-down">
               CollaBoard
             </a>
             <ul className="right">
@@ -86,6 +103,12 @@ class Board extends React.Component {
                   }}
                 >Whiteboard</a>
               </li>
+              <li><a
+                className="dropdown-button"
+                href="#!"
+                data-activates="dropdown1"
+                data-beloworigin="true"
+              ><i className="material-icons">arrow_drop_down</i></a></li>
             </ul>
           </div>
         </nav>
