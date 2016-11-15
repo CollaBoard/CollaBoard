@@ -1,8 +1,12 @@
 const browserify = require('browserify-middleware');
 const express = require('express');
 const bodyParser = require('body-parser');
-const socket = require('./socket/index.js');
 const http = require('http');
+
+const passport = require('passport');
+const session = require('express-session');
+const socket = require('./socket/index.js');
+
 
 const app = express();
 const server = http.Server(app);
@@ -20,6 +24,16 @@ app.use('/app-bundle.js', browserify('./client/src/index.js', {
     ['babelify', { presets: ['es2015', 'react'] }],
   ],
 }));
+
+// Authentication stuff: DO NOT TOUCH
+app.use(session({
+  secret: 'Super Duper Secret', // TODO: Move to .env
+  resave: true,
+  saveUninitialized: true,
+}));
+app.use(passport.initialize());
+app.use(passport.session());
+// End authentication stuff. Proceed touching
 
 app.use(bodyParser.json());
 
