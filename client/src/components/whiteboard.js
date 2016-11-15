@@ -8,7 +8,6 @@ class Whiteboard extends React.Component {
 
   canvasLoaded(canvas) {
     if (canvas) {
-      console.log(this.props.canvasState);
       this.props.canvasState.attachToElement(canvas);
     } else {
       this.props.canvasState.detachElement();

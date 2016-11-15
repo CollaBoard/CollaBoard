@@ -57,6 +57,10 @@ class Board extends React.Component {
       document.querySelector('#urlInput').select();
       document.execCommand('copy');
     };
+    const exportCanvas = function exportCanvas() {
+      const exportedImage = document.getElementById('whiteboard').toDataURL();
+      window.open(exportedImage);
+    };
     $(document).ready(() => {
       $('.dropdown-button').dropdown();
     });
@@ -66,7 +70,7 @@ class Board extends React.Component {
           <li><a href="#!"><i className="material-icons">undo</i></a></li>
           <li><a href="#!"><i className="material-icons">redo</i></a></li>
           <li><a onClick={copyToClipboard}><i className="material-icons">link</i></a></li>
-          <li><a href="#!"><i className="material-icons">save</i></a></li>
+          <li><a onClick={exportCanvas}><i className="material-icons">save</i></a></li>
         </ul>
         <nav>
           <div className="nav-wrapper">
