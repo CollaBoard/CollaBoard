@@ -27,10 +27,13 @@
     "draft-js-code": "^0.2.0",
     "draft-js-prism": "git+https://github.com/CollaBoard/draft-js-prism.git",
     "express": "^4.14.0",
+    "express-session": "^1.14.2",
     "knex": "^0.12.5",
     "nodemon": "^1.11.0",
     "page": "^1.7.1",
     "passport": "^0.3.2",
+    "passport-github2": "^0.1.10",
+    "passport-google-oauth": "^1.0.0",
     "pg": "^6.1.0",
     "puid": "^1.0.5",
     "react": "^15.3.2",
@@ -49,7 +52,6 @@
     "eslint-plugin-jsx-a11y": "^2.2.3",
     "eslint-plugin-react": "^6.5.0",
     "mocha": "^3.1.2",
-    "nodemon": "^1.11.0",
     "supertest": "^2.0.0",
     "supertest-as-promised": "^4.0.0"
   }
