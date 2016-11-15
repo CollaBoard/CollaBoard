@@ -23,6 +23,7 @@
     "bluebird": "^3.4.6",
     "body-parser": "^1.15.2",
     "browserify-middleware": "^7.1.0",
+    "dotenv": "^2.0.0",
     "draft-js": "^0.9.1",
     "draft-js-code": "^0.2.0",
     "draft-js-prism": "git+https://github.com/CollaBoard/draft-js-prism.git",
