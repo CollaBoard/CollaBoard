@@ -30,23 +30,16 @@ nav .brand-logo {
     font-size: 1.6rem;
 }
 
-.side-nav {
-    width: 150px;
-}
-
-#content {
-    position: absolute;
-    top: 34px;
-    left: 0px;
-    right: 0px;
+.canvasWrapper {
     overflow: auto;
-    background-color: #ddd;
+    background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA8AAAARCAMAAAA11AaTAAAAD1BMVEUAAADp6enp6enp6en///8uyUgXAAAAA3RSTlMAVamSsHaDAAAAFklEQVQY02NgZmZAAUxMqHxGRoaRBAANPgANgJAOfgAAAABJRU5ErkJggg==);
     height: 100%;
+    -webkit-overflow-scrolling: touch;
 }
 
-#whiteboard {
+.whiteboard {
     cursor: crosshair;
-    background-color: rgba(255, 255, 255, .9);
+    background-color: rgba(255, 255, 255, .1);
 }
 
 .circular-menu {
@@ -55,6 +48,8 @@ nav .brand-logo {
     margin: 0 auto;
     position: absolute;
     z-index: 10;
+    display: none;
+    /*added display none onload to prevent excess space below canvas*/
 }
 
 .circle a i {

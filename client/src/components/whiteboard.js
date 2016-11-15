@@ -17,10 +17,10 @@ class Whiteboard extends React.Component {
 
   render() {
     return (
-      <div>
+      <div className="canvasWrapper">
         <canvas
           ref={this.canvasLoaded}
-          id="whiteboard"
+          className="whiteboard"
           width="1280"
           height="740"
         >
