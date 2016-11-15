@@ -52,11 +52,6 @@ class Board extends React.Component {
   }
 
   render() {
-    const copyToClipboard = function copyToClipboard() {
-      document.getElementById('urlInput').value = window.location.href;
-      document.querySelector('#urlInput').select();
-      document.execCommand('copy');
-    };
     const exportCanvas = function exportCanvas() {
       const exportedImage = document.getElementById('whiteboard').toDataURL();
       window.open(exportedImage);
@@ -69,7 +64,7 @@ class Board extends React.Component {
         <ul id="dropdown1" className="dropdown-content">
           <li><a href="#!"><i className="material-icons">undo</i></a></li>
           <li><a href="#!"><i className="material-icons">redo</i></a></li>
-          <li><a onClick={copyToClipboard}><i className="material-icons">link</i></a></li>
+          <li><a href="#!"><i className="material-icons">link</i></a></li>
           <li><a onClick={exportCanvas}><i className="material-icons">save</i></a></li>
         </ul>
         <nav>
@@ -116,7 +111,6 @@ class Board extends React.Component {
         <div className="workspace">
           {this.state.display}
         </div>
-        <input id="urlInput" />
       </div>
     );
   }
