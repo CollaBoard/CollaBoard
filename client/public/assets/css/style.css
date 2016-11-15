@@ -30,23 +30,14 @@ nav .brand-logo {
     font-size: 1.6rem;
 }
 
-.side-nav {
-    width: 150px;
-}
-
-#canvasWrapper {
-    position: relative;
-    top: 34px;
-    left: 0px;
-    right: 0px;
+.canvasWrapper {
     overflow: auto;
     background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA8AAAARCAMAAAA11AaTAAAAD1BMVEUAAADp6enp6enp6en///8uyUgXAAAAA3RSTlMAVamSsHaDAAAAFklEQVQY02NgZmZAAUxMqHxGRoaRBAANPgANgJAOfgAAAABJRU5ErkJggg==);
     height: 100%;
     -webkit-overflow-scrolling: touch;
 }
 
-
-#whiteboard {
+.whiteboard {
     cursor: crosshair;
     background-color: rgba(255, 255, 255, .1);
 }
