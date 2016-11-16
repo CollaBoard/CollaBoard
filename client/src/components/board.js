@@ -57,7 +57,9 @@ class Board extends React.Component {
               canvas.addFigure(figure);
             });
           })
-          .catch(console.err);
+          .catch(() => {
+            // console.err(err);
+          });
         } else {
           API.createBoard()
           .then((board) => {
