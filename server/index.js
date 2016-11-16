@@ -1,3 +1,10 @@
+/* eslint-disable */
+// require dotenv only in development mode
+if (process.env.NODE_ENV !== 'production') {
+  require('dotenv');
+}
+/* eslint-enable */
+
 const browserify = require('browserify-middleware');
 const express = require('express');
 const bodyParser = require('body-parser');
@@ -7,12 +14,11 @@ const passport = require('passport');
 const session = require('express-session');
 const socket = require('./socket/index.js');
 
-
+// Do not touch express/socket stuff
 const app = express();
 const server = http.Server(app);
-
-// make socket listen
 socket.listen(server);
+// Resume touching
 
 const routes = require('./routes');
 
@@ -25,7 +31,7 @@ app.use('/app-bundle.js', browserify('./client/src/index.js', {
   ],
 }));
 
-// Authentication stuff: DO NOT TOUCH
+// Authentication stuff: NO TOUCHIE
 app.use(session({
   secret: 'Super Duper Secret', // TODO: Move to .env
   resave: true,
@@ -33,7 +39,7 @@ app.use(session({
 }));
 app.use(passport.initialize());
 app.use(passport.session());
-// End authentication stuff. Proceed touching
+// End authentication stuff. Proceed touchie
 
 app.use(bodyParser.json());
 
