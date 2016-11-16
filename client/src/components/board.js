@@ -58,13 +58,14 @@ class Board extends React.Component {
     };
     $(document).ready(() => {
       $('.dropdown-button').dropdown();
+      $('.modal').modal();
     });
     return (
       <div>
         <ul id="dropdown1" className="dropdown-content">
           <li><a href="#!"><i className="material-icons">undo</i></a></li>
           <li><a href="#!"><i className="material-icons">redo</i></a></li>
-          <li><a href="#!"><i className="material-icons">link</i></a></li>
+          <li><a href="#modal1"><i className="material-icons">link</i></a></li>
           <li><a onClick={exportCanvas}><i className="material-icons">save</i></a></li>
         </ul>
         <nav>
@@ -99,17 +100,25 @@ class Board extends React.Component {
                   }}
                 >Whiteboard</a>
               </li>
-              <li><a
-                className="dropdown-button"
-                href="#!"
-                data-activates="dropdown1"
-                data-beloworigin="true"
-              ><i className="material-icons">arrow_drop_down</i></a></li>
+              <li>
+                <a
+                  className="dropdown-button"
+                  href="#!"
+                  data-activates="dropdown1"
+                  data-beloworigin="true"
+                ><i className="material-icons">arrow_drop_down</i></a>
+              </li>
             </ul>
           </div>
         </nav>
         <div className="workspace">
           {this.state.display}
+        </div>
+        <div id="modal1" className="modal">
+          <div className="modal-content">
+            Copy this link to your clipboard to share:
+            <input readOnly value={`http://localhost:4000/${this.props.uid}`} />
+          </div>
         </div>
       </div>
     );
