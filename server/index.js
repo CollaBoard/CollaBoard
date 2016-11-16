@@ -1,7 +1,7 @@
 /* eslint-disable */
 // require dotenv only in development mode
 if (process.env.NODE_ENV !== 'production') {
-  require('dotenv');
+  require('dotenv').config();
 }
 /* eslint-enable */
 
@@ -10,17 +10,15 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const http = require('http');
 
-const passport = require('passport');
-const session = require('express-session');
-const socket = require('./socket/index.js');
+const socket = require('./socket/index');
+const authentication = require('./lib/auth');
+const routes = require('./routes');
 
 // Do not touch express/socket stuff
 const app = express();
 const server = http.Server(app);
 socket.listen(server);
 // Resume touching
-
-const routes = require('./routes');
 
 //
 // Provide a browserified file at a specified path
@@ -31,18 +29,10 @@ app.use('/app-bundle.js', browserify('./client/src/index.js', {
   ],
 }));
 
-// Authentication stuff: NO TOUCHIE
-app.use(session({
-  secret: 'Super Duper Secret', // TODO: Move to .env
-  resave: true,
-  saveUninitialized: true,
-}));
-app.use(passport.initialize());
-app.use(passport.session());
-// End authentication stuff. Proceed touchie
-
 app.use(bodyParser.json());
 
+// Mount our authentication routes
+app.use(authentication);
 // Mount our main router
 app.use('/', routes);
 
