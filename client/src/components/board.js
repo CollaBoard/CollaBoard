@@ -2,6 +2,7 @@ import React from 'react';
 import io from 'socket.io-client';
 import page from 'page';
 
+import WebRTC from '../lib/webrtc';
 import API from '../lib/api';
 import Canvas from './whiteboard/Canvas';
 import Whiteboard from './whiteboard';
@@ -56,9 +57,13 @@ class Board extends React.Component {
       const exportedImage = document.getElementById('whiteboard').toDataURL();
       window.open(exportedImage);
     };
+    const displayChat = function displayChat() {
+      document.getElementById('videoChat').style.display = 'block';
+    };
     $(document).ready(() => {
       $('.dropdown-button').dropdown();
       $('.modal').modal();
+      WebRTC(this.props.uid);
     });
     return (
       <div>
@@ -67,6 +72,7 @@ class Board extends React.Component {
           <li><a href="#!"><i className="material-icons">redo</i></a></li>
           <li><a href="#modal1"><i className="material-icons">link</i></a></li>
           <li><a onClick={exportCanvas}><i className="material-icons">save</i></a></li>
+          <li><a onClick={displayChat} id="open-or-join"><i className="material-icons">voice_chat</i></a></li>
         </ul>
         <nav>
           <div className="nav-wrapper">
@@ -119,6 +125,9 @@ class Board extends React.Component {
             Copy this link to your clipboard to share:
             <input readOnly value={`http://localhost:4000/${this.props.uid}`} />
           </div>
+        </div>
+        <div id="videoChat">
+          <video id="video-container" />
         </div>
       </div>
     );
