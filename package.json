@@ -25,7 +25,6 @@
     "body-parser": "^1.15.2",
     "browserify-middleware": "^7.1.0",
     "cookie-session": "^2.0.0-alpha.2",
-    "dotenv": "^2.0.0",
     "draft-js": "^0.9.1",
     "draft-js-code": "^0.2.0",
     "draft-js-prism": "git+https://github.com/CollaBoard/draft-js-prism.git",
@@ -46,6 +45,7 @@
   "devDependencies": {
     "chai": "^3.5.0",
     "chai-subset": "^1.3.0",
+    "dotenv": "^2.0.0",
     "eslint": "^3.9.1",
     "eslint-config-airbnb": "^12.0.0",
     "eslint-plugin-import": "^1.16.0",
