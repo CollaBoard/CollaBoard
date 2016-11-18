@@ -1,14 +1,22 @@
+/* eslint-disable */
+// require dotenv only in development mode
+if (process.env.NODE_ENV !== 'production') {
+  require('dotenv').config();
+}
+/* eslint-enable */
+
 const browserify = require('browserify-middleware');
 const express = require('express');
 const bodyParser = require('body-parser');
-const socket = require('./socket/index.js');
 const http = require('http');
 
+const socket = require('./socket');
+
+// Do not touch express/socket stuff
 const app = express();
 const server = http.Server(app);
-
-// make socket listen
 socket.listen(server);
+// Resume touching
 
 const routes = require('./routes');
 

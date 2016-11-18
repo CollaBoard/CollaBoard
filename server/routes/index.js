@@ -1,6 +1,7 @@
 const express = require('express');
-const api = require('./api');
 const path = require('path');
+const api = require('./api');
+const authentication = require('../lib/auth');
 
 const router = express.Router();
 
@@ -9,6 +10,9 @@ const router = express.Router();
 //
 const assetFolder = path.resolve(__dirname, '../../client/public');
 router.use(express.static(assetFolder));
+
+// authentication middleware
+router.use(authentication);
 
 router.use('/api', api);
 
