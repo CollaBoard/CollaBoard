@@ -67,7 +67,12 @@ class Board extends React.Component {
     });
     return (
       <div>
-        <ul id="dropdown1" className="dropdown-content">
+        <ul id="marker-dropdown" className="dropdown-content">
+          <li><a onClick={() => { this.state.cavasState.prop('lineWidth', 5); }}><i className="material-icons">lens</i></a></li>
+          <li><a onClick={() => { this.state.cavasState.prop('lineWidth', 15); }}><i className="material-icons">lens</i></a></li>
+          <li><a onClick={() => { this.state.cavasState.prop('lineWidth', 25); }}><i className="material-icons">lens</i></a></li>
+        </ul>
+        <ul id="tool-dropdown" className="dropdown-content">
           <li><a href="#!"><i className="material-icons">undo</i></a></li>
           <li><a href="#!"><i className="material-icons">redo</i></a></li>
           <li><a href="#modal1"><i className="material-icons">link</i></a></li>
@@ -94,6 +99,7 @@ class Board extends React.Component {
                   }}
                 >Text Editor</a>
               </li>
+              :
               <li>
                 <a
                   onClick={(e) => {
@@ -111,7 +117,15 @@ class Board extends React.Component {
                 <a
                   className="dropdown-button"
                   href="#!"
-                  data-activates="dropdown1"
+                  data-activates="marker-dropdown"
+                  data-beloworigin="true"
+                ><i className="material-icons">arrow_drop_down</i></a>
+              </li>
+              <li>
+                <a
+                  className="dropdown-button"
+                  href="#!"
+                  data-activates="tool-dropdown"
                   data-beloworigin="true"
                 ><i className="material-icons">arrow_drop_down</i></a>
               </li>
