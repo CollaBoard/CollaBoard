@@ -72,7 +72,8 @@ class Board extends React.Component {
           <li><a href="#!"><i className="material-icons">redo</i></a></li>
           <li><a href="#modal1"><i className="material-icons">link</i></a></li>
           <li><a onClick={exportCanvas}><i className="material-icons">save</i></a></li>
-          <li><a onClick={displayChat} id="open-or-join"><i className="material-icons">voice_chat</i></a></li>
+          <li><a onClick={displayChat} id="open-or-join">
+            <i className="material-icons">voice_chat</i></a></li>
         </ul>
         <nav>
           <div className="nav-wrapper">

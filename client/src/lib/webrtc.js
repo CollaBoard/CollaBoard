@@ -2,15 +2,15 @@ const webRTC = function webRTC(uid) {
   const connection = new RTCMultiConnection();
   connection.socketURL = 'https://rtcmulticonnection.herokuapp.com:443/';
   // until we set up our own signalling server, we can use this one ^
-  connection.socketMessageEvent = 'video-broadcast-demo'; // ???
+  // connection.socketMessageEvent = 'video-broadcast-demo';
   connection.session = {
-    audio: false,
+    audio: true,
     video: true,
     oneway: true,
   };
   const videoContainer = document.getElementById('video-container');
-  connection.onstream = function (event) {
-    videoContainer.src = URL.createObjectURL(event.stream);
+  connection.onstream = function (e) {
+    videoContainer.src = URL.createObjectURL(e.stream);
     videoContainer.play();
   };
 
