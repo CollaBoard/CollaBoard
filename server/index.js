@@ -11,7 +11,6 @@ const bodyParser = require('body-parser');
 const http = require('http');
 
 const socket = require('./socket/index');
-const authentication = require('./lib/auth');
 const routes = require('./routes');
 
 // Do not touch express/socket stuff
@@ -31,8 +30,6 @@ app.use('/app-bundle.js', browserify('./client/src/index.js', {
 
 app.use(bodyParser.json());
 
-// Mount our authentication routes
-app.use(authentication);
 // Mount our main router
 app.use('/', routes);
 
