@@ -10,14 +10,15 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const http = require('http');
 
-const socket = require('./socket/index');
-const routes = require('./routes');
+const socket = require('./socket');
 
 // Do not touch express/socket stuff
 const app = express();
 const server = http.Server(app);
 socket.listen(server);
 // Resume touching
+
+const routes = require('./routes');
 
 //
 // Provide a browserified file at a specified path
