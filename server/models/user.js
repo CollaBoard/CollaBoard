@@ -4,7 +4,6 @@ const helpers = require('../lib/helpers');
 const User = function User(info, fetched = false) {
   this.uid = fetched ? info.uid : helpers.uid();
   this.name = info.name || null;
-  this.username = info.username || null;
   this.email = info.email || null;
   this.github_id = info.github_id || null;
   this.google_id = info.google_id || null;
@@ -18,7 +17,6 @@ const User = function User(info, fetched = false) {
         .insert({
           uid: this.uid,
           name: this.name,
-          username: this.username,
           email: this.email,
           github_id: this.github_id,
           google_id: this.google_id,
@@ -27,7 +25,6 @@ const User = function User(info, fetched = false) {
       : db('users').where({ uid: this.uid })
         .update({
           name: this.name,
-          username: this.username,
           email: this.email,
           github_id: this.github_id,
           google_id: this.google_id,
