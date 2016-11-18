@@ -59,7 +59,7 @@ router.use(cookieSession({
 
 router.get('/auth/:service', authport.app);
 
-router.use((req, res, next) => {
+router.use('/api', (req, res, next) => {
   if (!req.session) {
     req.user = null;
     return next();
