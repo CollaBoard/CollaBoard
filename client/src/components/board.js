@@ -57,8 +57,11 @@ class Board extends React.Component {
       const exportedImage = document.getElementById('whiteboard').toDataURL();
       window.open(exportedImage);
     };
-    const displayChat = function displayChat() {
+    const displayVoiceChat = function displayVoiceChat() {
       document.getElementById('videoChat').style.display = 'block';
+    };
+    const displayTextChat = function displayTextChat() {
+      document.getElementById('textChat').style.display = 'block';
     };
     $(document).ready(() => {
       $('.dropdown-button').dropdown();
@@ -67,6 +70,16 @@ class Board extends React.Component {
     });
     return (
       <div>
+        <ul id="color-dropdown" className="dropdown-content">
+          <li><a onClick={() => { this.state.cavasState.prop('color', 'red'); }}><i className="material-icons tools">lens</i></a></li>
+          <li><a onClick={() => { this.state.cavasState.prop('color', 'orange'); }}><i className="material-icons tools">lens</i></a></li>
+          <li><a onClick={() => { this.state.cavasState.prop('color', 'yellow'); }}><i className="material-icons tools">lens</i></a></li>
+          <li><a onClick={() => { this.state.cavasState.prop('color', 'green'); }}><i className="material-icons tools">lens</i></a></li>
+          <li><a onClick={() => { this.state.cavasState.prop('color', 'blue'); }}><i className="material-icons tools">lens</i></a></li>
+          <li><a onClick={() => { this.state.cavasState.prop('color', 'purple'); }}><i className="material-icons tools">lens</i></a></li>
+          <li><a onClick={() => { this.state.cavasState.prop('color', 'black'); }}><i className="material-icons tools">lens</i></a></li>
+          <li><a onClick={() => { this.state.cavasState.prop('color', 'white'); }}><i className="material-icons tools">lens</i></a></li>
+        </ul>
         <ul id="marker-dropdown" className="dropdown-content">
           <li><a onClick={() => { this.state.cavasState.prop('lineWidth', 5); }}><i className="material-icons tools marker1">lens</i></a></li>
           <li><a onClick={() => { this.state.cavasState.prop('lineWidth', 15); }}><i className="material-icons tools marker2">lens</i></a></li>
@@ -77,8 +90,10 @@ class Board extends React.Component {
           <li><a href="#!"><i className="material-icons tools">redo</i></a></li>
           <li><a href="#modal1"><i className="material-icons tools">link</i></a></li>
           <li><a onClick={exportCanvas}><i className="material-icons tools">save</i></a></li>
-          <li><a onClick={displayChat} id="open-or-join">
+          <li><a onClick={displayVoiceChat} id="display-voice-chat">
             <i className="material-icons tools">voice_chat</i></a></li>
+          <li><a onClick={displayTextChat} id="display-text-chat">
+            <i className="material-icons tools">chat</i></a></li>
         </ul>
         <nav>
           <div className="nav-wrapper">
@@ -88,12 +103,22 @@ class Board extends React.Component {
             <ul className="right">
               <li>
                 <a
+                  id="viewButton"
                   onClick={(e) => {
                     e.preventDefault();
                     e.stopPropagation();
+                    const button = document.getElementById('viewButton');
+                    let display;
+                    if (this.state.display.type.name === 'Whiteboard') {
+                      button.innerHTML = 'Whiteboard';
+                      display = this.state.texteditor;
+                    } else {
+                      button.innerHTML = 'Text Editor';
+                      display = this.state.whiteboard;
+                    }
                     if (this.state.socket) {
                       this.setState({
-                        display: this.state.texteditor,
+                        display,
                       });
                     }
                   }}
@@ -101,16 +126,12 @@ class Board extends React.Component {
               </li>
               <li>
                 <a
-                  onClick={(e) => {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    if (this.state.socket) {
-                      this.setState({
-                        display: this.state.whiteboard,
-                      });
-                    }
-                  }}
-                >Whiteboard</a>
+                  className="dropdown-button"
+                  href="#!"
+                  data-activates="color-dropdown"
+                  data-beloworigin="true"
+                  data-constrainwidth="false"
+                ><i className="material-icons">palette</i></a>
               </li>
               <li>
                 <a
@@ -145,6 +166,7 @@ class Board extends React.Component {
         <div id="videoChat">
           <video id="video-container" />
         </div>
+        <div id="textChat" />
       </div>
     );
   }
