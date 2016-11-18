@@ -12,6 +12,24 @@ nav ul a, .nav-text {
  .nav-button {
   cursor: pointer;
  }
+
+.dropdown-content {
+	min-width: inherit;
+}
+
+.tools {
+	color: #0058e8;
+	text-align: center;
+}
+
+.marker1 {
+	font-size: .5em !important;
+}
+
+.marker3 {
+	font-size: 2em !important;
+}
+
 /*
  .modal {
 	 width: 30%;

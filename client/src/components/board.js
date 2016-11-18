@@ -68,17 +68,17 @@ class Board extends React.Component {
     return (
       <div>
         <ul id="marker-dropdown" className="dropdown-content">
-          <li><a onClick={() => { this.state.cavasState.prop('lineWidth', 5); }}><i className="material-icons">lens</i></a></li>
-          <li><a onClick={() => { this.state.cavasState.prop('lineWidth', 15); }}><i className="material-icons">lens</i></a></li>
-          <li><a onClick={() => { this.state.cavasState.prop('lineWidth', 25); }}><i className="material-icons">lens</i></a></li>
+          <li><a onClick={() => { this.state.cavasState.prop('lineWidth', 5); }}><i className="material-icons tools marker1">lens</i></a></li>
+          <li><a onClick={() => { this.state.cavasState.prop('lineWidth', 15); }}><i className="material-icons tools marker2">lens</i></a></li>
+          <li><a onClick={() => { this.state.cavasState.prop('lineWidth', 25); }}><i className="material-icons tools marker3">lens</i></a></li>
         </ul>
         <ul id="tool-dropdown" className="dropdown-content">
-          <li><a href="#!"><i className="material-icons">undo</i></a></li>
-          <li><a href="#!"><i className="material-icons">redo</i></a></li>
-          <li><a href="#modal1"><i className="material-icons">link</i></a></li>
-          <li><a onClick={exportCanvas}><i className="material-icons">save</i></a></li>
+          <li><a href="#!"><i className="material-icons tools">undo</i></a></li>
+          <li><a href="#!"><i className="material-icons tools">redo</i></a></li>
+          <li><a href="#modal1"><i className="material-icons tools">link</i></a></li>
+          <li><a onClick={exportCanvas}><i className="material-icons tools">save</i></a></li>
           <li><a onClick={displayChat} id="open-or-join">
-            <i className="material-icons">voice_chat</i></a></li>
+            <i className="material-icons tools">voice_chat</i></a></li>
         </ul>
         <nav>
           <div className="nav-wrapper">
@@ -99,7 +99,6 @@ class Board extends React.Component {
                   }}
                 >Text Editor</a>
               </li>
-              :
               <li>
                 <a
                   onClick={(e) => {
@@ -119,7 +118,8 @@ class Board extends React.Component {
                   href="#!"
                   data-activates="marker-dropdown"
                   data-beloworigin="true"
-                ><i className="material-icons">arrow_drop_down</i></a>
+                  data-constrainwidth="false"
+                ><i className="material-icons">mode_edit</i></a>
               </li>
               <li>
                 <a
@@ -127,7 +127,8 @@ class Board extends React.Component {
                   href="#!"
                   data-activates="tool-dropdown"
                   data-beloworigin="true"
-                ><i className="material-icons">arrow_drop_down</i></a>
+                  data-constrainwidth="false"
+                ><i className="material-icons">build</i></a>
               </li>
             </ul>
           </div>
