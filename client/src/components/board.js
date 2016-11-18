@@ -81,9 +81,9 @@ class Board extends React.Component {
           <li><a onClick={() => { this.state.cavasState.prop('color', 'white'); }}><i className="material-icons tools">lens</i></a></li>
         </ul>
         <ul id="marker-dropdown" className="dropdown-content">
-          <li><a onClick={() => { this.state.cavasState.prop('lineWidth', 5); }}><i className="material-icons tools marker1">lens</i></a></li>
-          <li><a onClick={() => { this.state.cavasState.prop('lineWidth', 15); }}><i className="material-icons tools marker2">lens</i></a></li>
-          <li><a onClick={() => { this.state.cavasState.prop('lineWidth', 25); }}><i className="material-icons tools marker3">lens</i></a></li>
+          <li><a onClick={() => { this.state.cavasState.prop('lineWidth', 5); }}><i className="material-icons tools">lens</i></a></li>
+          <li><a onClick={() => { this.state.cavasState.prop('lineWidth', 15); }}><i className="material-icons tools">lens</i></a></li>
+          <li><a onClick={() => { this.state.cavasState.prop('lineWidth', 25); }}><i className="material-icons tools">lens</i></a></li>
         </ul>
         <ul id="tool-dropdown" className="dropdown-content">
           <li><a href="#!"><i className="material-icons tools">undo</i></a></li>
@@ -103,26 +103,29 @@ class Board extends React.Component {
             <ul className="right">
               <li>
                 <a
-                  id="viewButton"
                   onClick={(e) => {
                     e.preventDefault();
                     e.stopPropagation();
-                    const button = document.getElementById('viewButton');
-                    let display;
-                    if (this.state.display.type.name === 'Whiteboard') {
-                      button.innerHTML = 'Whiteboard';
-                      display = this.state.texteditor;
-                    } else {
-                      button.innerHTML = 'Text Editor';
-                      display = this.state.whiteboard;
-                    }
                     if (this.state.socket) {
                       this.setState({
-                        display,
+                        display: this.state.texteditor,
                       });
                     }
                   }}
                 >Text Editor</a>
+              </li>
+              <li>
+                <a
+                  onClick={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    if (this.state.socket) {
+                      this.setState({
+                        display: this.state.whiteboard,
+                      });
+                    }
+                  }}
+                >Whiteboard</a>
               </li>
               <li>
                 <a
