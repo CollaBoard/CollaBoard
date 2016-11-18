@@ -1,4 +1,4 @@
-exports.up = function up(knex, Promise) {
+exports.up = function up(knex) {
   return knex.schema.createTable('users', (table) => {
     table.string('uid').primary();
     table.string('google_id').unique();
