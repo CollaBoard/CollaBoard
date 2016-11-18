@@ -4,6 +4,9 @@
   "description": "A live-synced whiteboard and text editor.",
   "repository": "https://github.com/collaboard/collaboard",
   "main": "server/index.js",
+  "engines": {
+    "node": "7.0.0"
+  },
   "scripts": {
     "start": "nodemon server/ --ignore client/",
     "test": "./test/run.sh",

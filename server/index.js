@@ -4,9 +4,9 @@ const bodyParser = require('body-parser');
 const socket = require('./socket/index.js');
 const http = require('http');
 
-
 const app = express();
 const server = http.Server(app);
+
 // make socket listen
 socket.listen(server);
 
