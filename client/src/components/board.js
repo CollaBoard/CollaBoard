@@ -57,11 +57,11 @@ class Board extends React.Component {
       const exportedImage = document.getElementById('whiteboard').toDataURL();
       window.open(exportedImage);
     };
-    const displayVoiceChat = function displayVoiceChat() {
-      document.getElementById('videoChat').style.display = 'block';
+    const displayVideoChat = function displayVideoChat() {
+      document.getElementById('video-chat').style.display = 'block';
     };
     const displayTextChat = function displayTextChat() {
-      document.getElementById('textChat').style.display = 'block';
+      document.getElementById('text-chat').style.display = 'block';
     };
     $(document).ready(() => {
       $('.dropdown-button').dropdown();
@@ -90,7 +90,7 @@ class Board extends React.Component {
           <li><a href="#!"><i className="material-icons tools">redo</i></a></li>
           <li><a href="#modal1"><i className="material-icons tools">link</i></a></li>
           <li><a onClick={exportCanvas}><i className="material-icons tools">save</i></a></li>
-          <li><a onClick={displayVoiceChat} id="display-voice-chat">
+          <li><a onClick={displayVideoChat} id="display-video-chat">
             <i className="material-icons tools">voice_chat</i></a></li>
           <li><a onClick={displayTextChat} id="display-text-chat">
             <i className="material-icons tools">chat</i></a></li>
@@ -166,10 +166,24 @@ class Board extends React.Component {
             <input readOnly value={`http://localhost:4000/${this.props.uid}`} />
           </div>
         </div>
-        <div id="videoChat">
+        <div id="video-chat">
           <video id="video-container" />
         </div>
-        <div id="textChat" />
+        <div id="text-chat">
+          <div id="text-chat-feed" />
+          <div id="text-chat-bottom">
+            <div id="text-chat-input-container">
+              <input id="text-chat-input" type="text" />
+            </div>
+            <div id="text-chat-btn-container">
+              <button
+                className="btn waves-effect waves-light"
+                type="submit"
+                name="action"
+              ><i className="material-icons">send</i></button>
+            </div>
+          </div>
+        </div>
       </div>
     );
   }

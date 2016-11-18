@@ -16,7 +16,7 @@ const webRTC = function webRTC(uid) {
   };
 
   const socketId = uid;
-  document.getElementById('display-voice-chat').addEventListener('click', () => {
+  document.getElementById('display-video-chat').addEventListener('click', () => {
     connection.openOrJoin(socketId);
   });
 };
