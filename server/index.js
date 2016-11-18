@@ -3,16 +3,10 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const socket = require('./socket/index.js');
 const http = require('http');
-// const fs = require('fs');
-
-// const options = {
-//   key: fs.readFileSync('./keys/22338043-localhost_4000.key'),
-//   cert: fs.readFileSync('./keys/22338043-localhost_4000.cert'),
-// };
 
 const app = express();
 const server = http.Server(app);
-// const server = https.createServer(options, app);
+
 // make socket listen
 socket.listen(server);
 
