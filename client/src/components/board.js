@@ -95,8 +95,8 @@ class Board extends React.Component {
           <li><a onClick={displayTextChat} id="display-text-chat">
             <i className="material-icons tools">chat</i></a></li>
         </ul>
-        <nav>
-          <div className="nav-wrapper">
+        <nav className="grey darken-3">
+          <div className="nav-wrapper container">
             <a href="/boards" className="brand-logo left hide-on-small-and-down">
               CollaBoard
             </a>

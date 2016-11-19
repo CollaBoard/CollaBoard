@@ -1,74 +1,62 @@
 .nav-wrapper {
-	background-color: #0058e8;
-  z-index: 2;
-}
-
-nav ul a, .nav-text {
   font-family: "Roboto", "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
-  font-weight: 100;
-  font-size: 17px !important;
+  font-weight: 300;
 }
 
- .nav-button {
+nav ul a {
+  font-size: 17px
+}
+
+.nav-button {
   cursor: pointer;
- }
+}
 
 .dropdown-content {
-	min-width: inherit;
+  min-width: inherit;
 }
 
 .tools {
-	color: #0058e8;
-	text-align: center !important;
+  color: #0058e8;
+  text-align: center !important;
 }
 
 #marker-dropdown li:nth-child(1) a i {
-	font-size: .5em !important;
+  font-size: .5em !important;
 }
 
 #marker-dropdown li:nth-child(3) a i {
-	font-size: 2em !important;
+  font-size: 2em !important;
 }
 
 #color-dropdown li:nth-child(1) a i {
-	color: red;
+  color: red;
 }
 
 #color-dropdown li:nth-child(2) a i {
-	color: orange;
+  color: orange;
 }
 
 #color-dropdown li:nth-child(3) a i {
-	color: yellow;
+  color: yellow;
 }
 
 #color-dropdown li:nth-child(4) a i {
-	color: green;
+  color: green;
 }
 
 #color-dropdown li:nth-child(5) a i {
-	color: blue;
+  color: blue;
 }
 
 #color-dropdown li:nth-child(6) a i {
-	color: purple;
+  color: purple;
 }
 
 #color-dropdown li:nth-child(7) a i {
-	color: black;
+  color: black;
 }
 
 #color-dropdown li:nth-child(8) a i {
-	color: white;
+  color: white;
 }
 
-/*
- .modal {
-	 width: 30%;
- }
-
- @media only screen and (min-width: 601px) {
-	 .modal {
-		 width: 60%;
-	 }
- }*/
