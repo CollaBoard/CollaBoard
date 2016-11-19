@@ -1,12 +1,13 @@
 import React from 'react';
+import TextChatFeed from './textchat-feed';
 
 class TextChat extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       text: '',
-      count: 0,
       messages: props.messages,
+      user: props.user,
     };
   }
 
@@ -14,15 +15,13 @@ class TextChat extends React.Component {
   }
 
   componentDidUpdate() {
-    if (this.state.messages.length > this.state.count) {
-      this.state.count += 1;
-    }
   }
 
   handleSubmit(e) {
     e.preventDefault();
     const message = {
       text: this.state.text,
+      user: this.state.user,
     };
     this.props.submitMessage(message);
     this.setState({ text: '' });
@@ -35,16 +34,7 @@ class TextChat extends React.Component {
   render() {
     return (
       <div id="text-chat">
-        <div id="text-chat-feed">
-          {this.state.messages.map(message =>
-           (
-             <div className="chatMessage">
-               <div className="chatMessageUser">{message.user}</div>
-               <div className="chatMessageText">{message.text}</div>
-             </div>
-      )
-    )}
-        </div>
+        <TextChatFeed messages={this.state.messages} />
         <div id="text-chat-bottom">
           <form onSubmit={this.handleSubmit.bind(this)}>
             <input
@@ -66,6 +56,9 @@ class TextChat extends React.Component {
 }
 
 TextChat.propTypes = {
+  messages: React.PropTypes.arrayOf(React.PropTypes.object),
+  submitMessage: React.PropTypes.function,
+  user: React.PropTypes.string,
 };
 
 export default TextChat;

@@ -27,24 +27,31 @@ class Board extends React.Component {
             const socket = io(`/${uid}`);
 
             const messages = [];
-            const user = Math.floor(Math.random() * 100);
+            const user = (Math.floor(Math.random() * 100)).toString();
 
             const submitMessage = function submitMessage(message) {
-              message.user = user;
               socket.emit('chat sent', message);
             };
 
             socket.on('incoming chat', (message) => {
               messages.push(message);
+              if (!this.state.displayChat) {
+                alert('Open your chat window');
+              }
             });
 
             const canvas = new Canvas();
             const whiteboard = <Whiteboard socket={socket} canvasState={canvas} />;
             const texteditor = <TextEditor socket={socket} />;
-            const textchat = <TextChat messages={messages} submitMessage={submitMessage} />;
+            const textchat = (<TextChat
+              messages={messages}
+              user={user}
+              submitMessage={submitMessage}
+            />);
             this.setState({
               display: whiteboard,
               cavasState: canvas,
+              displayChat: false,
               user,
               textchat,
               socket,
@@ -76,7 +83,11 @@ class Board extends React.Component {
     };
     const toggleWindow = function toggleWindow(id) {
       const element = document.getElementById(id);
-      element.style.display === 'block' ? element.style.display = 'none' : element.style.display = 'block';
+      if (element.style.display === 'block') {
+        element.style.display = 'none';
+      } else {
+        element.style.display = 'block';
+      }
     };
     $(document).ready(() => {
       $('.dropdown-button').dropdown();
@@ -108,7 +119,7 @@ class Board extends React.Component {
           <li><a onClick={() => { toggleWindow('video-chat'); }} id="display-video-chat">
             <i className="material-icons tools">voice_chat</i></a></li>
           <li><a
-            onClick={() => { toggleWindow('text-chat'); }} id="display-text-chat"
+            onClick={() => { toggleWindow('text-chat'); this.state.displayChat = !this.state.displayChat; }} id="display-text-chat"
           >
             <i className="material-icons tools">chat</i></a></li>
         </ul>
