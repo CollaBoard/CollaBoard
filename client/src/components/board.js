@@ -170,18 +170,23 @@ class Board extends React.Component {
           <video id="video-container" />
         </div>
         <div id="text-chat">
-          <div id="text-chat-feed" />
+          <div id="text-chat-feed">
+            <div className="chatMessage">
+              <div className="chatMessageUser">Roger</div>
+              <div className="chatMessageText">Hey guys</div>
+            </div>
+            <div className="chatMessage">
+              <div className="chatMessageUser">Bill</div>
+              <div className="chatMessageText">Hey dudes</div>
+            </div>
+          </div>
           <div id="text-chat-bottom">
-            <div id="text-chat-input-container">
-              <input id="text-chat-input" type="text" />
-            </div>
-            <div id="text-chat-btn-container">
-              <button
-                className="btn waves-effect waves-light"
-                type="submit"
-                name="action"
-              ><i className="material-icons">send</i></button>
-            </div>
+            <input id="text-chat-input" type="text" />
+            <button
+              className="sendbtn btn waves-effect waves-light"
+              type="submit"
+              name="action"
+            ><i className="material-icons">send</i></button>
           </div>
         </div>
       </div>
