@@ -1,14 +1,6 @@
 {
   "extends": "airbnb",
-  "rules": {
-    "new-cap": [
-      "error",
-      {
-        "capIsNew": false
-      }
-    ]
-  },
-  "env": {
-    "node": true
+  rules: {
+    "new-cap": [ "error", { "capIsNew": false } ],
   }
 }

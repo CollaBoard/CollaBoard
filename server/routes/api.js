@@ -1,10 +1,15 @@
 const express = require('express');
 const Board = require('../models/board');
+const Auth = require('../lib/auth');
 
 const router = express.Router();
 
 router.get('/', (req, res) => {
   res.send(['this', 'is', 'the', 'api', 'route']);
+});
+
+router.get('/me', Auth.checkLogin(true), (req, res) => {
+  res.send(req.user);
 });
 
 router.get('/boards/:boardId', (req, res) => {
