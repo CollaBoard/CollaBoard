@@ -7,6 +7,7 @@ import API from '../lib/api';
 import Canvas from './whiteboard/Canvas';
 import Whiteboard from './whiteboard';
 import TextEditor from './text-editor';
+import TextChat from './textchat';
 
 class Board extends React.Component {
   constructor(props) {
@@ -15,7 +16,9 @@ class Board extends React.Component {
       display: <div />,
       socket: null,
       canvasState: null,
+      messages: [],
     };
+    this.submitMessage = this.submitMessage.bind(this);
 
     this.componentDidMount = this.componentWillReceiveProps = (newProps) => {
       if (!this.state.socket) {
@@ -24,12 +27,25 @@ class Board extends React.Component {
           API.getBoard(uid)
           .then(() => {
             const socket = io(`/${uid}`);
+
+            const user = (Math.floor(Math.random() * 100)).toString();
+
+            socket.on('incoming chat', (message) => {
+              this.state.messages.push(message);
+              this.setState({ messages: this.state.messages });
+              if (!this.state.displayChat) {
+                alert('Open your chat window');
+              }
+            });
+
             const canvas = new Canvas();
             const whiteboard = <Whiteboard socket={socket} canvasState={canvas} />;
             const texteditor = <TextEditor socket={socket} />;
             this.setState({
               display: whiteboard,
               cavasState: canvas,
+              displayChat: false,
+              user,
               socket,
               whiteboard,
               texteditor,
@@ -52,16 +68,22 @@ class Board extends React.Component {
     };
   }
 
+  submitMessage(message) {
+    this.state.socket.emit('chat sent', message);
+  }
+
   render() {
     const exportCanvas = function exportCanvas() {
       const exportedImage = document.getElementById('whiteboard').toDataURL();
       window.open(exportedImage);
     };
-    const displayVideoChat = function displayVideoChat() {
-      document.getElementById('video-chat').style.display = 'block';
-    };
-    const displayTextChat = function displayTextChat() {
-      document.getElementById('text-chat').style.display = 'block';
+    const toggleWindow = function toggleWindow(id) {
+      const element = document.getElementById(id);
+      if (element.style.display === 'block') {
+        element.style.display = 'none';
+      } else {
+        element.style.display = 'block';
+      }
     };
     $(document).ready(() => {
       $('.dropdown-button').dropdown();
@@ -90,9 +112,12 @@ class Board extends React.Component {
           <li><a href="#!"><i className="material-icons tools">redo</i></a></li>
           <li><a href="#modal1"><i className="material-icons tools">link</i></a></li>
           <li><a onClick={exportCanvas}><i className="material-icons tools">save</i></a></li>
-          <li><a onClick={displayVideoChat} id="display-video-chat">
+          <li><a onClick={() => { toggleWindow('video-chat'); }} id="display-video-chat">
             <i className="material-icons tools">voice_chat</i></a></li>
-          <li><a onClick={displayTextChat} id="display-text-chat">
+          <li><a
+            onClick={() => this.setState({ displayChat: !this.state.displayChat })}
+            id="display-text-chat"
+          >
             <i className="material-icons tools">chat</i></a></li>
         </ul>
         <nav className="grey darken-3">
@@ -159,6 +184,11 @@ class Board extends React.Component {
         </nav>
         <div className="workspace">
           {this.state.display}
+          {this.state.displayChat ? <TextChat
+            messages={this.state.messages}
+            user={this.state.user}
+            submitMessage={this.submitMessage}
+          /> : undefined }
         </div>
         <div id="modal1" className="modal">
           <div className="modal-content">
@@ -168,26 +198,6 @@ class Board extends React.Component {
         </div>
         <div id="video-chat">
           <video id="video-container" />
-        </div>
-        <div id="text-chat">
-          <div id="text-chat-feed">
-            <div className="chatMessage">
-              <div className="chatMessageUser">Roger</div>
-              <div className="chatMessageText">Hey guys</div>
-            </div>
-            <div className="chatMessage">
-              <div className="chatMessageUser">Bill</div>
-              <div className="chatMessageText">Hey dudes</div>
-            </div>
-          </div>
-          <div id="text-chat-bottom">
-            <input id="text-chat-input" type="text" />
-            <button
-              className="sendbtn btn waves-effect waves-light"
-              type="submit"
-              name="action"
-            ><i className="material-icons">send</i></button>
-          </div>
         </div>
       </div>
     );
