@@ -11,6 +11,7 @@ Namespace.create = function create(uid) {
   const socket = io.of(uid);
   socket.on('connection', (client) => {
     socket.emit('new user');
+
     // Text Editor Events
     client.on('text change', (newText) => {
       console.log('sending new text:', newText);
@@ -19,8 +20,16 @@ Namespace.create = function create(uid) {
 
     // Whiteboard Events
     client.on('add figure', (figure) => {
-      console.log('sending new shape event:', figure);
+      // console.log('sending new shape event:', figure);
       socket.emit('add figure', figure);
+    });
+
+    // Video Chat Events
+
+    // Text Chat Events
+    client.on('chat sent', (message) => {
+      console.log('chat message sent');
+      socket.emit('incoming chat', message);
     });
   });
   return socket;

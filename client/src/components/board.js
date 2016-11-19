@@ -7,6 +7,7 @@ import API from '../lib/api';
 import Canvas from './whiteboard/Canvas';
 import Whiteboard from './whiteboard';
 import TextEditor from './text-editor';
+import TextChat from './textchat';
 
 class Board extends React.Component {
   constructor(props) {
@@ -24,12 +25,28 @@ class Board extends React.Component {
           API.getBoard(uid)
           .then(() => {
             const socket = io(`/${uid}`);
+
+            const messages = [];
+            const user = Math.floor(Math.random() * 100);
+
+            const submitMessage = function submitMessage(message) {
+              message.user = user;
+              socket.emit('chat sent', message);
+            };
+
+            socket.on('incoming chat', (message) => {
+              messages.push(message);
+            });
+
             const canvas = new Canvas();
             const whiteboard = <Whiteboard socket={socket} canvasState={canvas} />;
             const texteditor = <TextEditor socket={socket} />;
+            const textchat = <TextChat messages={messages} submitMessage={submitMessage} />;
             this.setState({
               display: whiteboard,
               cavasState: canvas,
+              user,
+              textchat,
               socket,
               whiteboard,
               texteditor,
@@ -57,11 +74,9 @@ class Board extends React.Component {
       const exportedImage = document.getElementById('whiteboard').toDataURL();
       window.open(exportedImage);
     };
-    const displayVideoChat = function displayVideoChat() {
-      document.getElementById('video-chat').style.display = 'block';
-    };
-    const displayTextChat = function displayTextChat() {
-      document.getElementById('text-chat').style.display = 'block';
+    const toggleWindow = function toggleWindow(id) {
+      const element = document.getElementById(id);
+      element.style.display === 'block' ? element.style.display = 'none' : element.style.display = 'block';
     };
     $(document).ready(() => {
       $('.dropdown-button').dropdown();
@@ -90,9 +105,11 @@ class Board extends React.Component {
           <li><a href="#!"><i className="material-icons tools">redo</i></a></li>
           <li><a href="#modal1"><i className="material-icons tools">link</i></a></li>
           <li><a onClick={exportCanvas}><i className="material-icons tools">save</i></a></li>
-          <li><a onClick={displayVideoChat} id="display-video-chat">
+          <li><a onClick={() => { toggleWindow('video-chat'); }} id="display-video-chat">
             <i className="material-icons tools">voice_chat</i></a></li>
-          <li><a onClick={displayTextChat} id="display-text-chat">
+          <li><a
+            onClick={() => { toggleWindow('text-chat'); }} id="display-text-chat"
+          >
             <i className="material-icons tools">chat</i></a></li>
         </ul>
         <nav>
@@ -159,6 +176,7 @@ class Board extends React.Component {
         </nav>
         <div className="workspace">
           {this.state.display}
+          {this.state.textchat}
         </div>
         <div id="modal1" className="modal">
           <div className="modal-content">
@@ -168,26 +186,6 @@ class Board extends React.Component {
         </div>
         <div id="video-chat">
           <video id="video-container" />
-        </div>
-        <div id="text-chat">
-          <div id="text-chat-feed">
-            <div className="chatMessage">
-              <div className="chatMessageUser">Roger</div>
-              <div className="chatMessageText">Hey guys</div>
-            </div>
-            <div className="chatMessage">
-              <div className="chatMessageUser">Bill</div>
-              <div className="chatMessageText">Hey dudes</div>
-            </div>
-          </div>
-          <div id="text-chat-bottom">
-            <input id="text-chat-input" type="text" />
-            <button
-              className="sendbtn btn waves-effect waves-light"
-              type="submit"
-              name="action"
-            ><i className="material-icons">send</i></button>
-          </div>
         </div>
       </div>
     );
