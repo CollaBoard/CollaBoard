@@ -37,7 +37,6 @@ const User = function User(info = {}, f = false) {
       })
       .catch(helpers.logAndThrow);
   };
-  console.log('Created User:', this);
 };
 
 
