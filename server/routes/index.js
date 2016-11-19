@@ -1,7 +1,7 @@
 const express = require('express');
 const path = require('path');
 const api = require('./api');
-const authentication = require('../lib/auth');
+const authentication = require('./auth');
 
 const router = express.Router();
 
