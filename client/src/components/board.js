@@ -16,7 +16,9 @@ class Board extends React.Component {
       display: <div />,
       socket: null,
       canvasState: null,
+      messages: [],
     };
+    this.submitMessage = this.submitMessage.bind(this);
 
     this.componentDidMount = this.componentWillReceiveProps = (newProps) => {
       if (!this.state.socket) {
@@ -26,15 +28,11 @@ class Board extends React.Component {
           .then(() => {
             const socket = io(`/${uid}`);
 
-            const messages = [];
             const user = (Math.floor(Math.random() * 100)).toString();
 
-            const submitMessage = function submitMessage(message) {
-              socket.emit('chat sent', message);
-            };
-
             socket.on('incoming chat', (message) => {
-              messages.push(message);
+              this.state.messages.push(message);
+              this.setState({ messages: this.state.messages });
               if (!this.state.displayChat) {
                 alert('Open your chat window');
               }
@@ -43,17 +41,11 @@ class Board extends React.Component {
             const canvas = new Canvas();
             const whiteboard = <Whiteboard socket={socket} canvasState={canvas} />;
             const texteditor = <TextEditor socket={socket} />;
-            const textchat = (<TextChat
-              messages={messages}
-              user={user}
-              submitMessage={submitMessage}
-            />);
             this.setState({
               display: whiteboard,
               cavasState: canvas,
               displayChat: false,
               user,
-              textchat,
               socket,
               whiteboard,
               texteditor,
@@ -74,6 +66,10 @@ class Board extends React.Component {
         }
       }
     };
+  }
+
+  submitMessage(message) {
+    this.state.socket.emit('chat sent', message);
   }
 
   render() {
@@ -119,7 +115,8 @@ class Board extends React.Component {
           <li><a onClick={() => { toggleWindow('video-chat'); }} id="display-video-chat">
             <i className="material-icons tools">voice_chat</i></a></li>
           <li><a
-            onClick={() => { toggleWindow('text-chat'); this.state.displayChat = !this.state.displayChat; }} id="display-text-chat"
+            onClick={() => this.setState({ displayChat: !this.state.displayChat })}
+            id="display-text-chat"
           >
             <i className="material-icons tools">chat</i></a></li>
         </ul>
@@ -187,7 +184,11 @@ class Board extends React.Component {
         </nav>
         <div className="workspace">
           {this.state.display}
-          {this.state.textchat}
+          {this.state.displayChat ? <TextChat
+            messages={this.state.messages}
+            user={this.state.user}
+            submitMessage={this.submitMessage}
+          /> : undefined }
         </div>
         <div id="modal1" className="modal">
           <div className="modal-content">

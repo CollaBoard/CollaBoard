@@ -4,7 +4,6 @@ class TextChatFeed extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      messages: props.messages,
     };
   }
 
@@ -14,7 +13,7 @@ class TextChatFeed extends React.Component {
   render() {
     return (
       <div id="text-chat-feed">
-        { this.state.messages.map((message, i) =>
+        { this.props.messages.map((message, i) =>
            (
              <div className="chatMessage" key={i}>
                <div className="chatMessageUser">{message.user}</div>

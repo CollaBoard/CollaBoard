@@ -6,15 +6,10 @@ class TextChat extends React.Component {
     super(props);
     this.state = {
       text: '',
-      messages: props.messages,
       user: props.user,
     };
-  }
-
-  componentDidMount() {
-  }
-
-  componentDidUpdate() {
+    this.changeHandler = this.changeHandler.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
   handleSubmit(e) {
@@ -34,13 +29,13 @@ class TextChat extends React.Component {
   render() {
     return (
       <div id="text-chat">
-        <TextChatFeed messages={this.state.messages} />
+        <TextChatFeed messages={this.props.messages} />
         <div id="text-chat-bottom">
-          <form onSubmit={this.handleSubmit.bind(this)}>
+          <form onSubmit={this.handleSubmit}>
             <input
               id="text-chat-input"
               type="text"
-              onChange={this.changeHandler.bind(this)}
+              onChange={this.changeHandler}
               value={this.state.text}
             />
             <button
