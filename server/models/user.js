@@ -1,14 +1,14 @@
 const db = require('../lib/knex-driver');
 const helpers = require('../lib/helpers');
 
-const User = function User(info, fetched = false) {
-  this.uid = fetched ? info.uid : helpers.uid();
+const User = function User(info = {}, f = false) {
+  let fetched = (info.uid && f) || false;
+  this.uid = fetched ? info.uid || helpers.uuid() : helpers.uid();
   this.name = info.name || null;
   this.email = info.email || null;
   this.github_id = info.github_id || null;
   this.google_id = info.google_id || null;
   this.avatar = info.avatar || null;
-  this.token = info.token || null;
 
   this.save = function save() {
     return (
@@ -31,7 +31,10 @@ const User = function User(info, fetched = false) {
           avatar: this.avatar,
         })
     )
-      .then(() => this)
+      .then(() => {
+        fetched = true;
+        return this;
+      })
       .catch(helpers.logAndThrow);
   };
   console.log('Created User:', this);
