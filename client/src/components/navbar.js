@@ -2,10 +2,13 @@ import React from 'react';
 import Link from './link';
 
 const NavBar = () => (
-  <nav>
-    <div className="nav-wrapper grey darken-3 nav-text">
+  <nav className="grey darken-3">
+    <div className="nav-wrapper container">
       <Link href="/" className="brand-logo left">CollaBoard</Link>
-      <a className="nav-button right">Log In</a>
+      <ul className="right">
+        <li><a href="/auth/github">Login with Github</a></li>
+        <li><a href="/auth/google">Login with Google</a></li>
+      </ul>
     </div>
   </nav>
 );
