@@ -12,6 +12,56 @@ nav ul a, .nav-text {
  .nav-button {
   cursor: pointer;
  }
+
+.dropdown-content {
+	min-width: inherit;
+}
+
+.tools {
+	color: #0058e8;
+	text-align: center !important;
+}
+
+#marker-dropdown li:nth-child(1) a i {
+	font-size: .5em !important;
+}
+
+#marker-dropdown li:nth-child(3) a i {
+	font-size: 2em !important;
+}
+
+#color-dropdown li:nth-child(1) a i {
+	color: red;
+}
+
+#color-dropdown li:nth-child(2) a i {
+	color: orange;
+}
+
+#color-dropdown li:nth-child(3) a i {
+	color: yellow;
+}
+
+#color-dropdown li:nth-child(4) a i {
+	color: green;
+}
+
+#color-dropdown li:nth-child(5) a i {
+	color: blue;
+}
+
+#color-dropdown li:nth-child(6) a i {
+	color: purple;
+}
+
+#color-dropdown li:nth-child(7) a i {
+	color: black;
+}
+
+#color-dropdown li:nth-child(8) a i {
+	color: white;
+}
+
 /*
  .modal {
 	 width: 30%;

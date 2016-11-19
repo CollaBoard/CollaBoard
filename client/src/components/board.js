@@ -57,8 +57,11 @@ class Board extends React.Component {
       const exportedImage = document.getElementById('whiteboard').toDataURL();
       window.open(exportedImage);
     };
-    const displayChat = function displayChat() {
-      document.getElementById('videoChat').style.display = 'block';
+    const displayVideoChat = function displayVideoChat() {
+      document.getElementById('video-chat').style.display = 'block';
+    };
+    const displayTextChat = function displayTextChat() {
+      document.getElementById('text-chat').style.display = 'block';
     };
     $(document).ready(() => {
       $('.dropdown-button').dropdown();
@@ -67,13 +70,30 @@ class Board extends React.Component {
     });
     return (
       <div>
-        <ul id="dropdown1" className="dropdown-content">
-          <li><a href="#!"><i className="material-icons">undo</i></a></li>
-          <li><a href="#!"><i className="material-icons">redo</i></a></li>
-          <li><a href="#modal1"><i className="material-icons">link</i></a></li>
-          <li><a onClick={exportCanvas}><i className="material-icons">save</i></a></li>
-          <li><a onClick={displayChat} id="open-or-join">
-            <i className="material-icons">voice_chat</i></a></li>
+        <ul id="color-dropdown" className="dropdown-content">
+          <li><a onClick={() => { this.state.cavasState.prop('color', 'red'); }}><i className="material-icons tools">lens</i></a></li>
+          <li><a onClick={() => { this.state.cavasState.prop('color', 'orange'); }}><i className="material-icons tools">lens</i></a></li>
+          <li><a onClick={() => { this.state.cavasState.prop('color', 'yellow'); }}><i className="material-icons tools">lens</i></a></li>
+          <li><a onClick={() => { this.state.cavasState.prop('color', 'green'); }}><i className="material-icons tools">lens</i></a></li>
+          <li><a onClick={() => { this.state.cavasState.prop('color', 'blue'); }}><i className="material-icons tools">lens</i></a></li>
+          <li><a onClick={() => { this.state.cavasState.prop('color', 'purple'); }}><i className="material-icons tools">lens</i></a></li>
+          <li><a onClick={() => { this.state.cavasState.prop('color', 'black'); }}><i className="material-icons tools">lens</i></a></li>
+          <li><a onClick={() => { this.state.cavasState.prop('color', 'white'); }}><i className="material-icons tools">lens</i></a></li>
+        </ul>
+        <ul id="marker-dropdown" className="dropdown-content">
+          <li><a onClick={() => { this.state.cavasState.prop('lineWidth', 5); }}><i className="material-icons tools">lens</i></a></li>
+          <li><a onClick={() => { this.state.cavasState.prop('lineWidth', 15); }}><i className="material-icons tools">lens</i></a></li>
+          <li><a onClick={() => { this.state.cavasState.prop('lineWidth', 25); }}><i className="material-icons tools">lens</i></a></li>
+        </ul>
+        <ul id="tool-dropdown" className="dropdown-content">
+          <li><a href="#!"><i className="material-icons tools">undo</i></a></li>
+          <li><a href="#!"><i className="material-icons tools">redo</i></a></li>
+          <li><a href="#modal1"><i className="material-icons tools">link</i></a></li>
+          <li><a onClick={exportCanvas}><i className="material-icons tools">save</i></a></li>
+          <li><a onClick={displayVideoChat} id="display-video-chat">
+            <i className="material-icons tools">voice_chat</i></a></li>
+          <li><a onClick={displayTextChat} id="display-text-chat">
+            <i className="material-icons tools">chat</i></a></li>
         </ul>
         <nav>
           <div className="nav-wrapper">
@@ -111,9 +131,28 @@ class Board extends React.Component {
                 <a
                   className="dropdown-button"
                   href="#!"
-                  data-activates="dropdown1"
+                  data-activates="color-dropdown"
                   data-beloworigin="true"
-                ><i className="material-icons">arrow_drop_down</i></a>
+                  data-constrainwidth="false"
+                ><i className="material-icons">palette</i></a>
+              </li>
+              <li>
+                <a
+                  className="dropdown-button"
+                  href="#!"
+                  data-activates="marker-dropdown"
+                  data-beloworigin="true"
+                  data-constrainwidth="false"
+                ><i className="material-icons">mode_edit</i></a>
+              </li>
+              <li>
+                <a
+                  className="dropdown-button"
+                  href="#!"
+                  data-activates="tool-dropdown"
+                  data-beloworigin="true"
+                  data-constrainwidth="false"
+                ><i className="material-icons">build</i></a>
               </li>
             </ul>
           </div>
@@ -127,8 +166,28 @@ class Board extends React.Component {
             <input readOnly value={`http://localhost:4000/${this.props.uid}`} />
           </div>
         </div>
-        <div id="videoChat">
+        <div id="video-chat">
           <video id="video-container" />
+        </div>
+        <div id="text-chat">
+          <div id="text-chat-feed">
+            <div className="chatMessage">
+              <div className="chatMessageUser">Roger</div>
+              <div className="chatMessageText">Hey guys</div>
+            </div>
+            <div className="chatMessage">
+              <div className="chatMessageUser">Bill</div>
+              <div className="chatMessageText">Hey dudes</div>
+            </div>
+          </div>
+          <div id="text-chat-bottom">
+            <input id="text-chat-input" type="text" />
+            <button
+              className="sendbtn btn waves-effect waves-light"
+              type="submit"
+              name="action"
+            ><i className="material-icons">send</i></button>
+          </div>
         </div>
       </div>
     );

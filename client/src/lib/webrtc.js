@@ -10,15 +10,15 @@ const webRTC = function webRTC(uid) {
     oneway: true,
   };
   const videoContainer = document.getElementById('video-container');
-  connection.onstream = function (e) {
+  connection.onstream = function onstream(e) {
     videoContainer.src = URL.createObjectURL(e.stream);
     videoContainer.play();
   };
 
   const socketId = uid;
-  document.getElementById('open-or-join').onclick = function () {
+  document.getElementById('display-video-chat').addEventListener('click', () => {
     connection.openOrJoin(socketId);
-  };
+  });
 };
 
 export default webRTC;
