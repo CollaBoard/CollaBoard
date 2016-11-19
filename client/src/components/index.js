@@ -23,9 +23,6 @@ class App extends React.Component {
     page('/boards/:uid', (ctx) => {
       this.setState({ component: <Board uid={ctx.params.uid} /> });
     });
-    page(() => {
-      page('/');
-    });
     page.start();
   }
 
