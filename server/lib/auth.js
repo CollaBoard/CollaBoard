@@ -55,6 +55,7 @@ authport.on('error', (req, res, err) => {
 router.use(cookieSession({
   name: 'collaboard_session',
   secret: process.env.COOKIE_SECRET,
+  keys: ['secret_key_1', 'secret_key_2'],
 }));
 
 router.get('/auth/:service', authport.app);
