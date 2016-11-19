@@ -4,8 +4,12 @@
  *
  */
 
+<<<<<<< 18ed4139970de7cded2c917c4b05ce1ff3e148c3
+// import store from '../store';
+=======
 // Action Types
   const TEXT_CHANGE = 'TEXT_CHANGE';
+>>>>>>> working on redux set up
 
 // Actions object to export
   const actionCreators = {

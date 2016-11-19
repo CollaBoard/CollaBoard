@@ -12,6 +12,8 @@ import Draft, {
   convertToRaw,
 } from 'draft-js';
 import React from 'react';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 import CodeUtils from 'draft-js-code';
 // COLLABOARD: see forked repository https://github.com/CollaBoard/draft-js-prism for changes
 import PrismDraftDecorator from 'draft-js-prism';
@@ -20,6 +22,7 @@ import io from 'socket.io-client';
 import StyleButton from './StyleButton';
 // import TextEditor from 'draft-js-code';
 // import TextEditor from './../../../../draft-js-code/demo/main';
+import actionCreators from '../../data/actions';
 
 // Custom overrides for "code" style.
 const styleMap = {
@@ -38,23 +41,42 @@ function getBlockStyle(block) {
   }
 }
 
+// COLLABOARD: initializing functions for text editor container
+const mapStateToProps = state => ({
+  editorState: state.editorState,
+});
+
+const mapDispatchToProps = dispatch =>
+  bindActionCreators({ TEXT_CHANGE: actionCreators.TEXT_CHANGE }, dispatch);
+
 // COLLABOARD: initializing socket
-const socket = io();
+// const socket = io();
 
 class TextEditor extends React.Component {
   constructor(props) {
     super(props);
 
     const decorator = new PrismDraftDecorator();
-    this.state = {
-      editorState: Draft.EditorState.createEmpty(decorator),
-    };
+    // COLLABOARD: check if
+    if (!this.props.editorState && this.props.editorState !== {}) {
+      console.log('creating new editor state');
+      this.state = {
+        editorState: Draft.EditorState.createEmpty(decorator),
+      };
+    } else {
+      this.state = {
+        editorState: this.props.editorState,
+      };
+      // COLLABOARD: TODO figure out how best to dispatch this state to the store
+    }
 
     this.focus = () => this.editor.focus();
     // COLLABOARD: Emitting change event on editor change
     this.onChange = (editorState) => {
       this.setState({ editorState }, function emitChange() {
-        socket.emit('text change', convertToRaw(this.state.editorState.getCurrentContent()));
+        this.props.TEXT_CHANGE(convertToRaw(this.state.editorState.getCurrentContent()));
+        console.log('text change');
+        // socket.emit('text change', convertToRaw(this.state.editorState.getCurrentContent()));
       });
     };
 
@@ -126,6 +148,8 @@ class TextEditor extends React.Component {
   iOnReturn(e) {
     const editorState = this.state.editorState;
 
+    // COLLABOARD: Added false return to comply with AirBnB consistent return
+    // Notice: do not delete the final 'true' return, or each return will break a text block
     if (!CodeUtils.hasSelectionInBlock(editorState)) {
       return false;
     }
@@ -383,6 +407,7 @@ const InlineStyleControls = (props) => {
 //   }
 // }
 
+// COLLABOARD: Proptype validations to prevent unexpected props and to follow AirBnB style
 BlockStyleControls.propTypes = {
   blockType: React.PropTypes.string,
   onToggle: React.PropTypes.func,
@@ -403,10 +428,12 @@ InlineStyleControls.propTypes = {
 // };
 
 TextEditor.propTypes = {
-  active: React.PropTypes.bool,
-  onToggle: React.PropTypes.func,
-  // editorState: React.PropTypes.node,
-  style: React.PropTypes.string,
+  // active: React.PropTypes.bool,
+  // onToggle: React.PropTypes.func,
+  editorState: React.PropTypes.node,
+  TEXT_CHANGE: React.PropTypes.func,
+  // style: React.PropTypes.string,
 };
 
-export default TextEditor;
+// COLLABOARD: Redux container component for text editor
+export default connect(mapStateToProps, mapDispatchToProps)(TextEditor);
