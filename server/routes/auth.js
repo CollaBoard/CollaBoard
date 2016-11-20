@@ -1,8 +1,9 @@
-const cookieSession = require('cookie-session');
 const router = require('express').Router();
 const authport = require('authport');
 const User = require('../models/user');
-const Session = require('../models/session');
+const session = require('express-session');
+const KnexStore = require('connect-session-knex')(session);
+const db = require('../lib/knex-driver');
 
 authport.createServer({
   service: 'github',
@@ -39,12 +40,13 @@ authport.on('auth', (req, res, data) => {
         name: profile.name,
         avatar: profile.picture,
       }).save());
+  } else {
+    return res.send(new Error('Did not use github or google auth'));
   }
   findUser
-    .then(user => new Session({ user_uid: user.uid, token: data.token }).save())
-    .then((session) => {
-      req.session.uid = session.uid;
-      res.redirect('/dashboard');
+    .then((user) => {
+      req.session.userUid = user.uid;
+      res.redirect('/boards');
     });
 });
 
@@ -52,10 +54,16 @@ authport.on('error', (req, res, err) => {
   res.send(err);
 });
 
-router.use(cookieSession({
+router.use(session({
   name: 'collaboard_session',
-  secret: process.env.COOKIE_SECRET,
-  keys: ['secret_key_1', 'secret_key_2'],
+  secret: process.env.COOKIE_SECRET || 'test secret',
+  store: new KnexStore({
+    knex: db,
+    tablename: 'sessions',
+  }),
+  saveUninitialized: false,
+  resave: false,
+  maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
 }));
 
 router.get('/auth/:service', authport.app);
