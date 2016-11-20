@@ -1,9 +1,9 @@
 const db = require('../lib/knex-driver');
-const helpers = require('../lib/helpers');
+const util = require('../lib/util');
 
 const User = function User(info = {}, f = false) {
   let fetched = (info.uid && f) || false;
-  this.uid = fetched ? info.uid || helpers.uuid() : helpers.uid();
+  this.uid = fetched ? info.uid || util.uuid() : util.uid();
   this.name = info.name || null;
   this.email = info.email || null;
   this.github_id = info.github_id || null;
@@ -35,7 +35,10 @@ const User = function User(info = {}, f = false) {
         fetched = true;
         return this;
       })
-      .catch(helpers.logAndThrow);
+      .catch(util.catchUnexpected);
+  };
+  this.getTeams = function getTeams() {
+
   };
 };
 
@@ -46,9 +49,9 @@ User.find = function find(params) {
       if (rows.length) {
         return new User(rows[0], true);
       }
-      throw new helpers.NotFound('No user was found');
+      util.throwNotFound('No user was found');
     })
-    .catch(helpers.logAndThrow);
+    .catch(util.rethrow);
 };
 
 User.findById = function findById(uid) {
@@ -57,9 +60,9 @@ User.findById = function findById(uid) {
       if (rows.length) {
         return new User(rows[0], true);
       }
-      throw new helpers.NotFound('No user was found');
+      util.throwNotFound('No user was found');
     })
-    .catch(helpers.logAndThrow);
+    .catch(util.rethrow);
 };
 
 module.exports = User;

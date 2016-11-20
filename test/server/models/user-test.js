@@ -87,6 +87,11 @@ describe('The User model', () => {
     it_('should return a user by a set of parameters', function* () {
       const foundUser = yield User.find({ uid: user.uid });
       expect(foundUser.uid).to.equal(user.uid);
+      expect(foundUser.name).to.equal(user.name);
+      expect(foundUser.github_id).to.equal(user.github_id);
+      expect(foundUser.google_id).to.equal(user.google_id);
+      expect(foundUser.email).to.equal(user.email);
+      expect(foundUser.avatar).to.equal(user.avatar);
     });
   });
 });
