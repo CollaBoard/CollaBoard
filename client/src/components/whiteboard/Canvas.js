@@ -113,6 +113,20 @@ const Canvas = function Canvas(element, options) {
       x, y,
     };
   }.bind(this);
+
+  const getDistanceAndAngle = function getDistanceAndAngle(lastPoint, currentPoint) {
+    const distance = Math.sqrt(Math.pow(currentPoint.x - lastPoint.x, 2)
+                   + Math.pow(currentPoint.y - lastPoint.y, 2));
+    const angle = Math.atan2(currentPoint.x - lastPoint.x, currentPoint.y - lastPoint.y);
+    let x;
+    let y;
+    for (let i = 0; i < distance; i += 5) {
+      x = lastPoint.x + (Math.sin(angle) * i);
+      y = lastPoint.y + (Math.cos(angle) * i);
+    }
+    return { x, y };
+  };
+
   //
   // const ctxMenu = document.getElementById('context-menu');
   // const circle = document.getElementById('circle');
@@ -170,6 +184,8 @@ const Canvas = function Canvas(element, options) {
   this.attachToElement = function attachToElement(el) {
     this.el = el;
     ctx = this.el.getContext('2d');
+    let lastPoint;
+    let currentPoint;
 
     ctx.lineCap = currentConfig.lineCap;
     ctx.lineWidth = currentConfig.lineWidth;
@@ -198,6 +214,7 @@ const Canvas = function Canvas(element, options) {
       if (e.buttons === 1) {
         // if (!ctxOpen) {
         const { x, y } = getCoordinates(e);
+        lastPoint = { x, y };
         newFigure(x, y);
         // } else {
         //   ctxOpen = false;
@@ -211,11 +228,14 @@ const Canvas = function Canvas(element, options) {
 
     this.el.addEventListener('mousemove', (e) => {
       if (e.buttons === 1) {
-        const { x, y } = getCoordinates(e);
+        currentPoint = getCoordinates(e);
+        const { x, y } = getDistanceAndAngle(lastPoint, currentPoint);
+        console.log(x, y);
         if (!currentFigure) {
           newFigure(x, y);
         }
         currentFigure.move(x, y, e);
+        lastPoint = currentPoint;
       }
     });
 
