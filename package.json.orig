@@ -28,22 +28,17 @@
     "draft-js": "^0.9.1",
     "draft-js-code": "^0.2.0",
     "draft-js-prism": "git+https://github.com/CollaBoard/draft-js-prism.git",
-    "ends-with": "^0.2.0",
     "express": "^4.14.0",
     "express-session": "^1.14.2",
-    "immutable": "^3.8.1",
     "knex": "^0.12.5",
     "nodemon": "^1.11.0",
     "page": "^1.7.1",
     "pg": "^6.1.0",
-    "prismjs": "^1.5.1",
     "puid": "^1.0.5",
     "react": "^15.3.2",
     "react-dom": "^15.3.2",
     "react-redux": "^4.4.5",
     "redux": "^3.6.0",
-    "redux-logger": "^2.7.4",
-    "redux-promise": "^0.5.3",
     "socket.io": "^1.5.1",
     "socket.io-client": "^1.5.1",
     "uuid": "^2.0.3"
@@ -58,13 +53,13 @@
     "eslint-plugin-jsx-a11y": "^2.2.3",
     "eslint-plugin-react": "^6.5.0",
     "mocha": "^3.1.2",
+<<<<<<< d642c6e8630c5e82560f637e8169bc321bf868a9
+=======
     "nodemon": "^1.11.0",
     "pult-cli": "*",
     "redux-logger": "^2.7.4",
+>>>>>>> added logging middleware, got event firing and editor state storing in redux store
     "supertest": "^2.0.0",
     "supertest-as-promised": "^4.0.0"
-  },
-  "addedPultModules": [
-    "knex"
-  ]
+  }
 }

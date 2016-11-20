@@ -58,17 +58,20 @@ class TextEditor extends React.Component {
 
     const decorator = new PrismDraftDecorator();
     // COLLABOARD: check if
-    if (!this.props.editorState && this.props.editorState !== {}) {
-      console.log('creating new editor state');
-      this.state = {
-        editorState: Draft.EditorState.createEmpty(decorator),
-      };
-    } else {
-      this.state = {
-        editorState: this.props.editorState,
-      };
-      // COLLABOARD: TODO figure out how best to dispatch this state to the store
-    }
+    // if (!this.props.editorState && this.props.editorState !== {}) {
+    // console.log('creating new editor state');
+    const newEditorState = Draft.EditorState.createEmpty(decorator);
+    this.state = {
+      editorState: newEditorState,
+    };
+    this.props.TEXT_CHANGE(convertToRaw(newEditorState.getCurrentContent()));
+    // } else {
+    //   this.state = {
+    //     editorState: this.props.editorState,
+    //   };
+    //   this.props.TEXT_CHANGE(convertToRaw(this.state.editorState.getCurrentContent()));
+    //   // COLLABOARD: TODO figure out how best to dispatch this state to the store
+    // }
 
     this.focus = () => this.editor.focus();
     // COLLABOARD: Emitting change event on editor change
@@ -213,6 +216,7 @@ class TextEditor extends React.Component {
 
   render() {
     const { editorState } = this.state;
+    // console.log(editorState);
 
     // If the user changes block type before entering any text, we can
     // either style the placeholder or hide it. Let's just hide it now.
