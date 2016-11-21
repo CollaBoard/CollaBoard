@@ -2,17 +2,19 @@ import React from 'react';
 import io from 'socket.io-client';
 import page from 'page';
 import { bindActionCreators } from 'redux';
-import { connect } from 'react-redux';
+import { Provider, connect } from 'react-redux';
 
+<<<<<<< 4cea6165757a1109693be08d82912bde777f77fa
 import WebRTC from '../lib/webrtc';
+=======
+import configureStore from '../data/store';
+>>>>>>> switching store to initialize with board
 import API from '../lib/api';
 import Canvas from './whiteboard/Canvas';
 import Whiteboard from './whiteboard';
 import TextEditor from './text-editor';
-<<<<<<< 18ed4139970de7cded2c917c4b05ce1ff3e148c3
-import TextChat from './textchat';
-=======
 import actionCreators from '../data/actions';
+import TextChat from './textchat';
 
 const mapStateToProps = state => ({
   currentTeam: state.currentTeam,
@@ -26,7 +28,6 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch =>
   bindActionCreators({ TEXT_CHANGE: actionCreators.TEXT_CHANGE }, dispatch);
->>>>>>> working on redux set up
 
 class Board extends React.Component {
   constructor(props) {
@@ -35,11 +36,8 @@ class Board extends React.Component {
       display: <div />,
       socket: null,
       canvasState: null,
-<<<<<<< 18ed4139970de7cded2c917c4b05ce1ff3e148c3
-      messages: [],
-=======
       editorState: null,
->>>>>>> working on redux set up
+      messages: [],
     };
     this.submitMessage = this.submitMessage.bind(this);
 
@@ -48,7 +46,7 @@ class Board extends React.Component {
         const uid = this.props.uid || (newProps && newProps.uid) || null;
         if (uid) {
           API.getBoard(uid)
-          .then(() => {
+          .then((board) => {
             const socket = io(`/${uid}`);
 
             const user = (Math.floor(Math.random() * 100)).toString();
@@ -62,18 +60,24 @@ class Board extends React.Component {
             });
 
             const canvas = new Canvas();
+            const initialState = {
+              currentTeam: this.state.team || '',
+              connectedUsers: [],
+              canvasState: {},
+              editorState: {},
+              socketName: '',
+              socket: '',
+              display: {},
+            };
+
+            const store = configureStore(initialState);
             const whiteboard = <Whiteboard socket={socket} canvasState={canvas} />;
             const texteditor = <TextEditor socket={socket} />;
-            // TODO: use a reducer to set this state to the store
             this.setState({
               display: whiteboard,
-<<<<<<< 18ed4139970de7cded2c917c4b05ce1ff3e148c3
               cavasState: canvas,
               displayChat: false,
               user,
-=======
-              canvasState: canvas,
->>>>>>> working on redux set up
               socket,
               whiteboard,
               texteditor,
@@ -86,7 +90,7 @@ class Board extends React.Component {
             });
             socket.on('serve text', (text) => {
               console.log('serving text!!!');
-              this.props.TEXT_CHANGE(text);
+              this.props.SERVE_TEXT(text);
             });
             // this.state.unsubscribe = reduxStore.subscribe(() => {
             //   const currentState = reduxStore.getState();
@@ -114,13 +118,8 @@ class Board extends React.Component {
     };
   }
 
-<<<<<<< 18ed4139970de7cded2c917c4b05ce1ff3e148c3
   submitMessage(message) {
     this.state.socket.emit('chat sent', message);
-=======
-  componentWillUnmount() {
-    this.state.unsubscribe();
->>>>>>> working on redux set up
   }
 
   render() {
@@ -142,6 +141,7 @@ class Board extends React.Component {
       WebRTC(this.props.uid);
     });
     return (
+<<<<<<< 4cea6165757a1109693be08d82912bde777f77fa
       <div>
         <ul id="color-dropdown" className="dropdown-content">
           <li><a onClick={() => { this.state.cavasState.prop('color', 'red'); }}><i className="material-icons tools">lens</i></a></li>
@@ -152,6 +152,14 @@ class Board extends React.Component {
           <li><a onClick={() => { this.state.cavasState.prop('color', 'purple'); }}><i className="material-icons tools">lens</i></a></li>
           <li><a onClick={() => { this.state.cavasState.prop('color', 'black'); }}><i className="material-icons tools">lens</i></a></li>
           <li><a onClick={() => { this.state.cavasState.prop('color', 'white'); }}><i className="material-icons tools">lens</i></a></li>
+=======
+      <Provider store={store}>
+        <ul id="dropdown1" className="dropdown-content">
+          <li><a href="#!"><i className="material-icons">undo</i></a></li>
+          <li><a href="#!"><i className="material-icons">redo</i></a></li>
+          <li><a href="#modal1"><i className="material-icons">link</i></a></li>
+          <li><a onClick={exportCanvas}><i className="material-icons">save</i></a></li>
+>>>>>>> switching store to initialize with board
         </ul>
         <ul id="marker-dropdown" className="dropdown-content">
           <li><a onClick={() => { this.state.cavasState.prop('lineWidth', 5); }}><i className="material-icons tools">lens</i></a></li>
@@ -247,10 +255,14 @@ class Board extends React.Component {
             <input readOnly value={`http://localhost:4000/${this.props.uid}`} />
           </div>
         </div>
+<<<<<<< 4cea6165757a1109693be08d82912bde777f77fa
         <div id="video-chat">
           <video id="video-container" />
         </div>
       </div>
+=======
+      </Provider>
+>>>>>>> switching store to initialize with board
     );
   }
 }
@@ -260,4 +272,4 @@ Board.propTypes = {
   TEXT_CHANGE: React.PropTypes.func,
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Board);
+export default Board;

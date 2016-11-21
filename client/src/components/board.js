@@ -56,6 +56,17 @@ class Board extends React.Component {
             });
 
             const canvas = new Canvas();
+            const initialState = {
+              currentTeam: this.state.team || '',
+              connectedUsers: [],
+              canvasState: {},
+              editorState: {},
+              socketName: '',
+              socket: '',
+              display: {},
+            };
+
+            const store = configureStore(initialState);
             const whiteboard = <Whiteboard socket={socket} canvasState={canvas} />;
             const texteditor = <TextEditor socket={socket} />;
             this.setState({
@@ -75,7 +86,7 @@ class Board extends React.Component {
             });
             socket.on('serve text', (text) => {
               console.log('serving text!!!');
-              this.props.TEXT_CHANGE(text);
+              this.props.SERVE_TEXT(text);
             });
             // this.state.unsubscribe = reduxStore.subscribe(() => {
             //   const currentState = reduxStore.getState();
