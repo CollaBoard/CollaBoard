@@ -12,4 +12,113 @@ API.createBoard = function createBoard() {
     .then(res => res.data);
 };
 
+API.getMe = function getMe() {
+  return $.get('/api/users/me')
+  .then(res => res.data);
+};
+
+API.getTeams = function getTeams() {
+  return $.get('/api/teams')
+  .then(res => res.data);
+};
+
+API.getOneUser = function getOneUser(uid) {
+  return $.get(`/api/users/${uid}`)
+  .then(res => res.data);
+};
+
+API.getOneTeam = function getOneTeam(uid) {
+  return $.get(`/api/teams/${uid}`)
+  .then(res => res.data);
+};
+
+// TESTING API CALLS // TESTING API CALLS // TESTING API CALLS
+// TESTING API CALLS // TESTING API CALLS // TESTING API CALLS
+// TESTING API CALLS // TESTING API CALLS // TESTING API CALLS
+
+API.getMeTest = function getMeTest() {
+  return new Promise((resolve) => {
+    resolve({ name: 'Darion Freeman',
+      avatar: 'https://robohash.org/HandsomeDevil',
+      github_id: 'test-github-id',
+      google_id: 'test-google-id',
+      email: 'totallyatest@email.com',
+      uid: '123e4567-e89b-12d3-a456-426655440000' });
+  });
+};
+
+API.getTeamsTest = function getTeamsTest() {
+  return new Promise((resolve) => {
+    resolve([
+      {
+        uid: '123e4567-e89b-12d3-a456-426655440000',
+        name: 'Test team 1!',
+        avatar: 'https://robohash.org/testTeam1',
+        member_count: 3,
+        board_count: 2,
+      },
+      {
+        uid: '123e4567-e89b-12d3-a456-426655440001',
+        name: 'Test team 2!',
+        avatar: 'https://robohash.org/testTeam2',
+        member_count: 10,
+        board_count: 18,
+      },
+      {
+        uid: '123e4567-e89b-12d3-a456-426655440002',
+        name: 'Test team 3!',
+        avatar: 'https://robohash.org/testTeam3',
+        member_count: 1,
+        board_count: 0,
+      },
+    ]);
+  });
+};
+
+API.getOneTeamTest = function getOneTeamTest(uid) {
+  console.log(`Fetching ${uid}`);
+  return new Promise((resolve) => {
+    resolve({
+      uid: '123e4567-e89b-12d3-a456-426655440000',
+      name: 'Test team!',
+      avatar: 'https://robohash.org/testTeam1',
+      member_count: 3,
+      board_count: 2,
+      boards: [
+        {
+          uid: '123e4567-e89b-12d3-a456-426655440001',
+          name: 'Test Board 1',
+          data: '{some json canvas data}',
+        },
+        {
+          uid: '123e4567-e89b-12d3-a456-426655440002',
+          name: 'Test Board 2',
+          data: '{some json canvas data}',
+        },
+      ],
+      members: [
+        {
+          uid: '123e4567-e89b-12d3-a456-426655440001',
+          name: 'Test User',
+          avatar: 'https://robohash.org/testUser1',
+        },
+        {
+          uid: '123e4567-e89b-12d3-a456-426655440002',
+          name: 'Test User',
+          avatar: 'https://robohash.org/testUser2',
+        },
+        {
+          uid: '123e4567-e89b-12d3-a456-426655440003',
+          name: 'Test User',
+          avatar: 'https://robohash.org/testUser3',
+        },
+      ],
+    });
+  });
+};
+
+// TESTING API CALLS // TESTING API CALLS // TESTING API CALLS
+// TESTING API CALLS // TESTING API CALLS // TESTING API CALLS
+// TESTING API CALLS // TESTING API CALLS // TESTING API CALLS
+
 export default API;

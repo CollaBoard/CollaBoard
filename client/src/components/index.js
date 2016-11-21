@@ -1,8 +1,9 @@
 import React from 'react';
 import page from 'page';
 
-import Board from './board';
 import LandingPage from './landing-page';
+import Dashboard from './dashboard';
+import Board from './board';
 
 class App extends React.Component {
   constructor(props) {
@@ -17,9 +18,14 @@ class App extends React.Component {
       this.setState({ component: <LandingPage /> });
     });
 
+    page('/dashboard', () => {
+      this.setState({ component: <Dashboard /> });
+    });
+
     page('/boards', () => {
       this.setState({ component: <Board /> });
     });
+
     page('/boards/:uid', (ctx) => {
       this.setState({ component: <Board uid={ctx.params.uid} /> });
     });
