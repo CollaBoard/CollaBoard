@@ -1,12 +1,17 @@
 import React from 'react';
 import API from '../lib/api';
 
+import DashboardLeft from './dashboard-left';
+import DashboardRight from './dashboard-right';
+
 class Dashboard extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       user: { name: 'First Last',
-        avatar: 'https://robohash.org/CollaBoard' },
+        avatar: 'https://robohash.org/CollaBoard',
+        boards: [],
+        teams: [] },
     };
   }
 
@@ -16,14 +21,21 @@ class Dashboard extends React.Component {
       console.log(res);
       this.setState({
         user: { name: res.name,
-          avatar: res.avatar },
+          avatar: res.avatar,
+          boards: res.boards,
+          teams: res.teams },
       });
     }).catch(console.err);
   }
 
   render() {
     return (
-      <div>Hello</div>
+      <div className="outer">
+        <div className="row topDash">
+          <DashboardLeft />
+          <DashboardRight />
+        </div>
+      </div>
 
     );
   }
@@ -31,7 +43,6 @@ class Dashboard extends React.Component {
 }
 
 Dashboard.propTypes = {
-  uid: React.PropTypes.string,
 };
 
 export default Dashboard;

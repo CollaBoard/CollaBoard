@@ -1,0 +1,39 @@
+.topDash {
+  padding-top: 10px;
+}
+
+.boardLeft img {
+  border: 2px solid grey;
+}
+
+.name {
+  font-size: 1.8em;
+}
+
+.myBoards {
+  font-size: 1.4em;
+}
+
+.myTeams {
+  margin-top: 10px;
+}
+
+.myTeamsHeader {
+  font-size: 1.2em;
+}
+
+.myTeamsList {
+  margin-top: 0px;
+}
+
+.recent {
+  font-size: 1.5em;
+}
+
+.add {
+  font-size: 1.1em;
+}
+
+.boardImage {
+  margin-bottom: 1.5em;
+}

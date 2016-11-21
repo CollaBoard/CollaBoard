@@ -13,7 +13,7 @@ API.createBoard = function createBoard() {
 };
 
 API.getMe = function getMe() {
-  return $.get('/api/users/me')
+  return $.get('/api/me')
   .then(res => res.data);
 };
 
@@ -49,22 +49,22 @@ API.getMeTest = function getMeTest() {
         {
           uid: '123e4567-e89b-12d3-a456-426655440001',
           name: 'Recent Board 1',
-          data: '{some json canvas data}',
+          thumbnail: 'https://placem.at/places?w=600',
         },
         {
           uid: '123e4567-e89b-12d3-a456-426655440002',
           name: 'Recent Board 2',
-          data: '{some json canvas data}',
+          thumbnail: 'https://placem.at/places?w=600',
         },
         {
           uid: '123e4567-e89b-12d3-a456-426655440002',
           name: 'Recent Board 3',
-          data: '{some json canvas data}',
+          thumbnail: 'https://placem.at/places?w=600',
         },
         {
           uid: '123e4567-e89b-12d3-a456-426655440002',
           name: 'Recent Board 4',
-          data: '{some json canvas data}',
+          thumbnail: 'https://placem.at/places?w=600',
         },
       ],
       teams: [
@@ -106,28 +106,28 @@ API.getOneTeamTest = function getOneTeamTest(uid) {
         {
           uid: '123e4567-e89b-12d3-a456-426655440001',
           name: 'Test Board 1',
-          data: '{some json canvas data}',
+          thumbnail: 'https://placem.at/places?w=600',
         },
         {
           uid: '123e4567-e89b-12d3-a456-426655440002',
           name: 'Test Board 2',
-          data: '{some json canvas data}',
+          thumbnail: 'https://placem.at/places?w=600',
         },
       ],
       members: [
         {
           uid: '123e4567-e89b-12d3-a456-426655440001',
-          name: 'Test User',
+          name: 'John Smith',
           avatar: 'https://robohash.org/testUser1',
         },
         {
           uid: '123e4567-e89b-12d3-a456-426655440002',
-          name: 'Test User',
+          name: 'Bob John',
           avatar: 'https://robohash.org/testUser2',
         },
         {
           uid: '123e4567-e89b-12d3-a456-426655440003',
-          name: 'Test User',
+          name: 'Robert Davenport',
           avatar: 'https://robohash.org/testUser3',
         },
       ],
