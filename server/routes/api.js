@@ -12,7 +12,7 @@ router.get('/me', Auth.checkLogin(true), (req, res) => {
   res.send(req.user);
 });
 
-router.get('/boards/:boardId', (req, res) => {
+router.get('/boards/:boardId', Auth.checkLogin(), (req, res) => {
   Board.find(req.params.boardId)
     .then(board => res.send(board))
     // TODO: better error handling
