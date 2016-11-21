@@ -45,6 +45,7 @@ API.getMeTest = function getMeTest() {
       email: 'totallyatest@email.com',
       uid: '123e4567-e89b-12d3-a456-426655440000',
       username: 'totallyatest@email.com',
+      my_team: '123e4567-e89b-12d3-a456-426655440000',
       boards: [
         {
           uid: '123e4567-e89b-12d3-a456-426655440001',
