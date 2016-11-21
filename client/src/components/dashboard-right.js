@@ -1,49 +1,39 @@
 import React from 'react';
 
-const DashboardRight = () => (
+const DashboardRight = props => (
   <div className="col s12 m9 boardRight">
     <div className="row">
       <div className="col s7 recent">
-    Recent Boards
-  </div>
+        Recent Boards
+      </div>
       <div className="col s5 right-align add">
         <a href="#!">Create board</a>
       </div>
+      {
+        props.boards.map(board =>
+          (
+            <div className="col m6 boardImage">
+              <div>
+                <a href="#!"><img
+                  src={board.thumbnail}
+                  alt="board"
+                  className="responsive-img"
+                /></a>
+              </div>
+              <div>
+                {board.name}
+              </div>
+            </div>
+          )
+        )
+      }
 
-      <div className="col m6 boardImage">
-        <div>
-          <a href="#!"><img src="https://placem.at/places?w=600" alt="board" className="responsive-img" /></a>
-        </div>
-        <div>
-      Cool board
-    </div>
-      </div>
-      <div className="col m6 boardImage">
-        <div>
-          <a href="#!"><img src="https://placem.at/places?w=600" alt="board" className="responsive-img" /></a>
-        </div>
-        <div>
-      Rad board
-    </div>
-      </div>
-      <div className="col m6 boardImage">
-        <div>
-          <a href="#!"><img src="https://placem.at/places?w=600" alt="board" className="responsive-img" /></a>
-        </div>
-        <div>
-      Johns board
-    </div>
-      </div>
-      <div className="col m6 boardImage">
-        <div>
-          <a href="#!"><img src="https://placem.at/places?w=600" alt="board" className="responsive-img" /></a>
-        </div>
-        <div>
-      That neat board
-    </div>
-      </div>
     </div>
   </div>
 );
+
+DashboardRight.propTypes = {
+  boards: React.PropTypes.array,
+};
 
 export default DashboardRight;

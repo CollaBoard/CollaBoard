@@ -39,7 +39,7 @@ API.getOneTeam = function getOneTeam(uid) {
 API.getMeTest = function getMeTest() {
   return new Promise((resolve) => {
     resolve({ name: 'Darion Freeman',
-      avatar: 'https://robohash.org/HandsomeDevil',
+      avatar: 'http://i.imgur.com/Gved5aq.jpg',
       github_id: 'test-github-id',
       google_id: 'test-google-id',
       email: 'totallyatest@email.com',

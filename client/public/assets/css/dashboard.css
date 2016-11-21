@@ -4,6 +4,9 @@
 
 .boardLeft img {
   border: 2px solid grey;
+  border-radius: 50%;
+  height: 100%;
+  width: 100%
 }
 
 .name {

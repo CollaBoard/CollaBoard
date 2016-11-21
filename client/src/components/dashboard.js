@@ -8,10 +8,10 @@ class Dashboard extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      user: { name: 'First Last',
-        avatar: 'https://robohash.org/CollaBoard',
-        boards: [],
-        teams: [] },
+      name: 'First Last',
+      avatar: 'https://robohash.org/CollaBoard',
+      boards: [],
+      teams: [],
     };
   }
 
@@ -20,10 +20,11 @@ class Dashboard extends React.Component {
     .then((res) => {
       console.log(res);
       this.setState({
-        user: { name: res.name,
-          avatar: res.avatar,
-          boards: res.boards,
-          teams: res.teams },
+        name: res.name,
+        avatar: res.avatar,
+        boards: res.boards,
+        teams: res.teams,
+
       });
     }).catch(console.err);
   }
@@ -32,8 +33,12 @@ class Dashboard extends React.Component {
     return (
       <div className="outer">
         <div className="row topDash">
-          <DashboardLeft />
-          <DashboardRight />
+          <DashboardLeft
+            avatar={this.state.avatar}
+            name={this.state.name}
+            teams={this.state.teams}
+          />
+          <DashboardRight boards={this.state.boards} />
         </div>
       </div>
 
