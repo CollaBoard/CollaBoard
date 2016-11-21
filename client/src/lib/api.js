@@ -43,35 +43,53 @@ API.getMeTest = function getMeTest() {
       github_id: 'test-github-id',
       google_id: 'test-google-id',
       email: 'totallyatest@email.com',
-      uid: '123e4567-e89b-12d3-a456-426655440000' });
-  });
-};
-
-API.getTeamsTest = function getTeamsTest() {
-  return new Promise((resolve) => {
-    resolve([
-      {
-        uid: '123e4567-e89b-12d3-a456-426655440000',
-        name: 'Test team 1!',
-        avatar: 'https://robohash.org/testTeam1',
-        member_count: 3,
-        board_count: 2,
-      },
-      {
-        uid: '123e4567-e89b-12d3-a456-426655440001',
-        name: 'Test team 2!',
-        avatar: 'https://robohash.org/testTeam2',
-        member_count: 10,
-        board_count: 18,
-      },
-      {
-        uid: '123e4567-e89b-12d3-a456-426655440002',
-        name: 'Test team 3!',
-        avatar: 'https://robohash.org/testTeam3',
-        member_count: 1,
-        board_count: 0,
-      },
-    ]);
+      uid: '123e4567-e89b-12d3-a456-426655440000',
+      username: 'totallyatest@email.com',
+      boards: [
+        {
+          uid: '123e4567-e89b-12d3-a456-426655440001',
+          name: 'Recent Board 1',
+          data: '{some json canvas data}',
+        },
+        {
+          uid: '123e4567-e89b-12d3-a456-426655440002',
+          name: 'Recent Board 2',
+          data: '{some json canvas data}',
+        },
+        {
+          uid: '123e4567-e89b-12d3-a456-426655440002',
+          name: 'Recent Board 3',
+          data: '{some json canvas data}',
+        },
+        {
+          uid: '123e4567-e89b-12d3-a456-426655440002',
+          name: 'Recent Board 4',
+          data: '{some json canvas data}',
+        },
+      ],
+      teams: [
+        {
+          uid: '123e4567-e89b-12d3-a456-426655440000',
+          name: 'Test team 1!',
+          avatar: 'https://robohash.org/testTeam1',
+          member_count: 3,
+          board_count: 2,
+        },
+        {
+          uid: '123e4567-e89b-12d3-a456-426655440001',
+          name: 'Test team 2!',
+          avatar: 'https://robohash.org/testTeam2',
+          member_count: 10,
+          board_count: 18,
+        },
+        {
+          uid: '123e4567-e89b-12d3-a456-426655440002',
+          name: 'Test team 3!',
+          avatar: 'https://robohash.org/testTeam3',
+          member_count: 1,
+          board_count: 0,
+        },
+      ] });
   });
 };
 
