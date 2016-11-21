@@ -19,7 +19,6 @@ util.logAndThrow = (err) => {
   throw err;
 };
 
-
 class NotFound extends Error {
   constructor(details) {
     super();
@@ -59,13 +58,16 @@ const throwNew = Err => (details) => {
 util.throwNotFound = throwNew(NotFound);
 util.throwBadRequest = throwNew(BadRequest);
 util.throwPermissionDenied = throwNew(PermissionDenied);
-util.throwUnexpected = throwNew(UnexpectedError);
-util.catchUnexpected = () => util.throwUnexpected();
+util.throwUnexpected = (err) => {
+  console.log(err);
+  throw new UnexpectedError();
+};
+
 util.rethrow = (err) => {
   if (err instanceof NotFound || err instanceof BadRequest || err instanceof PermissionDenied) {
     throw err;
   }
-  util.throwUnexpected();
+  util.throwUnexpected(err);
 };
 
 util.NotFound = NotFound;
