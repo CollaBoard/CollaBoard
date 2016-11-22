@@ -1,5 +1,4 @@
 const db = require('../lib/knex-driver');
-const Namespace = require('./namespace');
 const util = require('../lib/util');
 
 
@@ -15,13 +14,11 @@ const util = require('../lib/util');
 const Board = function Board(info = {}, f = false) {
   let fetched = (f && info.uid) || false;
   this.uid = fetched ? info.uid : util.uidShort();
-  this.name = info.name || null;
+  this.name = info.name || 'Untitled';
   this.creator = info.creator || null;
   this.creator_type = info.creator_type || null;
   this.public = info.creator ? !!info.public : true;
-
-  // create a socket for this board if it dodesn't already exist
-  Namespace.create(this.uid);
+  this.thumbnail = null;
 
   this.save = () => (
     (!fetched
@@ -31,6 +28,7 @@ const Board = function Board(info = {}, f = false) {
         creator: this.creator,
         creator_type: this.creator_type,
         public: this.public,
+        thumbnail: this.thumbnail || null,
       })
       : db('boards').where('uid', this.uid)
         .update({
@@ -83,16 +81,4 @@ Board.findById = Board.find = function find(boardUid, userUid) {
     });
 };
 
-Board.create = function create(type) {
-  const uid = util.uidShort();
-  return db('boards').insert({ uid, type })
-    .then(() => {
-      // create a namespace for the new room
-      Namespace.create(uid);
-      return { uid, type };
-    })
-    .catch((err) => {
-      // console.error(err);
-      throw err;
-    });
-};
+module.exports = Board;
