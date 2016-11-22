@@ -74,3 +74,13 @@ util.NotFound = NotFound;
 util.BadRequest = BadRequest;
 util.PermissionDenied = PermissionDenied;
 util.UnexpectedError = UnexpectedError;
+
+util.sendError = res => (err) => {
+  console.log(err);
+  res.status(err.statusCode || 500);
+  res.send({ details: err.details || err.message });
+};
+
+util.sendResult = (res, status) => (result) => {
+  res.status(status || 200).send(result);
+};
