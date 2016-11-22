@@ -1,8 +1,24 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { Provider } from 'react-redux';
 import App from './components';
+import configureStore from './data/store';
+
+const initialState = {
+  currentTeam: '',
+  connectedUsers: [],
+  canvasState: {},
+  editorState: {},
+  socketName: '',
+  socket: '',
+  display: {},
+};
+
+const store = configureStore(initialState);
 
 ReactDOM.render(
-  <App />
+  <Provider store={store} >
+    <App />
+  </ Provider>
   , document.getElementById('app')
 );

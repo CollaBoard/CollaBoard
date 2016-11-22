@@ -12,7 +12,7 @@
   const actionCreators = {
     TEXT_CHANGE: (updatedText) => {
       console.log('updating text');
-      socket.emit('serve text', updatedText);
+      // socket.emit('serve text', updatedText);
       return {
         type: TEXT_CHANGE,
         payload: updatedText,

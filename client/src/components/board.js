@@ -56,17 +56,7 @@ class Board extends React.Component {
             });
 
             const canvas = new Canvas();
-            const initialState = {
-              currentTeam: this.state.team || '',
-              connectedUsers: [],
-              canvasState: {},
-              editorState: {},
-              socketName: '',
-              socket: '',
-              display: {},
-            };
 
-            const store = configureStore(initialState);
             const whiteboard = <Whiteboard socket={socket} canvasState={canvas} />;
             const texteditor = <TextEditor socket={socket} />;
             this.setState({
