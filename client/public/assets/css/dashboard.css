@@ -40,3 +40,17 @@
 .boardImage {
   margin-bottom: 1.5em;
 }
+
+/*.searchPhoto {
+  max-width: 60px;
+}*/
+
+#edit-team {
+  width: 80% !important;
+}
+
+@media only screen and (min-width: 993px) {
+  #edit-team {
+    width: 40% !important;
+  }
+}

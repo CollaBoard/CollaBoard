@@ -23,7 +23,7 @@ API.createTeam = function createTeam(teamName) {
 };
 
 API.addToTeam = function addToTeam(uidTeam, uidUser) {
-  return $.post(`/api/teams/${uidTeam}/${uidUser}`)
+  return $.post('/api/teams', { uidTeam, uidUser })
     .then(res => res.data);
 };
 
@@ -44,6 +44,11 @@ API.getOneUser = function getOneUser(uid) {
 
 API.getOneTeam = function getOneTeam(uid) {
   return $.get(`/api/teams/${uid}`)
+  .then(res => res.data);
+};
+
+API.searchUsers = function searchUsers(query) {
+  return $.get('/api/users', { query })
   .then(res => res.data);
 };
 
@@ -181,6 +186,58 @@ API.getOneTeamTest = function getOneTeamTest(uid) {
   });
 };
 
+API.searchUsersTest = function searchUsersTest(query) {
+  console.log(`Fetching ${query}`);
+  return new Promise((resolve) => {
+    if (query === '3') {
+      resolve([
+        {
+          uid: '123e4567-e89b-12d3-a456-426655440007',
+          name: 'Bob Johnson',
+          avatar: 'https://robohash.org/bob',
+        },
+        {
+          uid: '123e4567-e89b-12d3-a456-426655440009',
+          name: 'Roger Clementine',
+          avatar: 'https://robohash.org/roger',
+        },
+        {
+          uid: '123e4567-e89b-12d3-a456-426655440008',
+          name: 'Samantha Fortwell',
+          avatar: 'https://robohash.org/sam',
+        },
+      ]);
+    } else {
+      resolve([
+        {
+          uid: '123e4567-e89b-12d3-a456-426655440007',
+          name: 'Sally Whateverson',
+          avatar: 'https://robohash.org/sally',
+        },
+        {
+          uid: '123e4567-e89b-12d3-a456-426655440009',
+          name: 'Ellen Johnson',
+          avatar: 'https://robohash.org/ellen',
+        },
+        {
+          uid: '123e4567-e89b-12d3-a456-426655440008',
+          name: 'Bob Rogers',
+          avatar: 'https://robohash.org/bobro',
+        },
+        {
+          uid: '123e4567-e89b-12d3-a456-426655440008',
+          name: 'Doug Bartwell',
+          avatar: 'https://robohash.org/doug',
+        },
+        {
+          uid: '123e4567-e89b-12d3-a456-426655440008',
+          name: ' Mark Dearson',
+          avatar: 'https://robohash.org/mark',
+        },
+      ]);
+    }
+  });
+};
 // TESTING API CALLS // TESTING API CALLS // TESTING API CALLS
 // TESTING API CALLS // TESTING API CALLS // TESTING API CALLS
 // TESTING API CALLS // TESTING API CALLS // TESTING API CALLS

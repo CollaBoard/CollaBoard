@@ -11,14 +11,17 @@ class Dashboard extends React.Component {
       user: {},
       view: null,
       name: 'John Doe',
+      uid: null,
       avatar: 'https://robohash.org/JohnDoe',
       boards: [],
       teams: [],
+      searchResults: [],
     };
     this.selectTeam = this.selectTeam.bind(this);
     this.showRecent = this.showRecent.bind(this);
     this.showMy = this.showMy.bind(this);
     this.createTeam = this.createTeam.bind(this);
+    this.searchUsers = this.searchUsers.bind(this);
   }
 
   componentDidMount() {
@@ -27,6 +30,7 @@ class Dashboard extends React.Component {
       this.setState({
         user: {
           name: res.name,
+          uid: res.uid,
           avatar: res.avatar,
           boards: res.boards,
           teams: res.teams,
@@ -34,6 +38,7 @@ class Dashboard extends React.Component {
         },
         view: 'recent',
         name: res.name,
+        uid: res.uid,
         avatar: res.avatar,
         boards: res.boards,
         teams: res.teams,
@@ -45,6 +50,7 @@ class Dashboard extends React.Component {
     this.setState({
       view: 'recent',
       name: this.state.user.name,
+      uid: this.state.user.uid,
       avatar: this.state.user.avatar,
       boards: this.state.user.boards,
       teams: this.state.user.teams,
@@ -57,6 +63,7 @@ class Dashboard extends React.Component {
       this.setState({
         view: 'my',
         name: this.state.user.name,
+        uid: this.state.user.uid,
         avatar: this.state.user.avatar,
         boards: res.boards,
         teams: this.state.user.teams,
@@ -69,6 +76,7 @@ class Dashboard extends React.Component {
       this.setState({
         view: 'team',
         name: res.name,
+        uid: res.uid,
         avatar: res.avatar,
         boards: res.boards,
         teams: res.members,
@@ -81,6 +89,28 @@ class Dashboard extends React.Component {
       this.setState({
         view: 'team',
         name: res.name,
+        uid: res.uid,
+        avatar: res.avatar,
+        boards: res.boards,
+        teams: res.members,
+      });
+    }).catch(console.err);
+  }
+
+  searchUsers(query) {
+    API.searchUsersTest(query).then((res) => {
+      this.setState({
+        searchResults: res,
+      });
+    }).catch(console.err);
+  }
+
+  addToTeam(uid) {
+    API.addToTeam(this.state.uid, uid).then((res) => {
+      this.setState({
+        view: 'team',
+        name: res.name,
+        uid: res.uid,
         avatar: res.avatar,
         boards: res.boards,
         teams: res.members,
@@ -101,6 +131,9 @@ class Dashboard extends React.Component {
             showRecent={this.showRecent}
             showMy={this.showMy}
             createTeam={this.createTeam}
+            addToTeam={this.addToTeam}
+            searchUsers={this.searchUsers}
+            searchResults={this.state.searchResults}
           />
           <DashboardRight view={this.state.view} boards={this.state.boards} />
         </div>

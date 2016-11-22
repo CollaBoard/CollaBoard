@@ -63,7 +63,25 @@ const DashboardLeft = (props) => {
       <div id="edit-team" className="modal">
         <div className="modal-content">
           <h4>Edit your team</h4>
-          <input placeholder="Search for users to add" /><a className="btn">Add</a>
+          <div className="row">
+            <div className="col s10"><input type="text" id="team-add-input" placeholder="Search for users to add" /></div><div className="col s2"><a onClick={() => { props.searchUsers(document.getElementById('team-add-input').value); }} className="btn"><i className="material-icons">search</i></a></div>
+          </div>
+          {props.searchResults.map((result, i) =>
+            (
+              <div className="row valign-wrapper">
+                <div className="col s2 valign"><img
+                  className="searchPhoto responsive-img"
+                  alt="profile"
+                  src={result.avatar}
+                /></div>
+                <div className="col s10 valign" key={i}>{result.name}</div>
+                <div className="col s2 valign">
+                  <a className="btn-floating btn-small waves-effect waves-light red">
+                    <i className="material-icons">add</i></a>
+                </div>
+              </div>
+          )
+        )}
         </div>
       </div>
 
@@ -80,6 +98,9 @@ DashboardLeft.propTypes = {
   showMy: React.PropTypes.func,
   showRecent: React.PropTypes.func,
   createTeam: React.PropTypes.func,
+  addToTeam: React.PropTypes.func,
+  searchUsers: React.PropTypes.func,
+  searchResults: React.PropTypes.arrayOf(React.PropTypes.objects),
 };
 
 export default DashboardLeft;
