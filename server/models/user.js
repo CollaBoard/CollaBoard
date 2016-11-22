@@ -36,13 +36,13 @@ const User = function User(info = {}, f = false) {
    */
   this.save = () => {
     if (!this.name) {
-      return Promise.reject(new util.BadRequest('name is required'));
+      return Promise.reject(new util.BadRequest('\'name\' is required'));
     }
     if (!this.google_id && !this.github_id) {
-      return Promise.reject(new util.BadRequest('github_id or google_id are required'));
+      return Promise.reject(new util.BadRequest('\'github_id\' or \'google_id\' is required'));
     }
     if (!this.username) {
-      return Promise.reject(new util.BadRequest('user email, login, or username are required'));
+      return Promise.reject(new util.BadRequest('user \'email\', \'login\', or \'username\' is required'));
     }
     return (
       (!fetched
@@ -91,7 +91,6 @@ User.find = function find(params) {
     .catch(util.rethrow);
 };
 
-
 /**
  * Find a user based on the uid
  * @param {string} uid - Id to find a matching user for
@@ -99,6 +98,29 @@ User.find = function find(params) {
  */
 User.findById = function findById(uid) {
   return User.find({ uid });
+};
+
+
+/**
+ * Search for users with a name, username, or email
+ * @param {any} query
+ * @returns
+ */
+User.search = function search(q, uid) {
+  if (!q || !q.trim()) {
+    return Promise.reject(new util.BadRequest('query is required'));
+  }
+  if (!uid) {
+    return Promise.reject(new util.BadRequest('user_uid is required'));
+  }
+  const query = q.trim().toLowerCase();
+  return db('users').where('uid', '<>', uid)
+    .andWhere('name', 'ilike', `%${query}%`)
+    .orWhere('username', 'ilike', `%${query}%`)
+    .orWhere('email', 'ilike', `${query}%`)
+    .limit(10)
+    .select('uid', 'name', 'avatar')
+    .catch(util.rethrow);
 };
 
 /**
@@ -119,7 +141,7 @@ User.fetchTeams = uid => db('team_memberships')
  */
 User.fetchBoards = uid => db('boards')
   .where({ creator: uid, creator_type: 'user' })
-  .select('uid', 'name', 'avatar')
+  .select('uid', 'name', 'thumbnail')
   .catch(util.rethrow);
 
 /**
@@ -128,13 +150,7 @@ User.fetchBoards = uid => db('boards')
  * @param {string} board.name - The title of the Board
  * @param {string} uid - The id of the user to create the Board under
  */
-User.addBoard = function addBoard(board, uid) {
-  if (!board || !board.name) {
-    return Promise.reject(new util.BadRequest('board name is required'));
-  }
-  if (!uid) {
-    return Promise.reject(new util.BadRequest('user_uid is required'));
-  }
+User.addBoard = function addBoard(board = {}, uid) {
   const newBoard = new Board(Object.assign({}, board, {
     creator: uid,
     creator_type: 'user',
@@ -158,6 +174,10 @@ User.prototype.fetchTeams = function fetchTeams() {
  */
 User.prototype.fetchBoards = function fetchBoards() {
   return User.fetchBoards(this.uid);
+};
+
+User.prototype.addBoard = function addBoard(board) {
+  return User.addBoard(board, this.uid);
 };
 
 module.exports = User;
