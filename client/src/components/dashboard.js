@@ -58,7 +58,7 @@ class Dashboard extends React.Component {
         name: this.state.user.name,
         avatar: this.state.user.avatar,
         boards: res.boards,
-        teams: res.members,
+        teams: this.state.user.teams,
       });
     }).catch(console.err);
   }

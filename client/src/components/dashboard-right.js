@@ -1,6 +1,9 @@
 import React from 'react';
 
 const DashboardRight = (props) => {
+  $(document).ready(() => {
+    $('.modal').modal();
+  });
   let topTitle;
   if (props.view === 'recent') {
     topTitle = 'Recent Boards';
@@ -14,7 +17,7 @@ const DashboardRight = (props) => {
       <div className="row">
         <div className="col s7 recent">{topTitle}</div>
         <div className="col s5 right-align add">
-          <a href="#!">Create board</a>
+          <a href="#create-board">Create board</a>
         </div>
         {
           props.boards.map((board, i) =>
@@ -35,6 +38,18 @@ const DashboardRight = (props) => {
           )
         }
 
+      </div>
+      <div id="create-board" className="modal">
+        <div className="modal-content">
+          <h4>Create a new board</h4>
+          <input placeholder="Enter board name here" />
+        </div>
+        <div className="modal-footer">
+          <a
+            href="#!"
+            className="modal-action modal-close waves-effect waves-green btn-flat"
+          >CREATE</a>
+        </div>
       </div>
     </div>
   );

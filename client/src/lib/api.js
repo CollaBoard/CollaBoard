@@ -7,7 +7,7 @@ API.getBoard = function getBoard(uid) {
     .then(res => res.data);
 };
 
-API.createBoard = function createBoard() {
+API.createBoard = function createBoard(uid, name) {
   return $.post('/api/boards')
     .then(res => res.data);
 };
