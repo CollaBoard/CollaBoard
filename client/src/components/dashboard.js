@@ -18,6 +18,7 @@ class Dashboard extends React.Component {
     this.selectTeam = this.selectTeam.bind(this);
     this.showRecent = this.showRecent.bind(this);
     this.showMy = this.showMy.bind(this);
+    this.createTeam = this.createTeam.bind(this);
   }
 
   componentDidMount() {
@@ -75,6 +76,18 @@ class Dashboard extends React.Component {
     }).catch(console.err);
   }
 
+  createTeam(name) {
+    API.createTeam(name).then((res) => {
+      this.setState({
+        view: 'team',
+        name: res.name,
+        avatar: res.avatar,
+        boards: res.boards,
+        teams: res.members,
+      });
+    }).catch(console.err);
+  }
+
   render() {
     return (
       <div className="outer">
@@ -87,6 +100,7 @@ class Dashboard extends React.Component {
             selectTeam={this.selectTeam}
             showRecent={this.showRecent}
             showMy={this.showMy}
+            createTeam={this.createTeam}
           />
           <DashboardRight view={this.state.view} boards={this.state.boards} />
         </div>

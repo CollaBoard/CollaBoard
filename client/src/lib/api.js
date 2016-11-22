@@ -8,7 +8,22 @@ API.getBoard = function getBoard(uid) {
 };
 
 API.createBoard = function createBoard(uid, name) {
-  return $.post('/api/boards')
+  return $.post('/api/boards', { uid, name })
+    .then(res => res.data);
+};
+
+API.getTeams = function getTeams() {
+  return $.get('/api/teams')
+  .then(res => res.data);
+};
+
+API.createTeam = function createTeam(teamName) {
+  return $.post('/api/teams', { teamName })
+    .then(res => res.data);
+};
+
+API.addToTeam = function addToTeam(uidTeam, uidUser) {
+  return $.post(`/api/teams/${uidTeam}/${uidUser}`)
     .then(res => res.data);
 };
 
@@ -19,11 +34,6 @@ API.getMe = function getMe() {
 
 API.getMyBoards = function getMyBoards() {
   return $.get('/api/me/boards')
-  .then(res => res.data);
-};
-
-API.getTeams = function getTeams() {
-  return $.get('/api/teams')
   .then(res => res.data);
 };
 

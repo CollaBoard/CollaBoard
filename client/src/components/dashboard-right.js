@@ -1,4 +1,5 @@
 import React from 'react';
+import Link from './link';
 
 const DashboardRight = (props) => {
   $(document).ready(() => {
@@ -45,10 +46,10 @@ const DashboardRight = (props) => {
           <input placeholder="Enter board name here" />
         </div>
         <div className="modal-footer">
-          <a
-            href="#!"
+          <Link
+            href="/boards"
             className="modal-action modal-close waves-effect waves-green btn-flat"
-          >CREATE</a>
+          >CREATE</Link>
         </div>
       </div>
     </div>

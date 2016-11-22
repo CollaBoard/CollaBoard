@@ -51,11 +51,11 @@ const DashboardLeft = (props) => {
       <div id="create-team" className="modal">
         <div className="modal-content">
           <h4>Create a new team</h4>
-          <input placeholder="Enter team name here" />
+          <input id="team-input" placeholder="Enter team name here" />
         </div>
         <div className="modal-footer">
           <a
-            href="#!"
+            onClick={() => { props.createTeam(document.getElementById('team-input').value); }}
             className="modal-action modal-close waves-effect waves-green btn-flat"
           >SUBMIT</a>
         </div>
@@ -77,8 +77,9 @@ DashboardLeft.propTypes = {
   name: React.PropTypes.string,
   teams: React.PropTypes.arrayOf(React.PropTypes.objects),
   view: React.PropTypes.string,
-  showMy: React.PropTypes.function,
-  showRecent: React.PropTypes.function,
+  showMy: React.PropTypes.func,
+  showRecent: React.PropTypes.func,
+  createTeam: React.PropTypes.func,
 };
 
 export default DashboardLeft;
