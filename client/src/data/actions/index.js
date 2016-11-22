@@ -4,7 +4,7 @@
  *
  */
 
-// import store from '../store.js';
+// import store from '../store';
 
 export const showModal = modal => ({
   type: 'SHOW_MODAL',

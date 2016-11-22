@@ -66,6 +66,9 @@ class TextEditor extends React.Component {
     this.toggleInlineStyle = style => this.iToggleInlineStyle(style);
     this.onTab = e => this.iOnTab(e);
     this.onReturn = e => this.iOnReturn(e);
+  // COLLABOARD: Keeping same style for new functions like undo and redo
+    this.onUndo = () => this.iOnUndo();
+    this.onRedo = () => this.iOnRedo();
   }
 
   // COLLABOARD: Listening to socket and updating content after component mount
@@ -100,6 +103,23 @@ class TextEditor extends React.Component {
 
     this.onChange(
       CodeUtils.handleTab(e, editorState)
+    );
+  }
+
+  // COLLABOARD: Defining undo and redo functions, to work on nav bar clicks
+  iOnUndo() {
+    const editorState = this.state.editorState;
+
+    this.onChange(
+      Draft.EditorState.undo(editorState)
+    );
+  }
+
+  iOnRedo() {
+    const editorState = this.state.editorState;
+
+    this.onChange(
+      Draft.EditorState.redo(editorState)
     );
   }
 
@@ -200,6 +220,8 @@ class TextEditor extends React.Component {
           selection={selection}
           blockType={blockType}
           onToggle={this.toggleBlockType}
+          onRedo={this.onRedo}
+          onUndo={this.onUndo}
         />
         <InlineStyleControls
           activeStyles={activeStyles}
@@ -300,6 +322,16 @@ const BlockStyleControls = (props) => {
           style={type.style}
         />
       )}
+      <StyleButton
+        key="Undo"
+        label="Undo"
+        onToggle={props.onUndo}
+      />
+      <StyleButton
+        key="Redo"
+        label="Redo"
+        onToggle={props.onRedo}
+      />
     </div>
   );
 };
@@ -354,6 +386,8 @@ const InlineStyleControls = (props) => {
 BlockStyleControls.propTypes = {
   blockType: React.PropTypes.string,
   onToggle: React.PropTypes.func,
+  onUndo: React.PropTypes.func,
+  onRedo: React.PropTypes.func,
 };
 
 InlineStyleControls.propTypes = {
