@@ -14,9 +14,10 @@ exports.up = function up(knex) {
       teams.string('uid', 48).primary();
       teams.string('name', 50);
       teams.string('safename', 50);
+      teams.string('avatar');
       teams.string('creator').notNullable().references('users.uid');
       teams.timestamps(true, true);
-    })).then(() => knex.schema.createTable('team_membersips', (userTeams) => {
+    })).then(() => knex.schema.createTable('team_memberships', (userTeams) => {
       userTeams.string('team_uid', 48).references('teams.uid');
       userTeams.string('user_uid', 48).references('users.uid');
       userTeams.string('role');
@@ -28,6 +29,7 @@ exports.up = function up(knex) {
       boards.string('creator_type').nullable();
       boards.string('name', 50).nullable();
       boards.string('safename', 50).nullable();
+      boards.string('thumbnail').nullable();
       boards.boolean('public');
     }),
   ]);
