@@ -13,6 +13,7 @@ Auth.checkLogin = isRequired => (req, res, next) => {
   User.findById(req.session.userUid)
     .then((user) => {
       req.user = user;
+      req.user.recent_boards = [];
       return next();
     })
     .catch(() => {
