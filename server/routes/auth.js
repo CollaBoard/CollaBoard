@@ -4,6 +4,7 @@ const User = require('../models/user');
 const session = require('express-session');
 const KnexStore = require('connect-session-knex')(session);
 const db = require('../lib/knex-driver');
+const util = require('../lib/util');
 
 authport.createServer({
   service: 'github',
@@ -29,7 +30,8 @@ authport.on('auth', (req, res, data) => {
       .catch(() => new User({
         github_id: profile.id,
         email: profile.email,
-        name: profile.name || profile.login,
+        name: profile.name,
+        login: profile.login,
         avatar: profile.avatar,
       }).save());
   } else if (data.service === 'google') {
@@ -41,13 +43,15 @@ authport.on('auth', (req, res, data) => {
         avatar: profile.picture,
       }).save());
   } else {
-    return res.send(new Error('Did not use github or google auth'));
+    return util.throwUnexpected(new Error('Did not use github or google auth'));
   }
   findUser
     .then((user) => {
       req.session.userUid = user.uid;
+      req.session.recent_boards = [];
       res.redirect('/boards');
-    });
+    })
+    .catch(util.sendError(res));
 });
 
 authport.on('error', (req, res, err) => {
