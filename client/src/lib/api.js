@@ -17,6 +17,11 @@ API.getMe = function getMe() {
   .then(res => res.data);
 };
 
+API.getMyBoards = function getMyBoards() {
+  return $.get('/api/me/boards')
+  .then(res => res.data);
+};
+
 API.getTeams = function getTeams() {
   return $.get('/api/teams')
   .then(res => res.data);
@@ -91,6 +96,36 @@ API.getMeTest = function getMeTest() {
           board_count: 0,
         },
       ] });
+  });
+};
+
+API.getMyBoardsTest = function getMyBoardsTest() {
+  return new Promise((resolve) => {
+    resolve({
+      board_count: 4,
+      boards: [
+        {
+          uid: '123e4567-e89b-12d3-a456-426655440001',
+          name: 'My Board 1',
+          thumbnail: 'https://placem.at/places?w=600',
+        },
+        {
+          uid: '123e4567-e89b-12d3-a456-426655440002',
+          name: 'My Board 2',
+          thumbnail: 'https://placem.at/places?w=600',
+        },
+        {
+          uid: '123e4567-e89b-12d3-a456-426655440003',
+          name: 'My Board 3',
+          thumbnail: 'https://placem.at/places?w=600',
+        },
+        {
+          uid: '123e4567-e89b-12d3-a456-426655440004',
+          name: 'My Board 4',
+          thumbnail: 'https://placem.at/places?w=600',
+        },
+      ],
+    });
   });
 };
 

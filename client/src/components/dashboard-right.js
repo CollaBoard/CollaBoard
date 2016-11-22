@@ -41,7 +41,7 @@ const DashboardRight = (props) => {
 };
 
 DashboardRight.propTypes = {
-  boards: React.PropTypes.array,
+  boards: React.PropTypes.arrayOf(React.PropTypes.objects),
   view: React.PropTypes.string,
 };
 
