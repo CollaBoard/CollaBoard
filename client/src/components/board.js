@@ -109,6 +109,36 @@ class Board extends React.Component {
         element.style.display = 'block';
       }
     };
+    let switchButton;
+    if (this.state.display === this.state.whiteboard) {
+      switchButton = (<li>
+        <a
+          onClick={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            if (this.state.socket) {
+              this.setState({
+                display: this.state.texteditor,
+              });
+            }
+          }}
+        >Text Editor</a>
+      </li>);
+    } else {
+      switchButton = (<li>
+        <a
+          onClick={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            if (this.state.socket) {
+              this.setState({
+                display: this.state.whiteboard,
+              });
+            }
+          }}
+        >Whiteboard</a>
+      </li>);
+    }
     $(document).ready(() => {
       $('.dropdown-button').dropdown();
       $('.modal').modal();
@@ -150,32 +180,7 @@ class Board extends React.Component {
               CollaBoard
             </a>
             <ul className="right">
-              <li>
-                <a
-                  onClick={(e) => {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    if (this.state.socket) {
-                      this.setState({
-                        display: this.state.texteditor,
-                      });
-                    }
-                  }}
-                >Text Editor</a>
-              </li>
-              <li>
-                <a
-                  onClick={(e) => {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    if (this.state.socket) {
-                      this.setState({
-                        display: this.state.whiteboard,
-                      });
-                    }
-                  }}
-                >Whiteboard</a>
-              </li>
+              {switchButton}
               <li>
                 <a
                   className="dropdown-button"
