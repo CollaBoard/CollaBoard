@@ -1,6 +1,8 @@
-// now created in board.js component (to have individual stores for each board)
 import { createStore, compose, applyMiddleware } from 'redux';
 import logger from 'redux-logger';
+// import createSocketIoMiddleware from 'redux-socket.io';
+
+// let socketIoMiddleware = createSocketIoMiddleware(socket, "server/");
 
 import rootReducer from './reducers';
 

@@ -23,7 +23,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch =>
-  bindActionCreators({ TEXT_CHANGE: actionCreators.TEXT_CHANGE }, dispatch);
+  bindActionCreators({ SERVE_TEXT: actionCreators.SERVE_TEXT }, dispatch);
 
 class Board extends React.Component {
   constructor(props) {
@@ -242,7 +242,16 @@ class Board extends React.Component {
 
 Board.propTypes = {
   uid: React.PropTypes.string,
-  TEXT_CHANGE: React.PropTypes.func,
+  // TEXT_CHANGE: React.PropTypes.func,
+  SERVE_TEXT: React.PropTypes.func,
+  // currentTeam: React.PropTypes.string,
+  // connectedUsers: React.PropTypes.array,  // eslint-disable-line react/forbid-prop-types
+  canvasState: React.PropTypes.object,  // eslint-disable-line react/forbid-prop-types
+  editorState: React.PropTypes.object,   // eslint-disable-line react/forbid-prop-types
+  // socketName: React.PropTypes.string,
+  socket: React.PropTypes.object,   // eslint-disable-line react/forbid-prop-types
+  // display: React.PropTypes.object,   // eslint-disable-line react/forbid-prop-types
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Board);
+// export default Board;

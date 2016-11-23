@@ -4,10 +4,14 @@ import page from 'page';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
-<<<<<<< d3ac75f15b9c9c3cbba136019e8b8af0c6e5c94a
+<<<<<<< cf825cd77d9a558e28a5f92a8371f7d5e6101527
 import WebRTC from '../lib/webrtc';
 =======
->>>>>>> moves redux store initialization back to app root
+// import logger from 'redux-logger';
+// import createSocketIoMiddleware from 'redux-socket.io';
+// import rootReducer from '../data/reducers';
+
+>>>>>>> data sending!
 import API from '../lib/api';
 import Canvas from './whiteboard/Canvas';
 import Whiteboard from './whiteboard';
@@ -26,7 +30,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch =>
-  bindActionCreators({ TEXT_CHANGE: actionCreators.TEXT_CHANGE }, dispatch);
+  bindActionCreators({ SERVE_TEXT: actionCreators.SERVE_TEXT }, dispatch);
 
 class Board extends React.Component {
   constructor(props) {
@@ -35,7 +39,10 @@ class Board extends React.Component {
       display: <div />,
       socket: null,
       canvasState: null,
+<<<<<<< cf825cd77d9a558e28a5f92a8371f7d5e6101527
       editorState: null,
+=======
+>>>>>>> data sending!
       messages: [],
     };
     this.submitMessage = this.submitMessage.bind(this);
@@ -60,8 +67,24 @@ class Board extends React.Component {
 
             const canvas = new Canvas();
 
+<<<<<<< cf825cd77d9a558e28a5f92a8371f7d5e6101527
             const whiteboard = <Whiteboard socket={socket} canvasState={canvas} />;
             const texteditor = <TextEditor socket={socket} />;
+=======
+            const whiteboard = <Whiteboard canvasState={canvas} />;
+            const texteditor = <TextEditor socket={socket} editorState={this.state.editorState} />;
+            // const socketIoMiddleware = createSocketIoMiddleware(socket, 'SOCKET/');
+            //
+            // const finalCreateStore = compose(
+            //   applyMiddleware(socketIoMiddleware)
+            // )(createStore);
+            //
+            // function configureStore(initState) {
+            //   return finalCreateStore(rootReducer, initState);
+            // }
+            // const store = configureStore(initialState);
+            // TODO: use a reducer to set this state to the store
+>>>>>>> data sending!
             this.setState({
               display: whiteboard,
               cavasState: canvas,
@@ -107,9 +130,15 @@ class Board extends React.Component {
     };
   }
 
+<<<<<<< cf825cd77d9a558e28a5f92a8371f7d5e6101527
   submitMessage(message) {
     this.state.socket.emit('chat sent', message);
   }
+=======
+  // componentWillUnmount() {
+  //   this.state.unsubscribe();
+  // }
+>>>>>>> data sending!
 
   render() {
     const exportCanvas = function exportCanvas() {
@@ -131,7 +160,6 @@ class Board extends React.Component {
     });
     return (
       <div>
-<<<<<<< d3ac75f15b9c9c3cbba136019e8b8af0c6e5c94a
         <ul id="color-dropdown" className="dropdown-content">
           <li><a onClick={() => { this.state.cavasState.prop('color', 'red'); }}><i className="material-icons tools">lens</i></a></li>
           <li><a onClick={() => { this.state.cavasState.prop('color', 'orange'); }}><i className="material-icons tools">lens</i></a></li>
@@ -159,13 +187,6 @@ class Board extends React.Component {
             id="display-text-chat"
           >
             <i className="material-icons tools">chat</i></a></li>
-=======
-        <ul id="dropdown1" className="dropdown-content">
-          <li><a href="#!"><i className="material-icons">undo</i></a></li>
-          <li><a href="#!"><i className="material-icons">redo</i></a></li>
-          <li><a href="#modal1"><i className="material-icons">link</i></a></li>
-          <li><a onClick={exportCanvas}><i className="material-icons">save</i></a></li>
->>>>>>> moves redux store initialization back to app root
         </ul>
         <nav className="grey darken-3">
           <div className="nav-wrapper container">
@@ -243,12 +264,9 @@ class Board extends React.Component {
             <input readOnly value={`http://localhost:4000/${this.props.uid}`} />
           </div>
         </div>
-<<<<<<< d3ac75f15b9c9c3cbba136019e8b8af0c6e5c94a
         <div id="video-chat">
           <video id="video-container" />
         </div>
-=======
->>>>>>> moves redux store initialization back to app root
       </div>
     );
   }
@@ -256,7 +274,16 @@ class Board extends React.Component {
 
 Board.propTypes = {
   uid: React.PropTypes.string,
-  TEXT_CHANGE: React.PropTypes.func,
+  // TEXT_CHANGE: React.PropTypes.func,
+  SERVE_TEXT: React.PropTypes.func,
+  // currentTeam: React.PropTypes.string,
+  // connectedUsers: React.PropTypes.array,  // eslint-disable-line react/forbid-prop-types
+  canvasState: React.PropTypes.object,  // eslint-disable-line react/forbid-prop-types
+  editorState: React.PropTypes.object,   // eslint-disable-line react/forbid-prop-types
+  // socketName: React.PropTypes.string,
+  socket: React.PropTypes.object,   // eslint-disable-line react/forbid-prop-types
+  // display: React.PropTypes.object,   // eslint-disable-line react/forbid-prop-types
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Board);
+// export default Board;

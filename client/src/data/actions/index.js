@@ -10,9 +10,9 @@
 
 // Actions object to export
   const actionCreators = {
-    TEXT_CHANGE: (updatedText) => {
+    TEXT_CHANGE: (updatedText, socket) => {
       console.log('updating text');
-      // socket.emit('serve text', updatedText);
+      socket.emit('text change', updatedText);
       return {
         type: TEXT_CHANGE,
         payload: updatedText,

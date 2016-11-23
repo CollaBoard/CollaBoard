@@ -95,9 +95,13 @@ class TextEditor extends React.Component {
     this.toggleInlineStyle = style => this.iToggleInlineStyle(style);
     this.onTab = e => this.iOnTab(e);
     this.onReturn = e => this.iOnReturn(e);
+<<<<<<< cf825cd77d9a558e28a5f92a8371f7d5e6101527
   // COLLABOARD: Keeping same style for new functions like undo and redo
     this.onUndo = () => this.iOnUndo();
     this.onRedo = () => this.iOnRedo();
+  }
+=======
+>>>>>>> data sending!
 
     // COLLABOARD: TODO refactor this for redux
     this.componentDidMount = () => {
@@ -362,6 +366,7 @@ const BlockStyleControls = (props) => {
           style={type.style}
         />
       )}
+<<<<<<< cf825cd77d9a558e28a5f92a8371f7d5e6101527
       {LANGUAGES.map(type =>
         <StyleButton
           key={type.label}
@@ -381,6 +386,8 @@ const BlockStyleControls = (props) => {
         label="Redo"
         onToggle={props.onRedo}
       />
+=======
+>>>>>>> data sending!
     </div>
   );
 };

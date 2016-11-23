@@ -1,7 +1,7 @@
 
 import { combineReducers } from 'redux';
 
-import editorState from './editor';
+import editorState from './editorReducer';
 // import modal from './modals';
 
 const rootReducer = combineReducers({

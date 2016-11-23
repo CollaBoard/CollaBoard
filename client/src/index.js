@@ -10,10 +10,8 @@ const initialState = {
   canvasState: {},
   editorState: {},
   socketName: '',
-  socket: '',
   display: {},
 };
-
 const store = configureStore(initialState);
 
 ReactDOM.render(
