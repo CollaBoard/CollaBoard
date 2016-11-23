@@ -44,7 +44,7 @@ authport.on('auth', (req, res, data) => {
     .then(user => new Session({ user_uid: user.uid, token: data.token }).save())
     .then((session) => {
       req.session.uid = session.uid;
-      res.redirect('/boards');
+      res.redirect('/dashboard');
     });
 });
 
