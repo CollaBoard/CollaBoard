@@ -35,10 +35,10 @@ const DashboardLeft = (props) => {
           {
           props.teams.map((team, i) =>
              (
-               props.view === 'recent' || props.view === 'my' ?
-                 <li key={i}><a onClick={() => { props.selectTeam(team.uid); }}>
-                   {team.name}</a></li> :
-                     <li key={i}><span>{team.name}</span></li>
+               props.view === 'recent' || props.view === 'my'
+                 ? <li key={i}><a onClick={() => { props.selectTeam(team.uid); }}>
+                   {team.name}</a></li>
+                   : <li key={i}><span>{team.name}</span></li>
              )
           )
         }
