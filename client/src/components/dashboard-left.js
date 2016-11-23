@@ -76,7 +76,10 @@ const DashboardLeft = (props) => {
                 /></div>
                 <div className="col s10 valign">{result.name}</div>
                 <div className="col s2 valign">
-                  <a className="btn-floating btn-small waves-effect waves-light red">
+                  <a
+                    onClick={() => { props.modifyTeam(result.uid); }}
+                    className="btn-floating btn-small waves-effect waves-light red"
+                  >
                     <i className="material-icons">{result.display}</i></a>
                 </div>
               </div>
@@ -97,9 +100,9 @@ DashboardLeft.propTypes = {
   view: React.PropTypes.string,
   showMy: React.PropTypes.func,
   showRecent: React.PropTypes.func,
-  createTeam: React.PropTypes.func,
-  addToTeam: React.PropTypes.func,
-  searchUsers: React.PropTypes.func,
+  // createTeam: React.PropTypes.func,
+  // modifyTeam: React.PropTypes.func,
+  // searchUsers: React.PropTypes.func,
   searchResults: React.PropTypes.arrayOf(React.PropTypes.objects),
 };
 

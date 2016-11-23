@@ -1,5 +1,4 @@
 import React from 'react';
-import Link from './link';
 
 const DashboardRight = (props) => {
   $(document).ready(() => {
@@ -43,13 +42,23 @@ const DashboardRight = (props) => {
       <div id="create-board" className="modal">
         <div className="modal-content">
           <h4>Create a new board</h4>
-          <input placeholder="Enter board name here" />
+          <input id="board-name" placeholder="Enter board name here" />
         </div>
         <div className="modal-footer">
-          <Link
-            href="/boards"
-            className="modal-action modal-close waves-effect waves-green btn-flat"
-          >CREATE</Link>
+          { props.view === 'team' ?
+           (<a
+             onClick={() => { props.createBoard(document.getElementById('board-name').value, props.uid); }}
+             className="modal-action modal-close waves-effect waves-green btn-flat"
+           >CREATE</a>
+        )
+          :
+           (
+             <a
+               onClick={() => { props.createBoard(document.getElementById('board-name').value); }}
+               className="modal-action modal-close waves-effect waves-green btn-flat"
+             >CREATE</a>
+        )
+        }
         </div>
       </div>
     </div>
@@ -59,6 +68,8 @@ const DashboardRight = (props) => {
 DashboardRight.propTypes = {
   boards: React.PropTypes.arrayOf(React.PropTypes.objects),
   view: React.PropTypes.string,
+  // uid: React.PropTypes.string,
+  createBoard: React.PropTypes.func,
 };
 
 export default DashboardRight;

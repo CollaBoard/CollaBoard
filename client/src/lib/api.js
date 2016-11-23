@@ -7,8 +7,8 @@ API.getBoard = function getBoard(uid) {
     .then(res => res.data);
 };
 
-API.createBoard = function createBoard(uid, name) {
-  return $.post('/api/boards', { uid, name })
+API.createBoard = function createBoard(name, uidTeam) {
+  return $.post('/api/boards', { name, uid: uidTeam })
     .then(res => res.data);
 };
 
@@ -18,12 +18,12 @@ API.getTeams = function getTeams() {
 };
 
 API.createTeam = function createTeam(teamName) {
-  return $.post('/api/teams', { teamName })
+  return $.post('/api/teams', { name: teamName })
     .then(res => res.data);
 };
 
 API.addToTeam = function addToTeam(uidTeam, uidUser) {
-  return $.post('/api/teams', { uidTeam, uidUser })
+  return $.post('/api/teams', { team_uid: uidTeam, user_uid: uidUser })
     .then(res => res.data);
 };
 
@@ -48,7 +48,7 @@ API.getOneTeam = function getOneTeam(uid) {
 };
 
 API.searchUsers = function searchUsers(query, uidTeam) {
-  return $.get('/api/users', { query, uidTeam })
+  return $.get('/api/users', { query, team_uid: uidTeam })
   .then(res => res.data);
 };
 
@@ -238,6 +238,7 @@ API.searchUsersTest = function searchUsersTest(query) {
           uid: 'doug01',
           name: 'Doug Bartwell',
           avatar: 'https://robohash.org/DougBartwell',
+          display: 'add',
         },
         {
           uid: 'mark01',
