@@ -97,10 +97,6 @@ class Board extends React.Component {
   }
 
   render() {
-    const exportCanvas = function exportCanvas() {
-      const exportedImage = document.getElementById('whiteboard').toDataURL();
-      window.open(exportedImage);
-    };
     const toggleWindow = function toggleWindow(id) {
       const element = document.getElementById(id);
       if (element.style.display === 'block') {
@@ -139,22 +135,22 @@ class Board extends React.Component {
         >Whiteboard</a>
       </li>);
     }
+    const colors = ['red', 'orange', 'yellow', 'green', 'blue', 'purple', 'black', 'white'];
     $(document).ready(() => {
       $('.dropdown-button').dropdown();
       $('.modal').modal();
       WebRTC(this.props.uid);
+      document.getElementById('export-png').addEventListener('click', function download() {
+        this.href = document.getElementById('whiteboard').toDataURL();
+        this.download = 'collaboard-export.png';
+      }, false);
     });
     return (
       <div>
         <ul id="color-dropdown" className="dropdown-content">
-          <li><a onClick={() => { this.state.cavasState.prop('color', 'red'); }}><i className="material-icons tools">lens</i></a></li>
-          <li><a onClick={() => { this.state.cavasState.prop('color', 'orange'); }}><i className="material-icons tools">lens</i></a></li>
-          <li><a onClick={() => { this.state.cavasState.prop('color', 'yellow'); }}><i className="material-icons tools">lens</i></a></li>
-          <li><a onClick={() => { this.state.cavasState.prop('color', 'green'); }}><i className="material-icons tools">lens</i></a></li>
-          <li><a onClick={() => { this.state.cavasState.prop('color', 'blue'); }}><i className="material-icons tools">lens</i></a></li>
-          <li><a onClick={() => { this.state.cavasState.prop('color', 'purple'); }}><i className="material-icons tools">lens</i></a></li>
-          <li><a onClick={() => { this.state.cavasState.prop('color', 'black'); }}><i className="material-icons tools">lens</i></a></li>
-          <li><a onClick={() => { this.state.cavasState.prop('color', 'white'); }}><i className="material-icons tools">lens</i></a></li>
+          {colors.map((color, i) => (
+            <li key={i}><a onClick={() => { this.state.cavasState.prop('color', color); }}><i className="material-icons tools">lens</i></a></li>
+          ))}
         </ul>
         <ul id="marker-dropdown" className="dropdown-content">
           <li><a onClick={() => { this.state.cavasState.prop('lineWidth', 5); }}><i className="material-icons tools">lens</i></a></li>
@@ -165,7 +161,7 @@ class Board extends React.Component {
           <li><a href="#!"><i className="material-icons tools">undo</i></a></li>
           <li><a href="#!"><i className="material-icons tools">redo</i></a></li>
           <li><a href="#modal1"><i className="material-icons tools">link</i></a></li>
-          <li><a onClick={exportCanvas}><i className="material-icons tools">save</i></a></li>
+          <li><a href="#!" id="export-png"><i className="material-icons tools">save</i></a></li>
           <li><a onClick={() => { toggleWindow('video-chat'); }} id="display-video-chat">
             <i className="material-icons tools">voice_chat</i></a></li>
           <li><a
@@ -222,7 +218,7 @@ class Board extends React.Component {
         <div id="modal1" className="modal">
           <div className="modal-content">
             Copy this link to your clipboard to share:
-            <input readOnly value={`http://localhost:4000/${this.props.uid}`} />
+            <input readOnly value={`https://localhost:4000/boards/${this.props.uid}`} />
           </div>
         </div>
         <div id="video-chat">
