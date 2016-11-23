@@ -75,7 +75,7 @@ class Board extends React.Component {
               canvas.addFigure(figure);
             });
             socket.on('serve text', (text) => {
-              console.log('serving text!!!');
+              // console.log('serving text!!!');
               this.props.SERVE_TEXT(text);
             });
             // this.state.unsubscribe = reduxStore.subscribe(() => {

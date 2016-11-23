@@ -8,7 +8,7 @@ const initialState = {
   currentTeam: '',
   connectedUsers: [],
   canvasState: {},
-  editorState: {},
+  editorState: '{"entityMap":{},"blocks":[{"key":"1l7tf","text":"","type":"unstyled","depth":0,"inlineStyleRanges":[],"entityRanges":[],"data":{}}]}',
   socketName: '',
   display: {},
 };

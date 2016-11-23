@@ -4,14 +4,7 @@ import page from 'page';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
-<<<<<<< cf825cd77d9a558e28a5f92a8371f7d5e6101527
 import WebRTC from '../lib/webrtc';
-=======
-// import logger from 'redux-logger';
-// import createSocketIoMiddleware from 'redux-socket.io';
-// import rootReducer from '../data/reducers';
-
->>>>>>> data sending!
 import API from '../lib/api';
 import Canvas from './whiteboard/Canvas';
 import Whiteboard from './whiteboard';
@@ -39,10 +32,7 @@ class Board extends React.Component {
       display: <div />,
       socket: null,
       canvasState: null,
-<<<<<<< cf825cd77d9a558e28a5f92a8371f7d5e6101527
       editorState: null,
-=======
->>>>>>> data sending!
       messages: [],
     };
     this.submitMessage = this.submitMessage.bind(this);
@@ -67,12 +57,12 @@ class Board extends React.Component {
 
             const canvas = new Canvas();
 
-<<<<<<< cf825cd77d9a558e28a5f92a8371f7d5e6101527
+<<<<<<< 44deac310dcbc320a9b627f670e1f082f571b708
             const whiteboard = <Whiteboard socket={socket} canvasState={canvas} />;
             const texteditor = <TextEditor socket={socket} />;
 =======
             const whiteboard = <Whiteboard canvasState={canvas} />;
-            const texteditor = <TextEditor socket={socket} editorState={this.state.editorState} />;
+            const texteditor = <TextEditor socket={socket} />;
             // const socketIoMiddleware = createSocketIoMiddleware(socket, 'SOCKET/');
             //
             // const finalCreateStore = compose(
@@ -83,8 +73,7 @@ class Board extends React.Component {
             //   return finalCreateStore(rootReducer, initState);
             // }
             // const store = configureStore(initialState);
-            // TODO: use a reducer to set this state to the store
->>>>>>> data sending!
+>>>>>>> debugging
             this.setState({
               display: whiteboard,
               cavasState: canvas,
@@ -101,7 +90,7 @@ class Board extends React.Component {
               canvas.addFigure(figure);
             });
             socket.on('serve text', (text) => {
-              console.log('serving text!!!');
+              // console.log('serving text!!!');
               this.props.SERVE_TEXT(text);
             });
             // this.state.unsubscribe = reduxStore.subscribe(() => {
@@ -130,15 +119,9 @@ class Board extends React.Component {
     };
   }
 
-<<<<<<< cf825cd77d9a558e28a5f92a8371f7d5e6101527
   submitMessage(message) {
     this.state.socket.emit('chat sent', message);
   }
-=======
-  // componentWillUnmount() {
-  //   this.state.unsubscribe();
-  // }
->>>>>>> data sending!
 
   render() {
     const exportCanvas = function exportCanvas() {
@@ -278,10 +261,10 @@ Board.propTypes = {
   SERVE_TEXT: React.PropTypes.func,
   // currentTeam: React.PropTypes.string,
   // connectedUsers: React.PropTypes.array,  // eslint-disable-line react/forbid-prop-types
-  canvasState: React.PropTypes.object,  // eslint-disable-line react/forbid-prop-types
-  editorState: React.PropTypes.object,   // eslint-disable-line react/forbid-prop-types
+  // canvasState: React.PropTypes.object,  // eslint-disable-line react/forbid-prop-types
+  // editorState: React.PropTypes.object,   // eslint-disable-line react/forbid-prop-types
   // socketName: React.PropTypes.string,
-  socket: React.PropTypes.object,   // eslint-disable-line react/forbid-prop-types
+  // socket: React.PropTypes.object,   // eslint-disable-line react/forbid-prop-types
   // display: React.PropTypes.object,   // eslint-disable-line react/forbid-prop-types
 };
 

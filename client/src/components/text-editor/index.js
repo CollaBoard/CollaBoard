@@ -18,7 +18,7 @@ import CodeUtils from 'draft-js-code';
 // COLLABOARD: see forked repository https://github.com/CollaBoard/draft-js-prism for changes
 import PrismDraftDecorator from 'draft-js-prism';
 // COLLABOARD: Adding socket.io
-import io from 'socket.io-client';
+// import io from 'socket.io-client';
 import StyleButton from './StyleButton';
 // import TextEditor from 'draft-js-code';
 // import TextEditor from './../../../../draft-js-code/demo/main';
@@ -60,6 +60,8 @@ class TextEditor extends React.Component {
     // COLLABOARD: check if
     // if (!this.props.editorState && this.props.editorState !== {}) {
     // console.log('creating new editor state');
+    // const newEditorState = Draft.EditorState
+    //   .createWithContent(convertFromRaw(JSON.parse(this.props.editorState)), decorator);
     const newEditorState = Draft.EditorState.createEmpty(decorator);
     this.state = {
       editorState: newEditorState,
@@ -76,13 +78,13 @@ class TextEditor extends React.Component {
     this.focus = () => this.editor.focus();
     // COLLABOARD: Emitting change event on editor change
     this.onChange = (editorState) => {
-      console.log(JSON.stringify(convertToRaw(this.state.editorState.getCurrentContent())));
+      // console.log(JSON.stringify(convertToRaw(this.state.editorState.getCurrentContent())));
       this.setState({ editorState }, function emitChange() {
         this.props.TEXT_CHANGE(
           JSON.stringify(convertToRaw(this.state.editorState.getCurrentContent())),
           this.props.socket
         );
-        console.log('text change');
+        // console.log('text change');
         // socket.emit('text change', convertToRaw(this.state.editorState.getCurrentContent()));
       });
     };
@@ -132,10 +134,10 @@ class TextEditor extends React.Component {
   // COLLABOARD: Setting the editor up to receive new editor state from redux
   componentWillReceiveProps(newProps) {
     if (newProps.editorState) {
-      console.log('newProps.editorState:', newProps.editorState.editorState);
+      // console.log('newProps.editorState:', newProps.editorState.editorState);
       const newState = Draft.EditorState
-        .push(this.state.editorState, convertFromRaw(JSON.parse(newProps.editorState.editorState)));
-      console.log('newState:', newState);
+        .push(this.state.editorState, convertFromRaw(JSON.parse(newProps.editorState.editorState)), 'insert-fragment');
+      // console.log('newState:', newState);
       this.setState({ editorState: newState });
     }
   }
@@ -464,7 +466,7 @@ InlineStyleControls.propTypes = {
 TextEditor.propTypes = {
   // active: React.PropTypes.bool,
   // onToggle: React.PropTypes.func,
-  // editorState: React.PropTypes.string,
+  editorState: React.PropTypes.string,
   socket: React.PropTypes.object,    // eslint-disable-line react/forbid-prop-types
   TEXT_CHANGE: React.PropTypes.func,
   // style: React.PropTypes.string,
