@@ -98,11 +98,17 @@ class Dashboard extends React.Component {
   }
 
   searchUsers(query) {
-    API.searchUsersTest(query).then((res) => {
+    if (query === '') {
       this.setState({
-        searchResults: res,
+        searchResults: [],
       });
-    }).catch(console.err);
+    } else {
+      API.searchUsersTest(query, this.state.uid).then((res) => {
+        this.setState({
+          searchResults: res,
+        });
+      }).catch(console.err);
+    }
   }
 
   addToTeam(uid) {

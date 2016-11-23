@@ -18,7 +18,7 @@ const DashboardLeft = (props) => {
   } else {
     teamHeader = 'Team Members';
     boardHeader = <a onClick={props.showRecent}>My Profile</a>;
-    teamLink = <a href="#edit-team">Edit team</a>;
+    teamLink = <a onClick={() => { props.searchUsers(''); }} href="#edit-team">Edit team</a>;
   }
   return (
     <div className="col offset-s2 s8 m3 boardLeft">
@@ -68,16 +68,16 @@ const DashboardLeft = (props) => {
           </div>
           {props.searchResults.map((result, i) =>
             (
-              <div className="row valign-wrapper">
+              <div className="row valign-wrapper" key={i}>
                 <div className="col s2 valign"><img
                   className="searchPhoto responsive-img"
                   alt="profile"
                   src={result.avatar}
                 /></div>
-                <div className="col s10 valign" key={i}>{result.name}</div>
+                <div className="col s10 valign">{result.name}</div>
                 <div className="col s2 valign">
                   <a className="btn-floating btn-small waves-effect waves-light red">
-                    <i className="material-icons">add</i></a>
+                    <i className="material-icons">{result.display}</i></a>
                 </div>
               </div>
           )

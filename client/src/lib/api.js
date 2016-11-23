@@ -47,8 +47,8 @@ API.getOneTeam = function getOneTeam(uid) {
   .then(res => res.data);
 };
 
-API.searchUsers = function searchUsers(query) {
-  return $.get('/api/users', { query })
+API.searchUsers = function searchUsers(query, uidTeam) {
+  return $.get('/api/users', { query, uidTeam })
   .then(res => res.data);
 };
 
@@ -63,9 +63,8 @@ API.getMeTest = function getMeTest() {
       github_id: 'test-github-id',
       google_id: 'test-google-id',
       email: 'totallyatest@email.com',
-      uid: '123e4567-e89b-12d3-a456-426655440000',
+      uid: 'darion01',
       username: 'totallyatest@email.com',
-      my_team: '123e4567-e89b-12d3-a456-426655440000',
       boards: [
         {
           uid: '123e4567-e89b-12d3-a456-426655440001',
@@ -167,19 +166,24 @@ API.getOneTeamTest = function getOneTeamTest(uid) {
       ],
       members: [
         {
-          uid: '123e4567-e89b-12d3-a456-426655440001',
+          uid: 'john01',
           name: 'John Smith',
-          avatar: 'https://robohash.org/testUser1',
+          avatar: 'https://robohash.org/JohnSmith',
         },
         {
-          uid: '123e4567-e89b-12d3-a456-426655440002',
-          name: 'Bob John',
-          avatar: 'https://robohash.org/testUser2',
+          uid: 'bob01',
+          name: 'Bob Johnsam',
+          avatar: 'https://robohash.org/BobJohnsam',
         },
         {
-          uid: '123e4567-e89b-12d3-a456-426655440003',
+          uid: 'robert01',
           name: 'Robert Davenport',
-          avatar: 'https://robohash.org/testUser3',
+          avatar: 'https://robohash.org/RobertDavenport',
+        },
+        {
+          uid: 'sally01',
+          name: 'Sally Whateverson',
+          avatar: 'https://robohash.org/SallyWhateverson',
         },
       ],
     });
@@ -192,47 +196,54 @@ API.searchUsersTest = function searchUsersTest(query) {
     if (query === '3') {
       resolve([
         {
-          uid: '123e4567-e89b-12d3-a456-426655440007',
+          uid: 'bob02',
           name: 'Bob Johnson',
-          avatar: 'https://robohash.org/bob',
+          avatar: 'https://robohash.org/BobJohnson',
+          display: 'add',
         },
         {
-          uid: '123e4567-e89b-12d3-a456-426655440009',
+          uid: 'roger01',
           name: 'Roger Clementine',
-          avatar: 'https://robohash.org/roger',
+          avatar: 'https://robohash.org/RogerClementine',
+          display: 'add',
         },
         {
-          uid: '123e4567-e89b-12d3-a456-426655440008',
+          uid: 'samantha01',
           name: 'Samantha Fortwell',
-          avatar: 'https://robohash.org/sam',
+          avatar: 'https://robohash.org/SamanthaFortwell',
+          display: 'add',
         },
       ]);
     } else {
       resolve([
         {
-          uid: '123e4567-e89b-12d3-a456-426655440007',
+          uid: 'sally01',
           name: 'Sally Whateverson',
-          avatar: 'https://robohash.org/sally',
+          avatar: 'https://robohash.org/SallyWhateverson',
+          display: 'remove',
         },
         {
-          uid: '123e4567-e89b-12d3-a456-426655440009',
+          uid: 'ellen01',
           name: 'Ellen Johnson',
-          avatar: 'https://robohash.org/ellen',
+          avatar: 'https://robohash.org/EllenJohnson',
+          display: 'add',
         },
         {
-          uid: '123e4567-e89b-12d3-a456-426655440008',
+          uid: 'bob03',
           name: 'Bob Rogers',
-          avatar: 'https://robohash.org/bobro',
+          avatar: 'https://robohash.org/BobRogers',
+          display: 'add',
         },
         {
-          uid: '123e4567-e89b-12d3-a456-426655440008',
+          uid: 'doug01',
           name: 'Doug Bartwell',
-          avatar: 'https://robohash.org/doug',
+          avatar: 'https://robohash.org/DougBartwell',
         },
         {
-          uid: '123e4567-e89b-12d3-a456-426655440008',
-          name: ' Mark Dearson',
-          avatar: 'https://robohash.org/mark',
+          uid: 'mark01',
+          name: 'Mark Dearson',
+          avatar: 'https://robohash.org/MarkDearson',
+          display: 'add',
         },
       ]);
     }
