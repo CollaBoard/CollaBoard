@@ -6,18 +6,16 @@ const DashboardRight = (props) => {
   });
   let topTitle;
   let createTeamButton;
-  if (props.view === 'recent') {
-    topTitle = 'Recent Boards';
+  if (props.view === 'recent' || props.view === 'my') {
     createTeamButton = (<a
       onClick={() => { props.createBoard(document.getElementById('board-name').value); }}
       className="modal-action modal-close waves-effect waves-green btn-flat"
     >CREATE</a>);
-  } else if (props.view === 'my') {
-    topTitle = 'My Boards';
-    createTeamButton = (<a
-      onClick={() => { props.createBoard(document.getElementById('board-name').value); }}
-      className="modal-action modal-close waves-effect waves-green btn-flat"
-    >CREATE</a>);
+    if (props.view === 'recent') {
+      topTitle = 'Recent Boards';
+    } else {
+      topTitle = 'My Boards';
+    }
   } else {
     topTitle = 'Our Boards';
     createTeamButton = (<a

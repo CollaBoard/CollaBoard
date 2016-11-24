@@ -118,8 +118,11 @@ class Board extends React.Component {
                 display: this.state.texteditor,
               });
             }
+            // move the below to a map function or potentially a query selection class
             document.getElementById('color-dropdown-btn').style.display = 'none';
             document.getElementById('size-dropdown-btn').style.display = 'none';
+            document.getElementById('undo-btn').style.display = 'none';
+            document.getElementById('redo-btn').style.display = 'none';
           }}
         >Text Editor</a>
       </li>);
@@ -136,6 +139,8 @@ class Board extends React.Component {
             }
             document.getElementById('color-dropdown-btn').style.display = 'block';
             document.getElementById('size-dropdown-btn').style.display = 'block';
+            document.getElementById('undo-btn').style.display = 'block';
+            document.getElementById('redo-btn').style.display = 'block';
           }}
         >Whiteboard</a>
       </li>);
@@ -168,8 +173,8 @@ class Board extends React.Component {
           <li><a onClick={() => { this.state.cavasState.prop('lineWidth', 25); }}><i className="material-icons tools">lens</i></a></li>
         </ul>
         <ul id="tool-dropdown" className="dropdown-content">
-          <li><a href="#!"><i className="material-icons tools">undo</i></a></li>
-          <li><a href="#!"><i className="material-icons tools">redo</i></a></li>
+          <li id="undo-btn"><a href="#!"><i className="material-icons tools">undo</i></a></li>
+          <li id="redo-btn"><a href="#!"><i className="material-icons tools">redo</i></a></li>
           <li><a href="#modal1"><i className="material-icons tools">link</i></a></li>
           <li><a href="#!" id="export-png"><i className="material-icons tools">save</i></a></li>
           <li><a onClick={() => { toggleWindow('video-chat'); }} id="display-video-chat">
@@ -212,7 +217,10 @@ class Board extends React.Component {
                   data-activates="tool-dropdown"
                   data-beloworigin="true"
                   data-constrainwidth="false"
-                >{this.state.flash ? <i className="material-icons">announcement</i>
+                >{this.state.flash ? <i
+                  id="announcement-button"
+                  className="material-icons"
+                >announcement</i>
                 : <i className="material-icons">build</i>
                 }
                 </a>
