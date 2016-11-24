@@ -34,6 +34,7 @@ class Board extends React.Component {
       canvasState: null,
       editorState: null,
       messages: [],
+      flash: false,
     };
     this.submitMessage = this.submitMessage.bind(this);
 
@@ -51,7 +52,7 @@ class Board extends React.Component {
               this.state.messages.push(message);
               this.setState({ messages: this.state.messages });
               if (!this.state.displayChat) {
-                // alert('Open your chat window');
+                this.setState({ flash: true });
               }
             });
 
@@ -107,7 +108,7 @@ class Board extends React.Component {
     };
     let switchButton;
     if (this.state.display === this.state.whiteboard) {
-      switchButton = (<li>
+      switchButton = (<li className="switchButton">
         <a
           onClick={(e) => {
             e.preventDefault();
@@ -117,11 +118,13 @@ class Board extends React.Component {
                 display: this.state.texteditor,
               });
             }
+            document.getElementById('color-dropdown-btn').style.display = 'none';
+            document.getElementById('size-dropdown-btn').style.display = 'none';
           }}
         >Text Editor</a>
       </li>);
     } else {
-      switchButton = (<li>
+      switchButton = (<li className="switchButton">
         <a
           onClick={(e) => {
             e.preventDefault();
@@ -131,6 +134,8 @@ class Board extends React.Component {
                 display: this.state.whiteboard,
               });
             }
+            document.getElementById('color-dropdown-btn').style.display = 'block';
+            document.getElementById('size-dropdown-btn').style.display = 'block';
           }}
         >Whiteboard</a>
       </li>);
@@ -144,6 +149,11 @@ class Board extends React.Component {
         this.href = document.getElementById('whiteboard').toDataURL();
         this.download = 'collaboard-export.png';
       }, false);
+      document.getElementById('build-button').addEventListener('click', () => {
+        if (this.state.flash) {
+          this.state.flash = false;
+        }
+      });
     });
     return (
       <div>
@@ -176,8 +186,7 @@ class Board extends React.Component {
               CollaBoard
             </a>
             <ul className="right">
-              {switchButton}
-              <li>
+              <li id="color-dropdown-btn">
                 <a
                   className="dropdown-button"
                   href="#!"
@@ -186,7 +195,7 @@ class Board extends React.Component {
                   data-constrainwidth="false"
                 ><i className="material-icons">palette</i></a>
               </li>
-              <li>
+              <li id="size-dropdown-btn">
                 <a
                   className="dropdown-button"
                   href="#!"
@@ -198,12 +207,17 @@ class Board extends React.Component {
               <li>
                 <a
                   className="dropdown-button"
+                  id="build-button"
                   href="#!"
                   data-activates="tool-dropdown"
                   data-beloworigin="true"
                   data-constrainwidth="false"
-                ><i className="material-icons">build</i></a>
+                >{this.state.flash ? <i className="material-icons">announcement</i>
+                : <i className="material-icons">build</i>
+                }
+                </a>
               </li>
+              {switchButton}
             </ul>
           </div>
         </nav>
