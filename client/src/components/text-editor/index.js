@@ -60,9 +60,27 @@ class TextEditor extends React.Component {
     // COLLABOARD: check if
     // if (!this.props.editorState && this.props.editorState !== {}) {
     // console.log('creating new editor state');
-    // const newEditorState = Draft.EditorState
-    //   .createWithContent(convertFromRaw(JSON.parse(this.props.editorState)), decorator);
-    const newEditorState = Draft.EditorState.createEmpty(decorator);
+    let newEditorState;
+    if (this.props.editorState === null) {
+      const empty = Draft.ContentState.createFromText('');
+      newEditorState = Draft.EditorState.createWithContent(empty, decorator);
+    } else {
+      const contentParsed = convertFromRaw(JSON.parse(this.props.editorState.editorState));
+      newEditorState = Draft.EditorState
+        .createWithContent(contentParsed, decorator);
+    }
+    // if (typeof this.props.editorState === 'string') {
+    //   console.log('editorstate string');
+    //   contentParsed = JSON.parse(this.props.editorState);
+    // } else if (this.props.editorState.editorState) {
+    //   console.log('editorstate object:', this.props.editorState);
+    //   contentParsed = JSON.parse(this.props.editorState.editorState);
+    //   // contentParsed = JSON.parse(JSON.stringify(this.props.editorState));
+    // } else {
+    // contentParsed = this.props.editorState;
+    // }
+
+    // const newEditorState = Draft.EditorState.createEmpty(decorator);
     this.state = {
       editorState: newEditorState,
     };
@@ -72,21 +90,23 @@ class TextEditor extends React.Component {
     //     editorState: this.props.editorState,
     //   };
     //   this.props.TEXT_CHANGE(convertToRaw(this.state.editorState.getCurrentContent()));
-    //   // COLLABOARD: TODO figure out how best to dispatch this state to the store
     // }
 
     this.focus = () => this.editor.focus();
     // COLLABOARD: Emitting change event on editor change
     this.onChange = (editorState) => {
       // console.log(JSON.stringify(convertToRaw(this.state.editorState.getCurrentContent())));
-      this.setState({ editorState }, function emitChange() {
-        this.props.TEXT_CHANGE(
-          JSON.stringify(convertToRaw(this.state.editorState.getCurrentContent())),
+      this.setState({ editorState },
+        function emitChange() {
+          this.props.TEXT_CHANGE(
+          JSON.stringify(convertToRaw(editorState.getCurrentContent())),
           this.props.socket
         );
+        });
         // console.log('text change');
         // socket.emit('text change', convertToRaw(this.state.editorState.getCurrentContent()));
-      });
+      //
+    // );
     };
 
 // COLLABOARD: original underscore-prefaced changed to i-prefaced to comply
@@ -101,12 +121,12 @@ class TextEditor extends React.Component {
     this.onUndo = () => this.iOnUndo();
     this.onRedo = () => this.iOnRedo();
 
-    // COLLABOARD: TODO refactor this for redux
+    // COLLABOARD: On mount should render redux saved
     this.componentDidMount = () => {
-      this.props.TEXT_CHANGE(JSON.stringify(convertToRaw(
-        this.state.editorState.getCurrentContent())),
-        this.props.socket
-      );
+      // this.props.TEXT_CHANGE(JSON.stringify(convertToRaw(
+      //   this.state.editorState.getCurrentContent())),
+      //   this.props.socket
+      // );
     //   $.ajax({
     //     type: 'POST',
     //     url: '/api/boards',
@@ -133,12 +153,19 @@ class TextEditor extends React.Component {
 
   // COLLABOARD: Setting the editor up to receive new editor state from redux
   componentWillReceiveProps(newProps) {
-    if (newProps.editorState) {
-      // console.log('newProps.editorState:', newProps.editorState.editorState);
+    // console.log('newProps:', newProps);
+    if (newProps.editorState && newProps.editorState.textOrigin === 'remote') {
+      const newContentState = convertFromRaw(JSON.parse(newProps.editorState.editorState));
+      // console.log('newContentState:', newContentState);
+      const focus = this.state.editorState.getSelection();
+      // console.log('focus:', focus);
       const newState = Draft.EditorState
-        .push(this.state.editorState, convertFromRaw(JSON.parse(newProps.editorState.editorState)), 'insert-fragment');
+        .push(this.state.editorState, newContentState, 'update-state');
       // console.log('newState:', newState);
-      this.setState({ editorState: newState });
+      const focusState = Draft.EditorState.forceSelection(newState, focus);
+      // console.log('focusState:', focusState);
+      this.setState({ editorState: focusState });
+      // this.onChange(focusState);
     }
   }
 
@@ -241,8 +268,6 @@ class TextEditor extends React.Component {
     const { editorState } = this.state;
     // console.log(editorState);
 
-    // If the user changes block type before entering any text, we can
-    // either style the placeholder or hide it. Let's just hide it now.
     let className = 'RichEditor-editor';
     const contentState = editorState.getCurrentContent();
     if (!contentState.hasText()) {
@@ -252,10 +277,13 @@ class TextEditor extends React.Component {
     }
 
     const selection = editorState.getSelection();
-    const blockType = editorState
-      .getCurrentContent()
-      .getBlockForKey(selection.getStartKey())
-      .getType();
+    // console.log('selection:', selection);
+    // console.log('content:', contentState);
+    const block = contentState
+      .getBlockForKey(selection.getStartKey());
+    // console.log('block:', block);
+    const blockType = block.getType();
+    // console.log('blockType:', blockType);
 
     const inlineStyle = editorState.getCurrentInlineStyle();
     const activeStyles = {
@@ -466,7 +494,7 @@ InlineStyleControls.propTypes = {
 TextEditor.propTypes = {
   // active: React.PropTypes.bool,
   // onToggle: React.PropTypes.func,
-  editorState: React.PropTypes.string,
+  editorState: React.PropTypes.string,   // eslint-disable-line react/forbid-prop-types
   socket: React.PropTypes.object,    // eslint-disable-line react/forbid-prop-types
   TEXT_CHANGE: React.PropTypes.func,
   // style: React.PropTypes.string,
