@@ -21,7 +21,7 @@ const Board = require('./board');
  * @return {User} An instance of User
  */
 const User = function User(info = {}, f = false) {
-  let fetched = (info.uid && f) || false;
+  const fetched = (info.uid && f) || false;
   this.uid = fetched ? info.uid : util.uid();
   this.username = info.username || info.login || info.email;
   this.name = (info.name && info.name.trim()) || null;
@@ -55,7 +55,7 @@ const User = function User(info = {}, f = false) {
           github_id: this.github_id,
           google_id: this.google_id,
           avatar: this.avatar,
-        })
+        }, ['uid', 'name', 'username', 'email', 'github_id', 'google_id', 'avatar'])
       : db('users').where({ uid: this.uid })
         .update({
           name: this.name,
@@ -64,12 +64,9 @@ const User = function User(info = {}, f = false) {
           github_id: this.github_id,
           google_id: this.google_id,
           avatar: this.avatar,
-        })
+        }, ['uid', 'name', 'username', 'email', 'github_id', 'google_id', 'avatar'])
       )
-      .then(() => {
-        fetched = true;
-        return this;
-      })
+      .then(rows => new User(rows[0], true))
       .catch(util.rethrow)
     );
   };
@@ -86,7 +83,7 @@ User.find = function find(params) {
       if (rows.length) {
         return new User(rows[0], true);
       }
-      util.throwNotFound('No user was found');
+      util.throwNotFound('user not found');
     })
     .catch(util.rethrow);
 };
