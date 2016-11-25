@@ -1,24 +1,24 @@
-const helpers = require('./helpers');
-const Session = require('../models/session');
+const util = require('../lib/util');
+const User = require('../models/user');
 
 const Auth = module.exports = {};
-Auth.checkLogin = isRequired => (req, res, next) => {
-  if (!req.session || !req.session.uid) {
+Auth.authenticate = (isRequired = true) => (req, res, next) => {
+  if (!req.session || !req.session.userUid) {
     if (isRequired) {
-      return next(new helpers.PermissionDenied('User must be logged in'));
+      return util.sendError(res)(new util.PermissionDenied('not logged in'));
     }
     req.user = null;
     return next();
   }
-  Session.find(req.session.uid)
-    .then(session => session.findUser())
+  User.findById(req.session.userUid)
     .then((user) => {
       req.user = user;
+      req.user.recent_boards = [];
       return next();
     })
     .catch(() => {
       if (isRequired) {
-        return next(new helpers.PermissionDenied('User must be logged in'));
+        return util.sendError(res)(new util.PermissionDenied('not logged in'));
       }
       req.user = null;
       return next();

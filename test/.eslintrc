@@ -10,6 +10,8 @@
     "xit_": true,
     "before_": true,
     "beforeEach_": true,
+    "after_": true,
+    "afterEach_": true,
     "__server": true,
     "__test": true,
     "__client": true,
@@ -18,20 +20,7 @@
   "rules": {
     "func-names": 0,
     "no-console": 0,
-    "no-underscore-dangle": [
-      "error",
-      {
-        "allow": [
-          "it_",
-          "xit_",
-          "before_",
-          "beforeEach_",
-          "__server",
-          "__test",
-          "__client"
-        ]
-      }
-    ],
+    "no-underscore-dangle": 0,
     "import/no-extraneous-dependencies": [
       "error",
       {

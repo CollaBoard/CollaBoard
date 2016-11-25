@@ -11,7 +11,5 @@ module.exports = db;
 // Function for your testing suite
 db.deleteEverything = function deleteEverything() {
   if (env !== 'test') return Promise.reject();
-  // TODO: Delete data from all tables (useful for testing)
-  // return db('users').truncate()
-  return Promise.reject();
+  return db.raw('truncate table users cascade');
 };
