@@ -40,6 +40,7 @@ describe('The User model', () => {
       expect(user.uid).to.be.a('string');
       expect(user.name).to.equal(testUser.name);
       expect(user.email).to.equal(testUser.email);
+      expect(user.username).to.equal(testUser.email);
       expect(user.github_id).to.equal(testUser.github_id);
       expect(user.google_id).to.equal(testUser.google_id);
       expect(user.avatar).to.equal(testUser.avatar);
@@ -132,10 +133,10 @@ describe('The User model', () => {
   });
 
   describe('User.addBoard', () => {
-    let user = new User(testUser);
+    let user;
     beforeEach_(function* () {
       yield db.deleteEverything();
-      user = yield user.save();
+      user = yield new User(testUser).save();
     });
 
     it('should exist on the class and instances', () => {
@@ -173,10 +174,10 @@ describe('The User model', () => {
   });
 
   describe('User.fetchBoards', () => {
-    let user = new User(testUser);
+    let user;
     beforeEach_(function* () {
       yield db.deleteEverything();
-      user = yield user.save();
+      user = yield new User(testUser).save();
     });
 
     it('should exist on the class and instances', () => {
@@ -211,10 +212,10 @@ describe('The User model', () => {
   });
 
   describe('User.fetchTeams', () => {
-    let user = new User(testUser);
+    let user;
     beforeEach_(function* () {
       yield db.deleteEverything();
-      user = yield user.save();
+      user = yield new User(testUser).save();
     });
 
     it('should exist on the class and instances', () => {
@@ -233,7 +234,9 @@ describe('The User model', () => {
     });
 
     it('should return an empty array for users who don\'t belong to a team', function* () {
-      yield new Team();
+      const teams = yield user.fetchTeams();
+      expect(Array.isArray(teams)).to.equal(true);
+      expect(teams.length).to.equal(0);
     });
   });
 });
