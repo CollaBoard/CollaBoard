@@ -9,7 +9,7 @@ describe('The Server', () => {
   app.use('/', routes);
   app.testReady();
 
-  it_('serves an example endpoint', function* () {
+  xit_('serves an example endpoint', function* () {
     yield request(app)
       .get('/api')
       .expect(200)
