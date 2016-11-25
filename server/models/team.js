@@ -3,8 +3,7 @@ const util = require('../lib/util');
 const Board = require('./board');
 
 //
-// TODO: Implement counts
-// Most recently edited boards
+// TODO: Implement member and board counts
 //
 
 /**
@@ -19,11 +18,17 @@ const Team = function Team(info = {}, f = false) {
   this.name = (info.name && info.name.trim().slice(0, 50)) || null;
   this.board_count = (fetched && info.board_count) || 0;
   this.member_count = (fetched && info.member_count) || 0;
-  this.avatar = info.avatar || null;
+  this.avatar = info.avatar || `https://robohash.org/${this.uid}`;
   this.creator = info.creator;
 
-  this.save = () => (
-    (!fetched
+  this.save = () => {
+    if (!this.creator) {
+      return Promise.reject(new util.BadRequest('user_uid is required'));
+    }
+    if (!this.name) {
+      return Promise.reject(new util.BadRequest('team_name is required'));
+    }
+    return (!fetched
       ? db('teams')
         .insert({
           uid: this.uid,
@@ -47,8 +52,8 @@ const Team = function Team(info = {}, f = false) {
         fetched = true;
         return this;
       })
-      .catch(util.rethrow)
-  );
+      .catch(util.rethrow);
+  };
 };
 
 Team.findById = Team.find = uid => db('teams')
@@ -104,7 +109,7 @@ Team.prototype.fetchBoards = function fetchBoards() {
 };
 
 Team.prototype.addUser = function addUser(userUid, role = 'member') {
-  return Team.addUser(this.uid, userUid, role);
+  return Team.addUser(userUid, this.uid, role);
 };
 
 /**
