@@ -14,5 +14,5 @@ const finalCreateStore = compose(
 )(createStore);
 
 export default function configureStore(initialState = {}) {
-  return finalCreateStore(rootReducer, initialState, window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__());
+  return finalCreateStore(rootReducer, initialState);
 }
