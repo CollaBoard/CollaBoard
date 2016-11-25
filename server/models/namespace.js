@@ -28,8 +28,8 @@ Namespace.create = function create(uid) {
 
     // Text Chat Events
     client.on('chat sent', (message) => {
-      console.log('chat message sent');
-      console.log(new Date());
+      // console.log('chat message sent');
+      message.timestamp = new Date().toLocaleTimeString('en-US');
       socket.emit('incoming chat', message);
     });
   });

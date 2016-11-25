@@ -2,7 +2,8 @@ import React from 'react';
 
 const DashboardRight = (props) => {
   $(document).ready(() => {
-    $('.modal').modal();
+    $('.modal').modal(() => {
+    });
   });
   let topTitle;
   let createTeamButton;

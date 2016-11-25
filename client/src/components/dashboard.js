@@ -163,10 +163,6 @@ class Dashboard extends React.Component {
 
     );
   }
-
 }
-
-Dashboard.propTypes = {
-};
 
 export default Dashboard;

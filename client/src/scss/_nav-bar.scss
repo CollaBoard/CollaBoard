@@ -65,5 +65,17 @@ nav ul a {
 }
 
 #announcement-button {
-  color: #6CAFCC
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% {
+    color: #FFF;
+  }
+  50% {
+    color: #6CAFCC;
+  }
+  100% {
+    color: #FFF;
+  }
 }
