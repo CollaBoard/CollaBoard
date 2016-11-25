@@ -157,14 +157,14 @@ class TextEditor extends React.Component {
     if (newProps.editorState && newProps.editorState.textOrigin === 'remote') {
       const newContentState = convertFromRaw(JSON.parse(newProps.editorState.editorState));
       // console.log('newContentState:', newContentState);
-      const focus = this.state.editorState.getSelection();
+      // const focus = this.state.editorState.getSelection();
       // console.log('focus:', focus);
       const newState = Draft.EditorState
         .push(this.state.editorState, newContentState, 'update-state');
       // console.log('newState:', newState);
-      const focusState = Draft.EditorState.forceSelection(newState, focus);
+      // const focusState = Draft.EditorState.forceSelection(newState, focus);
       // console.log('focusState:', focusState);
-      this.setState({ editorState: focusState });
+      this.setState({ editorState: newState });
       // this.onChange(focusState);
     }
   }
