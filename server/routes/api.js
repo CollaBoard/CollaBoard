@@ -1,16 +1,19 @@
 const express = require('express');
-const Board = require('../models/board');
-const Namespace = require('../models/namespace');
 const Auth = require('../lib/auth');
 const util = require('../lib/util');
+const Boards = require('../controllers/boards');
+const Users = require('../controllers/users');
+const Teams = require('../controllers/teams');
 
-const router = express.Router();
+const router = module.exports = express.Router();
 
-router.get('/', (req, res) => {
-  res.send(['this', 'is', 'the', 'api', 'route']);
-});
+// attach the user to the request if logged in
+router.use(Auth.authenticate(false));
 
-router.get('/me', Auth.checkLogin(true), (req, res) => {
+router.get('/me', (req, res) => {
+  if (!req.user) {
+    return util.sendError(res)(new util.PermissionDenied('not logged in'));
+  }
   const result = Object.assign({}, req.user);
   req.user.fetchBoards()
     .then((boards) => {
@@ -27,41 +30,18 @@ router.get('/me', Auth.checkLogin(true), (req, res) => {
     .catch(util.sendError(res));
 });
 
-router.get('/boards/:boardId', Auth.checkLogin(), (req, res) => {
-  Board.find(req.params.boardId, req.user && req.user.uid)
-    .then((board) => {
-      if (req.user) {
-        const newBoards = req.session.recent_boards.filter(uid => uid !== board.uid).slice(0, 3);
-        req.session.recent_boards = [board.uid].concat(newBoards);
-      }
-      Namespace.create(board.uid);
-      return board;
-    })
-    .then(util.sendResult(res))
-    .catch(util.sendError(res));
-});
+router.get('/boards', Boards.getForUser);
+router.post('/boards', Boards.createBoard);
+router.get('/boards/:uid', Boards.getBoard);
 
-router.post('/boards', Auth.checkLogin(), (req, res) => {
-  const createBoard = req.user ? req.user.addBoard(req.body)
-    .then((board) => {
-      const newBoards = req.session.recent_boards.slice(0, req.session.recent_boards.length - 1);
-      req.session.recent_boards = [board.uid].concat(newBoards);
-      return board;
-    })
-    : new Board().save();
-  return createBoard
-    .then((board) => {
-      Namespace.create(board.uid);
-      return board;
-    })
-    .then(util.sendResult(res, 201))
-    .catch(util.sendError(res));
-});
+router.get('/users/:uid', Users.getUser);
+router.put('/users/:uid', Users.update);
 
-router.get('/boards', Auth.checkLogin(true), (req, res) => {
-  req.user.fetchBoards
-    .then(util.sendResult(res))
-    .catch(util.sendError(res));
-});
+router.get('/teams', Teams.getForUser);
+router.post('/teams', Teams.createTeam);
+router.get('/teams/:uid', Teams.getTeam);
+router.put('/teams/:uid', Teams.update);
 
-module.exports = router;
+router.use('/*', (req, res) => {
+  util.sendError(res)(new util.NotFound('endpoint not found'));
+});
