@@ -1,13 +1,29 @@
 import React from 'react';
 import io from 'socket.io-client';
 import page from 'page';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
 
 import WebRTC from '../lib/webrtc';
 import API from '../lib/api';
 import Canvas from './whiteboard/Canvas';
 import Whiteboard from './whiteboard';
 import TextEditor from './text-editor';
+import actionCreators from '../data/actions';
 import TextChat from './textchat';
+
+const mapStateToProps = state => ({
+  currentTeam: state.currentTeam,
+  connectedUsers: state.connectedUsers,
+  canvasState: state.canvasState,
+  editorState: state.editorState,
+  socketName: state.socketName,
+  socket: state.socket,
+  display: state.display,
+});
+
+const mapDispatchToProps = dispatch =>
+  bindActionCreators({ SERVE_TEXT: actionCreators.SERVE_TEXT }, dispatch);
 
 class Board extends React.Component {
   constructor(props) {
@@ -16,6 +32,7 @@ class Board extends React.Component {
       display: <div />,
       socket: null,
       canvasState: null,
+      editorState: null,
       messages: [],
     };
     this.submitMessage = this.submitMessage.bind(this);
@@ -39,6 +56,7 @@ class Board extends React.Component {
             });
 
             const canvas = new Canvas();
+
             const whiteboard = <Whiteboard socket={socket} canvasState={canvas} />;
             const texteditor = <TextEditor socket={socket} />;
             this.setState({
@@ -56,8 +74,26 @@ class Board extends React.Component {
             socket.on('add figure', (figure) => {
               canvas.addFigure(figure);
             });
+            socket.on('serve text', (text) => {
+              // console.log('serving text!!!');
+              this.props.SERVE_TEXT(text);
+            });
+            // this.state.unsubscribe = reduxStore.subscribe(() => {
+            //   const currentState = reduxStore.getState();
+            //   console.log('updating store');
+            //   this.setState({
+            //     display: currentState.display,
+            //     canvasState: currentState.canvasState,
+            //     socket: currentState.socket,
+            //     socketName: currentState.socketName,
+            //     whiteboard: currentState.canvasState,
+            //     texteditor: currentState.editorState,
+            //   });
+            // });
           })
-          .catch(console.err);
+          .catch(() => {
+            // console.err(err);
+          });
         } else {
           API.createBoard()
           .then((board) => {
@@ -206,6 +242,16 @@ class Board extends React.Component {
 
 Board.propTypes = {
   uid: React.PropTypes.string,
+  // TEXT_CHANGE: React.PropTypes.func,
+  SERVE_TEXT: React.PropTypes.func,
+  // currentTeam: React.PropTypes.string,
+  // connectedUsers: React.PropTypes.array,  // eslint-disable-line react/forbid-prop-types
+  canvasState: React.PropTypes.object,  // eslint-disable-line react/forbid-prop-types
+  editorState: React.PropTypes.object,   // eslint-disable-line react/forbid-prop-types
+  // socketName: React.PropTypes.string,
+  socket: React.PropTypes.object,   // eslint-disable-line react/forbid-prop-types
+  // display: React.PropTypes.object,   // eslint-disable-line react/forbid-prop-types
 };
 
-export default Board;
+export default connect(mapStateToProps, mapDispatchToProps)(Board);
+// export default Board;
