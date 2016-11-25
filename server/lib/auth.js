@@ -1,11 +1,11 @@
-const util = require('./util');
+const util = require('../lib/util');
 const User = require('../models/user');
 
 const Auth = module.exports = {};
-Auth.checkLogin = isRequired => (req, res, next) => {
+Auth.authenticate = (isRequired = true) => (req, res, next) => {
   if (!req.session || !req.session.userUid) {
     if (isRequired) {
-      return next(new util.PermissionDenied('User must be logged in'));
+      return util.sendError(res)(new util.PermissionDenied('not logged in'));
     }
     req.user = null;
     return next();
@@ -18,7 +18,7 @@ Auth.checkLogin = isRequired => (req, res, next) => {
     })
     .catch(() => {
       if (isRequired) {
-        return next(new util.PermissionDenied('User must be logged in'));
+        return util.sendError(res)(new util.PermissionDenied('not logged in'));
       }
       req.user = null;
       return next();
