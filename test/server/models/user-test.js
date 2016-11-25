@@ -2,7 +2,7 @@ require(TEST_HELPER);
 
 const db = require(`${__server}/lib/knex-driver`);
 const User = require(`${__server}/models/user`);
-const Team = require(`${__server}/models/team`);
+// const Team = require(`${__server}/models/team`);
 const Board = require(`${__server}/models/board`);
 // const userFixtures = require('./fixtures/users');
 const boardFixtures = require('./fixtures/boards');
