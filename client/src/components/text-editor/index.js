@@ -392,15 +392,6 @@ const BlockStyleControls = (props) => {
           style={type.style}
         />
       )}
-      {LANGUAGES.map(type =>
-        <StyleButton
-          key={type.label}
-          active={type.syntax === blockType}
-          label={type.label}
-          onToggle={props.onToggle}
-          style={type.style}
-        />
-      )}
       <StyleButton
         key="Undo"
         label="Undo"

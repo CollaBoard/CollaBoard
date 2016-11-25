@@ -51,7 +51,7 @@ class Board extends React.Component {
               this.state.messages.push(message);
               this.setState({ messages: this.state.messages });
               if (!this.state.displayChat) {
-                alert('Open your chat window');
+                // alert('Open your chat window');
               }
             });
 
@@ -246,10 +246,10 @@ Board.propTypes = {
   SERVE_TEXT: React.PropTypes.func,
   // currentTeam: React.PropTypes.string,
   // connectedUsers: React.PropTypes.array,  // eslint-disable-line react/forbid-prop-types
-  canvasState: React.PropTypes.object,  // eslint-disable-line react/forbid-prop-types
-  editorState: React.PropTypes.object,   // eslint-disable-line react/forbid-prop-types
+  // canvasState: React.PropTypes.object,  // eslint-disable-line react/forbid-prop-types
+  // editorState: React.PropTypes.object,   // eslint-disable-line react/forbid-prop-types
   // socketName: React.PropTypes.string,
-  socket: React.PropTypes.object,   // eslint-disable-line react/forbid-prop-types
+  // socket: React.PropTypes.object,   // eslint-disable-line react/forbid-prop-types
   // display: React.PropTypes.object,   // eslint-disable-line react/forbid-prop-types
 };
 
