@@ -9,7 +9,7 @@ const browserify = require('browserify-middleware');
 const express = require('express');
 const bodyParser = require('body-parser');
 const http = require('http');
-const scssify = require('scssify');
+const sassMiddleware = require('node-sass-middleware');
 
 const socket = require('./socket');
 
@@ -27,18 +27,31 @@ const routes = require('./routes');
 app.use('/app-bundle.js', browserify('./client/src/index.js', {
   transform: [
     ['babelify', { presets: ['es2015', 'react'] }],
-    [scssify, {
-      autoInject: false,
-      export: false,
-      sass: {
-      // See the relevant node-sass documentation
-        sourceMapEmbed: true,
-        sourceMapContents: true,
-        outputStyle: 'compressed',
-      },
-    }],
   ],
 }));
+
+app.use(sassMiddleware({
+  src: './client/src/scss/app.scss',
+  dest: 'client/public/assets/main.css',
+  outputStyle: 'compressed',
+}));
+
+
+// app.use('/main.css', browserify('./client/src/scss/app.scss', {
+//   tranform: [
+//     scssify,
+//     {
+//       autoInject: false,
+//       export: false,
+//       sass: {
+//       // See the relevant node-sass documentation
+//         sourceMapEmbed: true,
+//         sourceMapContents: true,
+//         outputStyle: 'compressed',
+//       },
+//     },
+//   ],
+// }));
 
 app.use(bodyParser.json());
 
