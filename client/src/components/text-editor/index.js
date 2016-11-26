@@ -399,7 +399,6 @@ BlockStyleControls.propTypes = {
 
 InlineStyleControls.propTypes = {
   activeStyles: React.PropTypes.objectOf(React.PropTypes.bool),
-  onToggle: React.PropTypes.func,
 };
 
 TextEditor.propTypes = {
