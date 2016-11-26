@@ -2,3 +2,33 @@
   font-style: italic;
   display: inline-block;
 }
+.RichEditor-styleButton{
+  border: 1px solid #999;
+  background-color: #999;
+  border-radius: 2rem;
+  padding: 1rem;
+  color: #fff;
+  line-height: 8px;
+  &:hover{
+    background-color: #b7b7b7;
+    border-color: #b7b7b7;
+  }
+}
+.RichEditor-activeButton {
+  border-color: #5890ff;
+  background-color: #5890ff;
+  &:hover{
+    background-color: #5890ff;
+    border-color: #5890ff;
+  }
+}
+.RichEditor-hasIcon  {
+  span {
+    line-height: 8px;
+    padding-right: 0.8rem;
+  }
+  i {
+    float: right;
+    // line-height: 10px;
+  }
+}

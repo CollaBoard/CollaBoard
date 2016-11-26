@@ -32,18 +32,18 @@ const styleMap = {
 
 // COLLABOARD: Stylistic breakup of control button style definition blocks
 const BLOCK_TYPES1 = [
-    { label: 'Header 1', style: 'header-one' },
-    { label: 'Header 2', style: 'header-two' },
-    { label: 'Header 3', style: 'header-three' },
-    { label: 'Header 4', style: 'header-four' },
-    { label: 'Header 5', style: 'header-five' },
-    { label: 'Header 6', style: 'header-six' },
+    { label: 'H1', style: 'header-one' },
+    { label: 'H2', style: 'header-two' },
+    { label: 'H3', style: 'header-three' },
+    { label: 'H4', style: 'header-four' },
+    { label: 'H5', style: 'header-five' },
+    { label: 'H6', style: 'header-six' },
 ];
 
 const BLOCK_TYPES2 = [
-  { label: 'Blockquote', style: 'blockquote' },
+  { label: 'Blockquote', style: 'blockquote', icon: 'format_quote' },
   // { label: 'Bullet', style: 'unordered-list-item' },
-  { label: 'Numbered List', style: 'ordered-list-item' },
+  { label: 'Numbered List', style: 'ordered-list-item', icon: 'format_list_numbered' },
   { label: 'JS Code Block', style: 'code-block' },
 ];
 
@@ -245,12 +245,14 @@ class TextEditor extends React.Component {
           onToggle={this.toggleBlockType}
           onRedo={this.onRedo}
           onUndo={this.onUndo}
+          preface="Headings:    "
         />
         <BlockStyleControls
           selection={selection}
           blocks={BLOCK_TYPES2}
           blockType={blockType}
           onToggle={this.toggleBlockType}
+          preface="Block Type:    "
         />
         <InlineStyleControls
           onRedo={this.onRedo}
@@ -267,7 +269,7 @@ class TextEditor extends React.Component {
             handleKeyCommand={this.handleKeyCommand}
             keyBindingFn={this.keyBindingFn}
             onChange={this.onChange}
-            placeholder="Tell a story..."
+            placeholder="Write right here..."
             ref={(ref) => { this.editor = ref; }}
             spellCheck
             handleReturn={this.onReturn}
@@ -317,9 +319,15 @@ const BlockStyleControls = (props) => {
   // const lang = editorState
   //   .getCurrentContent()
   //   .getBlockForKey(selection.getStartKey());
-
+  let preface;
+  if (props.preface) {
+    preface = props.preface;
+  } else {
+    preface = '';
+  }
   return (
     <div className="RichEditor-controls">
+      {preface}
       {blocks.map(type =>
         <StyleButton
           key={type.label}
@@ -327,6 +335,7 @@ const BlockStyleControls = (props) => {
           label={type.label}
           onToggle={props.onToggle}
           style={type.style}
+          icon={type.icon}
         />
       )}
     </div>
@@ -343,14 +352,14 @@ const BlockStyleControls = (props) => {
 // )}
 
 const INLINE_STYLES = [
-  { label: 'Bold', style: 'BOLD' },
-  { label: 'Italic', style: 'ITALIC' },
-  { label: 'Underline', style: 'UNDERLINE' },
-  { label: 'Monospace', style: 'CODE' },
+  { label: 'Bold', style: 'BOLD', icon: 'format_bold' },
+  { label: 'Italic', style: 'ITALIC', icon: 'format_italic' },
+  { label: 'Underline', style: 'UNDERLINE', icon: 'format_underlined' },
+  // { label: 'Monospace', style: 'CODE' },
 ];
 const ExtraControlButtons = [
-  { label: 'Undo', func: 'onUndo' },
-  { label: 'Redo', func: 'onRedo' },
+  { label: 'Undo', func: 'onUndo', icon: 'undo' },
+  { label: 'Redo', func: 'onRedo', icon: 'redo' },
 ];
 const InlineStyleControls = (props) => {
   const activeStyles = props.activeStyles;
@@ -363,14 +372,16 @@ const InlineStyleControls = (props) => {
           label={type.label}
           onToggle={props.onToggle}
           style={type.style}
+          icon={type.icon}
         />
       )}
-      <div className="extra-control-buttons" >
+      <div className="extra-control-buttons">
         {ExtraControlButtons.map(type =>
           <StyleButton
             key={type.label}
             label={type.label}
             onToggle={props[type.func]}
+            icon={type.icon}
           />
         )}
       </div>
@@ -381,6 +392,7 @@ const InlineStyleControls = (props) => {
 // COLLABOARD: Proptype validations to prevent unexpected props and to follow AirBnB style
 BlockStyleControls.propTypes = {
   blockType: React.PropTypes.string,
+  preface: React.PropTypes.string,
   onToggle: React.PropTypes.func,
   blocks: React.PropTypes.array, // eslint-disable-line react/forbid-prop-types
 };
