@@ -34,6 +34,7 @@ app.use(sassMiddleware({
   src: './client/src/scss/app.scss',
   dest: 'client/public/assets/main.css',
   outputStyle: 'compressed',
+  sourceMap: 'true',
 }));
 
 
