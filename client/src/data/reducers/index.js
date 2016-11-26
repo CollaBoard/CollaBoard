@@ -2,12 +2,8 @@
 import { combineReducers } from 'redux';
 
 import editorState from './editorReducer';
-// import modal from './modals';
 
 const rootReducer = combineReducers({
-  // this is default boilterplate:
-  // state: (state = {}) => state
-  // modal,
   editorState,
 });
 

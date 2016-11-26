@@ -17,11 +17,7 @@ import { bindActionCreators } from 'redux';
 import CodeUtils from 'draft-js-code';
 // COLLABOARD: see forked repository https://github.com/CollaBoard/draft-js-prism for changes
 import PrismDraftDecorator from 'draft-js-prism';
-// COLLABOARD: Adding socket.io
-// import io from 'socket.io-client';
 import StyleButton from './StyleButton';
-// import TextEditor from 'draft-js-code';
-// import TextEditor from './../../../../draft-js-code/demo/main';
 import actionCreators from '../../data/actions';
 
 // Custom overrides for "code" style.
@@ -49,17 +45,12 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch =>
   bindActionCreators({ TEXT_CHANGE: actionCreators.TEXT_CHANGE }, dispatch);
 
-// COLLABOARD: initializing socket
-// const socket = io();
-
 class TextEditor extends React.Component {
   constructor(props) {
     super(props);
 
     const decorator = new PrismDraftDecorator();
-    // COLLABOARD: check if
-    // if (!this.props.editorState && this.props.editorState !== {}) {
-    // console.log('creating new editor state');
+    // COLLABOARD: creating new editor state based on Redux store
     let newEditorState;
     if (this.props.editorState === null) {
       const empty = Draft.ContentState.createFromText('');
@@ -69,33 +60,13 @@ class TextEditor extends React.Component {
       newEditorState = Draft.EditorState
         .createWithContent(contentParsed, decorator);
     }
-    // if (typeof this.props.editorState === 'string') {
-    //   console.log('editorstate string');
-    //   contentParsed = JSON.parse(this.props.editorState);
-    // } else if (this.props.editorState.editorState) {
-    //   console.log('editorstate object:', this.props.editorState);
-    //   contentParsed = JSON.parse(this.props.editorState.editorState);
-    //   // contentParsed = JSON.parse(JSON.stringify(this.props.editorState));
-    // } else {
-    // contentParsed = this.props.editorState;
-    // }
-
-    // const newEditorState = Draft.EditorState.createEmpty(decorator);
     this.state = {
       editorState: newEditorState,
     };
-    // this.props.TEXT_CHANGE(convertToRaw(newEditorState.getCurrentContent()), this.props.socket);
-    // } else {
-    //   this.state = {
-    //     editorState: this.props.editorState,
-    //   };
-    //   this.props.TEXT_CHANGE(convertToRaw(this.state.editorState.getCurrentContent()));
-    // }
 
     this.focus = () => this.editor.focus();
     // COLLABOARD: Emitting change event on editor change
     this.onChange = (editorState) => {
-      // console.log(JSON.stringify(convertToRaw(this.state.editorState.getCurrentContent())));
       this.setState({ editorState },
         function emitChange() {
           this.props.TEXT_CHANGE(
@@ -103,10 +74,6 @@ class TextEditor extends React.Component {
           this.props.socket
         );
         });
-        // console.log('text change');
-        // socket.emit('text change', convertToRaw(this.state.editorState.getCurrentContent()));
-      //
-    // );
     };
 
 // COLLABOARD: original underscore-prefaced changed to i-prefaced to comply
@@ -120,52 +87,16 @@ class TextEditor extends React.Component {
   // COLLABOARD: Keeping same style for new functions like undo and redo
     this.onUndo = () => this.iOnUndo();
     this.onRedo = () => this.iOnRedo();
-
-    // COLLABOARD: On mount should render redux saved
-    this.componentDidMount = () => {
-      // this.props.TEXT_CHANGE(JSON.stringify(convertToRaw(
-      //   this.state.editorState.getCurrentContent())),
-      //   this.props.socket
-      // );
-    //   $.ajax({
-    //     type: 'POST',
-    //     url: '/api/boards',
-    //     data: {
-    //       type: 'TextEditor',
-    //     },
-    //     contentType: 'JSON',
-    //   }).then((board) => {
-    //     const socketPath = `/${board.uid}`;
-    //     const thisSocket = io(socketPath);
-    //     thisSocket.on('serve text', (rawEditorState) => {
-    //       const newContentState = convertFromRaw(rawEditorState);
-    //       const editorStateToSet = Draft.EditorState.push(
-    //        this.state.editorState,
-    //        newContentState
-    //       );
-    //       this.setState({ editorState: editorStateToSet });
-    //     });
-    //   }).catch(() => {
-    //     // console.log('Error creating namespace:', err);
-    //   });
-    };
   }
 
   // COLLABOARD: Setting the editor up to receive new editor state from redux
   componentWillReceiveProps(newProps) {
-    // console.log('newProps:', newProps);
     if (newProps.editorState && newProps.editorState.textOrigin === 'remote') {
       const newContentState = convertFromRaw(JSON.parse(newProps.editorState.editorState));
-      // console.log('newContentState:', newContentState);
-      // const focus = this.state.editorState.getSelection();
-      // console.log('focus:', focus);
       const newState = Draft.EditorState
         .push(this.state.editorState, newContentState, 'update-state');
-      // console.log('newState:', newState);
       // const focusState = Draft.EditorState.forceSelection(newState, focus);
-      // console.log('focusState:', focusState);
       this.setState({ editorState: newState });
-      // this.onChange(focusState);
     }
   }
 
@@ -266,7 +197,6 @@ class TextEditor extends React.Component {
 
   render() {
     const { editorState } = this.state;
-    // console.log(editorState);
 
     let className = 'RichEditor-editor';
     const contentState = editorState.getCurrentContent();
@@ -277,13 +207,9 @@ class TextEditor extends React.Component {
     }
 
     const selection = editorState.getSelection();
-    // console.log('selection:', selection);
-    // console.log('content:', contentState);
     const block = contentState
       .getBlockForKey(selection.getStartKey());
-    // console.log('block:', block);
     const blockType = block.getType();
-    // console.log('blockType:', blockType);
 
     const inlineStyle = editorState.getCurrentInlineStyle();
     const activeStyles = {
@@ -378,7 +304,6 @@ const BlockStyleControls = (props) => {
   // const lang = editorState
   //   .getCurrentContent()
   //   .getBlockForKey(selection.getStartKey());
-  // console.log(lang);
 
 // COLLABOARD: mapping language buttons next to block types
   return (
@@ -439,29 +364,6 @@ const InlineStyleControls = (props) => {
   );
 };
 
-// class StyleButton extends React.Component {
-//   constructor() {
-//     super();
-//     this.onToggle = (e) => {
-//       e.preventDefault();
-//       this.props.onToggle(this.props.style);
-//     };
-//   }
-//
-//   render() {
-//     let className = 'RichEditor-styleButton';
-//     if (this.props.active) {
-//       className += ' RichEditor-activeButton';
-//     }
-//
-//     return (
-//       <span className={className} onMouseDown={this.onToggle}>
-//         {this.props.label}
-//       </span>
-//     );
-//   }
-// }
-
 // COLLABOARD: Proptype validations to prevent unexpected props and to follow AirBnB style
 BlockStyleControls.propTypes = {
   blockType: React.PropTypes.string,
@@ -475,20 +377,10 @@ InlineStyleControls.propTypes = {
   onToggle: React.PropTypes.func,
 };
 
-// StyleButton.propTypes = {
-//   onToggle: React.PropTypes.func,
-//   active: React.PropTypes.bool,
-//   style: React.PropTypes.string,
-//   label: React.PropTypes.string,
-// };
-
 TextEditor.propTypes = {
-  // active: React.PropTypes.bool,
-  // onToggle: React.PropTypes.func,
   editorState: React.PropTypes.string,   // eslint-disable-line react/forbid-prop-types
   socket: React.PropTypes.object,    // eslint-disable-line react/forbid-prop-types
   TEXT_CHANGE: React.PropTypes.func,
-  // style: React.PropTypes.string,
 };
 
 // COLLABOARD: Redux container component for text editor

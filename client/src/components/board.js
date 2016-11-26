@@ -78,18 +78,6 @@ class Board extends React.Component {
               // console.log('serving text!!!');
               this.props.SERVE_TEXT(text);
             });
-            // this.state.unsubscribe = reduxStore.subscribe(() => {
-            //   const currentState = reduxStore.getState();
-            //   console.log('updating store');
-            //   this.setState({
-            //     display: currentState.display,
-            //     canvasState: currentState.canvasState,
-            //     socket: currentState.socket,
-            //     socketName: currentState.socketName,
-            //     whiteboard: currentState.canvasState,
-            //     texteditor: currentState.editorState,
-            //   });
-            // });
           })
           .catch(() => {
             // console.err(err);
@@ -242,16 +230,7 @@ class Board extends React.Component {
 
 Board.propTypes = {
   uid: React.PropTypes.string,
-  // TEXT_CHANGE: React.PropTypes.func,
   SERVE_TEXT: React.PropTypes.func,
-  // currentTeam: React.PropTypes.string,
-  // connectedUsers: React.PropTypes.array,  // eslint-disable-line react/forbid-prop-types
-  // canvasState: React.PropTypes.object,  // eslint-disable-line react/forbid-prop-types
-  // editorState: React.PropTypes.object,   // eslint-disable-line react/forbid-prop-types
-  // socketName: React.PropTypes.string,
-  // socket: React.PropTypes.object,   // eslint-disable-line react/forbid-prop-types
-  // display: React.PropTypes.object,   // eslint-disable-line react/forbid-prop-types
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Board);
-// export default Board;
