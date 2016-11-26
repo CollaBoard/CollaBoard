@@ -3,10 +3,10 @@ import io from 'socket.io-client';
 import page from 'page';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
+import Canvas from 'collaboard-canvas';
 
 import WebRTC from '../lib/webrtc';
 import API from '../lib/api';
-import Canvas from './whiteboard/Canvas';
 import Whiteboard from './whiteboard';
 import TextEditor from './text-editor';
 import actionCreators from '../data/actions';
