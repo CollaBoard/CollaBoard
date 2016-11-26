@@ -30,6 +30,8 @@ const styleMap = {
   },
 };
 
+<<<<<<< 388df10690db8d33b2c9961cbf2d34613db305e0
+=======
 // COLLABOARD: Stylistic breakup of control button style definition blocks
 const BLOCK_TYPES1 = [
     { label: 'Header 1', style: 'header-one' },
@@ -47,6 +49,7 @@ const BLOCK_TYPES2 = [
   { label: 'JS Code Block', style: 'code-block' },
 ];
 
+>>>>>>> deletes compiled CSS files and italicizes undo and redo, adds SCSS compile script to npm start
 function getBlockStyle(block) {
   switch (block.getType()) {
     case 'blockquote': return 'RichEditor-blockquote';
@@ -129,7 +132,7 @@ class TextEditor extends React.Component {
     );
   }
 
-  // COLLABOARD: Defining undo and redo functions
+  // COLLABOARD: Defining undo and redo functions, to work on nav bar clicks
   iOnUndo() {
     const editorState = this.state.editorState;
 
@@ -240,21 +243,12 @@ class TextEditor extends React.Component {
       <div className="RichEditor-root">
         <BlockStyleControls
           selection={selection}
-          blocks={BLOCK_TYPES1}
           blockType={blockType}
           onToggle={this.toggleBlockType}
           onRedo={this.onRedo}
           onUndo={this.onUndo}
-        />
-        <BlockStyleControls
-          selection={selection}
-          blocks={BLOCK_TYPES2}
-          blockType={blockType}
-          onToggle={this.toggleBlockType}
         />
         <InlineStyleControls
-          onRedo={this.onRedo}
-          onUndo={this.onUndo}
           activeStyles={activeStyles}
           onToggle={this.toggleInlineStyle}
         />
@@ -310,17 +304,31 @@ class TextEditor extends React.Component {
 //   }
 // }
 
+const BLOCK_TYPES = [
+    { label: 'H1', style: 'header-one' },
+    { label: 'H2', style: 'header-two' },
+    { label: 'H3', style: 'header-three' },
+    { label: 'H4', style: 'header-four' },
+    { label: 'H5', style: 'header-five' },
+    { label: 'H6', style: 'header-six' },
+    { label: 'Blockquote', style: 'blockquote' },
+    { label: 'UL', style: 'unordered-list-item' },
+    { label: 'OL', style: 'ordered-list-item' },
+    { label: 'JS Code Block', style: 'code-block' },
+];
+
 const BlockStyleControls = (props) => {
-  const { blockType, blocks } = props;
+  const { blockType } = props;
 
     // COLLABOARD: adding language variable to track current language of code block
   // const lang = editorState
   //   .getCurrentContent()
   //   .getBlockForKey(selection.getStartKey());
 
+// COLLABOARD: mapping language buttons next to block types
   return (
     <div className="RichEditor-controls">
-      {blocks.map(type =>
+      {BLOCK_TYPES.map(type =>
         <StyleButton
           key={type.label}
           active={type.style === blockType}
@@ -329,6 +337,16 @@ const BlockStyleControls = (props) => {
           style={type.style}
         />
       )}
+      <StyleButton
+        key="Undo"
+        label="Undo"
+        onToggle={props.onUndo}
+      />
+      <StyleButton
+        key="Redo"
+        label="Redo"
+        onToggle={props.onRedo}
+      />
     </div>
   );
 };
@@ -348,10 +366,7 @@ const INLINE_STYLES = [
   { label: 'Underline', style: 'UNDERLINE' },
   { label: 'Monospace', style: 'CODE' },
 ];
-const ExtraControlButtons = [
-  { label: 'Undo', func: 'onUndo' },
-  { label: 'Redo', func: 'onRedo' },
-];
+
 const InlineStyleControls = (props) => {
   const activeStyles = props.activeStyles;
   return (
@@ -365,6 +380,8 @@ const InlineStyleControls = (props) => {
           style={type.style}
         />
       )}
+<<<<<<< 388df10690db8d33b2c9961cbf2d34613db305e0
+=======
       <div className="extra-control-buttons" >
         {ExtraControlButtons.map(type =>
           <StyleButton
@@ -374,6 +391,7 @@ const InlineStyleControls = (props) => {
           />
         )}
       </div>
+>>>>>>> deletes compiled CSS files and italicizes undo and redo, adds SCSS compile script to npm start
     </div>
   );
 };
@@ -382,7 +400,8 @@ const InlineStyleControls = (props) => {
 BlockStyleControls.propTypes = {
   blockType: React.PropTypes.string,
   onToggle: React.PropTypes.func,
-  blocks: React.PropTypes.array, // eslint-disable-line react/forbid-prop-types
+  onUndo: React.PropTypes.func,
+  onRedo: React.PropTypes.func,
 };
 
 InlineStyleControls.propTypes = {
@@ -391,7 +410,7 @@ InlineStyleControls.propTypes = {
 };
 
 TextEditor.propTypes = {
-  editorState: React.PropTypes.string,
+  editorState: React.PropTypes.string,   // eslint-disable-line react/forbid-prop-types
   socket: React.PropTypes.object,    // eslint-disable-line react/forbid-prop-types
   TEXT_CHANGE: React.PropTypes.func,
 };
