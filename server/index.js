@@ -9,6 +9,7 @@ const browserify = require('browserify-middleware');
 const express = require('express');
 const bodyParser = require('body-parser');
 const http = require('http');
+const scssify = require('scssify');
 
 const socket = require('./socket');
 
@@ -26,6 +27,16 @@ const routes = require('./routes');
 app.use('/app-bundle.js', browserify('./client/src/index.js', {
   transform: [
     ['babelify', { presets: ['es2015', 'react'] }],
+    [scssify, {
+      autoInject: false,
+      export: false,
+      sass: {
+      // See the relevant node-sass documentation
+        sourceMapEmbed: true,
+        sourceMapContents: true,
+        outputStyle: 'compressed',
+      },
+    }],
   ],
 }));
 
