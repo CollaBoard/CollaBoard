@@ -1,30 +1,47 @@
 const express = require('express');
-const Board = require('../models/board');
 const Auth = require('../lib/auth');
+const util = require('../lib/util');
+const Boards = require('../controllers/boards');
+const Users = require('../controllers/users');
+const Teams = require('../controllers/teams');
 
-const router = express.Router();
+const router = module.exports = express.Router();
 
-router.get('/', (req, res) => {
-  res.send(['this', 'is', 'the', 'api', 'route']);
+// attach the user to the request if logged in
+router.use(Auth.authenticate(false));
+
+router.get('/me', (req, res) => {
+  if (!req.user) {
+    return util.sendError(res)(new util.PermissionDenied('not logged in'));
+  }
+  const result = Object.assign({}, req.user);
+  req.user.fetchBoards()
+    .then((boards) => {
+      result.boards = boards;
+      return req.user.fetchTeams();
+    })
+    .then((teams) => {
+      result.teams = teams;
+      if (req.session.recent_boards) {
+        result.recent_boards = req.session.recent_boards;
+      }
+      res.send(result);
+    })
+    .catch(util.sendError(res));
 });
 
-router.get('/me', Auth.checkLogin(true), (req, res) => {
-  res.send(req.user);
-});
+router.get('/boards', Boards.getForUser);
+router.post('/boards', Boards.createBoard);
+router.get('/boards/:uid', Boards.getBoard);
 
-router.get('/boards/:boardId', (req, res) => {
-  Board.find(req.params.boardId)
-    .then(board => res.send(board))
-    // TODO: better error handling
-    .catch(err => res.status(404).send(err));
-});
+router.get('/users/:uid', Users.getUser);
+router.put('/users/:uid', Users.update);
 
-router.post('/boards', (req, res) => {
-  const type = req.body.type;
-  Board.create(type)
-    .then(board => res.send(board))
-    // TODO: better error handling
-    .catch(err => res.status(500).send(err));
-});
+router.get('/teams', Teams.getForUser);
+router.post('/teams', Teams.createTeam);
+router.get('/teams/:uid', Teams.getTeam);
+router.put('/teams/:uid', Teams.update);
 
-module.exports = router;
+router.use('/*', (req, res) => {
+  util.sendError(res)(new util.NotFound('endpoint not found'));
+});

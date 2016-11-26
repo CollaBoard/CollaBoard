@@ -12,14 +12,13 @@ import Draft, {
   convertToRaw,
 } from 'draft-js';
 import React from 'react';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 import CodeUtils from 'draft-js-code';
 // COLLABOARD: see forked repository https://github.com/CollaBoard/draft-js-prism for changes
 import PrismDraftDecorator from 'draft-js-prism';
-// COLLABOARD: Adding socket.io
-import io from 'socket.io-client';
 import StyleButton from './StyleButton';
-// import TextEditor from 'draft-js-code';
-// import TextEditor from './../../../../draft-js-code/demo/main';
+import actionCreators from '../../data/actions';
 
 // Custom overrides for "code" style.
 const styleMap = {
@@ -31,6 +30,23 @@ const styleMap = {
   },
 };
 
+// COLLABOARD: Stylistic breakup of control button style definition blocks
+const BLOCK_TYPES1 = [
+    { label: 'H1', style: 'header-one' },
+    { label: 'H2', style: 'header-two' },
+    { label: 'H3', style: 'header-three' },
+    { label: 'H4', style: 'header-four' },
+    { label: 'H5', style: 'header-five' },
+    { label: 'H6', style: 'header-six' },
+];
+
+const BLOCK_TYPES2 = [
+  { label: 'Blockquote', style: 'blockquote', icon: 'format_quote' },
+  // { label: 'Bullet', style: 'unordered-list-item' },
+  { label: 'Numbered List', style: 'ordered-list-item', icon: 'format_list_numbered' },
+  { label: 'JS Code Block', style: 'code-block' },
+];
+
 function getBlockStyle(block) {
   switch (block.getType()) {
     case 'blockquote': return 'RichEditor-blockquote';
@@ -38,24 +54,43 @@ function getBlockStyle(block) {
   }
 }
 
-// COLLABOARD: initializing socket
-const socket = io();
+// COLLABOARD: initializing functions for text editor container
+const mapStateToProps = state => ({
+  editorState: state.editorState,
+});
+
+const mapDispatchToProps = dispatch =>
+  bindActionCreators({ TEXT_CHANGE: actionCreators.TEXT_CHANGE }, dispatch);
 
 class TextEditor extends React.Component {
   constructor(props) {
     super(props);
 
     const decorator = new PrismDraftDecorator();
+    // COLLABOARD: creating new editor state based on Redux store
+    let newEditorState;
+    if (this.props.editorState === null) {
+      const empty = Draft.ContentState.createFromText('');
+      newEditorState = Draft.EditorState.createWithContent(empty, decorator);
+    } else {
+      const contentParsed = convertFromRaw(JSON.parse(this.props.editorState.editorState));
+      newEditorState = Draft.EditorState
+        .createWithContent(contentParsed, decorator);
+    }
     this.state = {
-      editorState: Draft.EditorState.createEmpty(decorator),
+      editorState: newEditorState,
     };
 
     this.focus = () => this.editor.focus();
     // COLLABOARD: Emitting change event on editor change
     this.onChange = (editorState) => {
-      this.setState({ editorState }, function emitChange() {
-        socket.emit('text change', convertToRaw(this.state.editorState.getCurrentContent()));
-      });
+      this.setState({ editorState },
+        function emitChange() {
+          this.props.TEXT_CHANGE(
+          JSON.stringify(convertToRaw(editorState.getCurrentContent())),
+          this.props.socket
+        );
+        });
     };
 
 // COLLABOARD: original underscore-prefaced changed to i-prefaced to comply
@@ -71,28 +106,16 @@ class TextEditor extends React.Component {
     this.onRedo = () => this.iOnRedo();
   }
 
-  // COLLABOARD: Listening to socket and updating content after component mount
-  componentDidMount() {
-    $.ajax({
-      type: 'POST',
-      url: '/api/boards',
-      data: {
-        type: 'TextEditor',
-      },
-      contentType: 'JSON',
-    }).then((board) => {
-      const socketPath = `/${board.uid}`;
-      const thisSocket = io(socketPath);
-      thisSocket.on('serve text', (rawEditorState) => {
-        const newContentState = convertFromRaw(rawEditorState);
-        const editorStateToSet = Draft.EditorState.push(this.state.editorState, newContentState);
-        this.setState({ editorState: editorStateToSet });
-      });
-    }).catch(() => {
-      // console.log('Error creating namespace:', err);
-    });
+  // COLLABOARD: Setting the editor up to receive new editor state from redux
+  componentWillReceiveProps(newProps) {
+    if (newProps.editorState && newProps.editorState.textOrigin === 'remote') {
+      const newContentState = convertFromRaw(JSON.parse(newProps.editorState.editorState));
+      const newState = Draft.EditorState
+        .push(this.state.editorState, newContentState, 'update-state');
+      // const focusState = Draft.EditorState.forceSelection(newState, focus);
+      this.setState({ editorState: newState });
+    }
   }
-
 
   iOnTab(e) {
     const editorState = this.state.editorState;
@@ -106,7 +129,7 @@ class TextEditor extends React.Component {
     );
   }
 
-  // COLLABOARD: Defining undo and redo functions, to work on nav bar clicks
+  // COLLABOARD: Defining undo and redo functions
   iOnUndo() {
     const editorState = this.state.editorState;
 
@@ -126,6 +149,8 @@ class TextEditor extends React.Component {
   iOnReturn(e) {
     const editorState = this.state.editorState;
 
+    // COLLABOARD: Added false return to comply with AirBnB consistent return
+    // Notice: do not delete the final 'true' return, or each return will break a text block
     if (!CodeUtils.hasSelectionInBlock(editorState)) {
       return false;
     }
@@ -190,8 +215,6 @@ class TextEditor extends React.Component {
   render() {
     const { editorState } = this.state;
 
-    // If the user changes block type before entering any text, we can
-    // either style the placeholder or hide it. Let's just hide it now.
     let className = 'RichEditor-editor';
     const contentState = editorState.getCurrentContent();
     if (!contentState.hasText()) {
@@ -201,10 +224,9 @@ class TextEditor extends React.Component {
     }
 
     const selection = editorState.getSelection();
-    const blockType = editorState
-      .getCurrentContent()
-      .getBlockForKey(selection.getStartKey())
-      .getType();
+    const block = contentState
+      .getBlockForKey(selection.getStartKey());
+    const blockType = block.getType();
 
     const inlineStyle = editorState.getCurrentInlineStyle();
     const activeStyles = {
@@ -218,12 +240,23 @@ class TextEditor extends React.Component {
       <div className="RichEditor-root">
         <BlockStyleControls
           selection={selection}
+          blocks={BLOCK_TYPES1}
           blockType={blockType}
           onToggle={this.toggleBlockType}
           onRedo={this.onRedo}
           onUndo={this.onUndo}
+          preface="Headings:    "
+        />
+        <BlockStyleControls
+          selection={selection}
+          blocks={BLOCK_TYPES2}
+          blockType={blockType}
+          onToggle={this.toggleBlockType}
+          preface="Block Type:    "
         />
         <InlineStyleControls
+          onRedo={this.onRedo}
+          onUndo={this.onUndo}
           activeStyles={activeStyles}
           onToggle={this.toggleInlineStyle}
         />
@@ -236,7 +269,7 @@ class TextEditor extends React.Component {
             handleKeyCommand={this.handleKeyCommand}
             keyBindingFn={this.keyBindingFn}
             onChange={this.onChange}
-            placeholder="Tell a story..."
+            placeholder="Write right here..."
             ref={(ref) => { this.editor = ref; }}
             spellCheck
             handleReturn={this.onReturn}
@@ -249,11 +282,11 @@ class TextEditor extends React.Component {
 }
 
 // COLLABOARD: languages array
-const LANGUAGES = [
-  { label: 'Javascript', style: 'language-Javascript' },
-  { label: 'HTML', style: 'language-HTML' },
-  { label: 'CSS', style: 'language-CSS' },
-];
+// const LANGUAGES = [
+//   { label: 'Javascript', style: 'language-Javascript' },
+//   { label: 'HTML', style: 'language-HTML' },
+//   { label: 'CSS', style: 'language-CSS' },
+// ];
 // COLLABOARD: language button component
 // class CodeButtons extends React.Component {
 //   constructor() {
@@ -279,70 +312,55 @@ const LANGUAGES = [
 //   }
 // }
 
-const BLOCK_TYPES = [
-    { label: 'H1', style: 'header-one' },
-    { label: 'H2', style: 'header-two' },
-    { label: 'H3', style: 'header-three' },
-    { label: 'H4', style: 'header-four' },
-    { label: 'H5', style: 'header-five' },
-    { label: 'H6', style: 'header-six' },
-    { label: 'Blockquote', style: 'blockquote' },
-    { label: 'UL', style: 'unordered-list-item' },
-    { label: 'OL', style: 'ordered-list-item' },
-    { label: 'Code Block', style: 'code-block' },
-];
-
 const BlockStyleControls = (props) => {
-  const { blockType } = props;
+  const { blockType, blocks } = props;
 
     // COLLABOARD: adding language variable to track current language of code block
   // const lang = editorState
   //   .getCurrentContent()
   //   .getBlockForKey(selection.getStartKey());
-  // console.log(lang);
-
-// COLLABOARD: mapping language buttons next to block types
+  let preface;
+  if (props.preface) {
+    preface = props.preface;
+  } else {
+    preface = '';
+  }
   return (
     <div className="RichEditor-controls">
-      {BLOCK_TYPES.map(type =>
+      {preface}
+      {blocks.map(type =>
         <StyleButton
           key={type.label}
           active={type.style === blockType}
           label={type.label}
           onToggle={props.onToggle}
           style={type.style}
+          icon={type.icon}
         />
       )}
-      {LANGUAGES.map(type =>
-        <StyleButton
-          key={type.label}
-          active={type.syntax === blockType}
-          label={type.label}
-          onToggle={props.onToggle}
-          style={type.style}
-        />
-      )}
-      <StyleButton
-        key="Undo"
-        label="Undo"
-        onToggle={props.onUndo}
-      />
-      <StyleButton
-        key="Redo"
-        label="Redo"
-        onToggle={props.onRedo}
-      />
     </div>
   );
 };
+// {LANGUAGES.map(type =>
+//   <StyleButton
+//     key={type.label}
+//     active={type.syntax === blockType}
+//     label={type.label}
+//     onToggle={props.onToggle}
+//     style={type.style}
+//   />
+// )}
 
 const INLINE_STYLES = [
-  { label: 'Bold', style: 'BOLD' },
-  { label: 'Italic', style: 'ITALIC' },
-  { label: 'Underline', style: 'UNDERLINE' },
-  { label: 'Monospace', style: 'CODE' },
+  { label: 'Bold', style: 'BOLD', icon: 'format_bold' },
+  { label: 'Italic', style: 'ITALIC', icon: 'format_italic' },
+  { label: 'Underline', style: 'UNDERLINE', icon: 'format_underlined' },
+  // { label: 'Monospace', style: 'CODE' },
 ];
-
+const ExtraControlButtons = [
+  { label: 'Undo', func: 'onUndo', icon: 'undo' },
+  { label: 'Redo', func: 'onRedo', icon: 'redo' },
+];
 const InlineStyleControls = (props) => {
   const activeStyles = props.activeStyles;
   return (
@@ -354,59 +372,40 @@ const InlineStyleControls = (props) => {
           label={type.label}
           onToggle={props.onToggle}
           style={type.style}
+          icon={type.icon}
         />
       )}
+      <div className="extra-control-buttons">
+        {ExtraControlButtons.map(type =>
+          <StyleButton
+            key={type.label}
+            label={type.label}
+            onToggle={props[type.func]}
+            icon={type.icon}
+          />
+        )}
+      </div>
     </div>
   );
 };
 
-// class StyleButton extends React.Component {
-//   constructor() {
-//     super();
-//     this.onToggle = (e) => {
-//       e.preventDefault();
-//       this.props.onToggle(this.props.style);
-//     };
-//   }
-//
-//   render() {
-//     let className = 'RichEditor-styleButton';
-//     if (this.props.active) {
-//       className += ' RichEditor-activeButton';
-//     }
-//
-//     return (
-//       <span className={className} onMouseDown={this.onToggle}>
-//         {this.props.label}
-//       </span>
-//     );
-//   }
-// }
-
+// COLLABOARD: Proptype validations to prevent unexpected props and to follow AirBnB style
 BlockStyleControls.propTypes = {
   blockType: React.PropTypes.string,
+  preface: React.PropTypes.string,
   onToggle: React.PropTypes.func,
-  onUndo: React.PropTypes.func,
-  onRedo: React.PropTypes.func,
+  blocks: React.PropTypes.array, // eslint-disable-line react/forbid-prop-types
 };
 
 InlineStyleControls.propTypes = {
   activeStyles: React.PropTypes.objectOf(React.PropTypes.bool),
-  onToggle: React.PropTypes.func,
 };
-
-// StyleButton.propTypes = {
-//   onToggle: React.PropTypes.func,
-//   active: React.PropTypes.bool,
-//   style: React.PropTypes.string,
-//   label: React.PropTypes.string,
-// };
 
 TextEditor.propTypes = {
-  active: React.PropTypes.bool,
-  onToggle: React.PropTypes.func,
-  // editorState: React.PropTypes.node,
-  style: React.PropTypes.string,
+  editorState: React.PropTypes.string,
+  socket: React.PropTypes.object,    // eslint-disable-line react/forbid-prop-types
+  TEXT_CHANGE: React.PropTypes.func,
 };
 
-export default TextEditor;
+// COLLABOARD: Redux container component for text editor
+export default connect(mapStateToProps, mapDispatchToProps)(TextEditor);

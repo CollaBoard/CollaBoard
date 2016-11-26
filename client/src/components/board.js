@@ -1,13 +1,29 @@
 import React from 'react';
 import io from 'socket.io-client';
 import page from 'page';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+import Canvas from 'collaboard-canvas';
 
 import WebRTC from '../lib/webrtc';
 import API from '../lib/api';
-import Canvas from './whiteboard/Canvas';
 import Whiteboard from './whiteboard';
 import TextEditor from './text-editor';
+import actionCreators from '../data/actions';
 import TextChat from './textchat';
+
+const mapStateToProps = state => ({
+  currentTeam: state.currentTeam,
+  connectedUsers: state.connectedUsers,
+  canvasState: state.canvasState,
+  editorState: state.editorState,
+  socketName: state.socketName,
+  socket: state.socket,
+  display: state.display,
+});
+
+const mapDispatchToProps = dispatch =>
+  bindActionCreators({ SERVE_TEXT: actionCreators.SERVE_TEXT }, dispatch);
 
 class Board extends React.Component {
   constructor(props) {
@@ -16,6 +32,7 @@ class Board extends React.Component {
       display: <div />,
       socket: null,
       canvasState: null,
+      editorState: null,
       messages: [],
     };
     this.submitMessage = this.submitMessage.bind(this);
@@ -34,11 +51,12 @@ class Board extends React.Component {
               this.state.messages.push(message);
               this.setState({ messages: this.state.messages });
               if (!this.state.displayChat) {
-                alert('Open your chat window');
+                // alert('Open your chat window');
               }
             });
 
             const canvas = new Canvas();
+
             const whiteboard = <Whiteboard socket={socket} canvasState={canvas} />;
             const texteditor = <TextEditor socket={socket} />;
             this.setState({
@@ -56,8 +74,14 @@ class Board extends React.Component {
             socket.on('add figure', (figure) => {
               canvas.addFigure(figure);
             });
+            socket.on('serve text', (text) => {
+              // console.log('serving text!!!');
+              this.props.SERVE_TEXT(text);
+            });
           })
-          .catch(console.err);
+          .catch(() => {
+            // console.err(err);
+          });
         } else {
           API.createBoard()
           .then((board) => {
@@ -206,6 +230,7 @@ class Board extends React.Component {
 
 Board.propTypes = {
   uid: React.PropTypes.string,
+  SERVE_TEXT: React.PropTypes.func,
 };
 
-export default Board;
+export default connect(mapStateToProps, mapDispatchToProps)(Board);
