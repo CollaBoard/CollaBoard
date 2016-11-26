@@ -1,21 +1,20 @@
 import { createStore, compose, applyMiddleware } from 'redux';
+import rootReducer from './reducers';
 /* eslint-disable */
 // require redux-logger only in development mode
+let finalCreateStore;
 if (process.env.NODE_ENV === 'production' && process.env.NODE_ENV !== 'test') {
-  import logger from 'redux-logger';
-}
-/* eslint-enable */
-import rootReducer from './reducers';
-
-if (process.env.NODE_ENV === 'production' && process.env.NODE_ENV !== 'test') {
-  const finalCreateStore = compose(
+  const logger = require('redux-logger');
+  finalCreateStore = compose(
     applyMiddleware(logger())
   )(createStore);
 } else {
-  const finalCreateStore = compose(
+  finalCreateStore = compose(
     applyMiddleware()
   )(createStore);
 }
+/* eslint-enable */
+
 
 export default function configureStore(initialState = {}) {
   return finalCreateStore(rootReducer, initialState);
