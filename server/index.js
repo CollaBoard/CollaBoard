@@ -32,8 +32,6 @@ app.use('/app-bundle.js', browserify('./client/src/index.js', {
       export: false,
       sass: {
       // See the relevant node-sass documentation
-        importer: 'custom-importers.js',
-        importerFactory: 'custom-importer-factory.js',
         sourceMapEmbed: true,
         sourceMapContents: true,
         outputStyle: 'compressed',
