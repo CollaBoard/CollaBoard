@@ -30,6 +30,23 @@ const styleMap = {
   },
 };
 
+// COLLABOARD: Stylistic breakup of control button style definition blocks
+const BLOCK_TYPES1 = [
+    { label: 'H1', style: 'header-one' },
+    { label: 'H2', style: 'header-two' },
+    { label: 'H3', style: 'header-three' },
+    { label: 'H4', style: 'header-four' },
+    { label: 'H5', style: 'header-five' },
+    { label: 'H6', style: 'header-six' },
+];
+
+const BLOCK_TYPES2 = [
+  { label: 'Blockquote', style: 'blockquote', icon: 'format_quote' },
+  // { label: 'Bullet', style: 'unordered-list-item' },
+  { label: 'Numbered List', style: 'ordered-list-item', icon: 'format_list_numbered' },
+  { label: 'JS Code Block', style: 'code-block' },
+];
+
 function getBlockStyle(block) {
   switch (block.getType()) {
     case 'blockquote': return 'RichEditor-blockquote';
@@ -112,7 +129,7 @@ class TextEditor extends React.Component {
     );
   }
 
-  // COLLABOARD: Defining undo and redo functions, to work on nav bar clicks
+  // COLLABOARD: Defining undo and redo functions
   iOnUndo() {
     const editorState = this.state.editorState;
 
@@ -223,12 +240,23 @@ class TextEditor extends React.Component {
       <div className="RichEditor-root">
         <BlockStyleControls
           selection={selection}
+          blocks={BLOCK_TYPES1}
           blockType={blockType}
           onToggle={this.toggleBlockType}
           onRedo={this.onRedo}
           onUndo={this.onUndo}
+          preface="Headings:    "
+        />
+        <BlockStyleControls
+          selection={selection}
+          blocks={BLOCK_TYPES2}
+          blockType={blockType}
+          onToggle={this.toggleBlockType}
+          preface="Block Type:    "
         />
         <InlineStyleControls
+          onRedo={this.onRedo}
+          onUndo={this.onUndo}
           activeStyles={activeStyles}
           onToggle={this.toggleInlineStyle}
         />
@@ -241,7 +269,7 @@ class TextEditor extends React.Component {
             handleKeyCommand={this.handleKeyCommand}
             keyBindingFn={this.keyBindingFn}
             onChange={this.onChange}
-            placeholder="Tell a story..."
+            placeholder="Write right here..."
             ref={(ref) => { this.editor = ref; }}
             spellCheck
             handleReturn={this.onReturn}
@@ -284,49 +312,32 @@ class TextEditor extends React.Component {
 //   }
 // }
 
-const BLOCK_TYPES = [
-    { label: 'H1', style: 'header-one' },
-    { label: 'H2', style: 'header-two' },
-    { label: 'H3', style: 'header-three' },
-    { label: 'H4', style: 'header-four' },
-    { label: 'H5', style: 'header-five' },
-    { label: 'H6', style: 'header-six' },
-    { label: 'Blockquote', style: 'blockquote' },
-    { label: 'UL', style: 'unordered-list-item' },
-    { label: 'OL', style: 'ordered-list-item' },
-    { label: 'JS Code Block', style: 'code-block' },
-];
-
 const BlockStyleControls = (props) => {
-  const { blockType } = props;
+  const { blockType, blocks } = props;
 
     // COLLABOARD: adding language variable to track current language of code block
   // const lang = editorState
   //   .getCurrentContent()
   //   .getBlockForKey(selection.getStartKey());
-
-// COLLABOARD: mapping language buttons next to block types
+  let preface;
+  if (props.preface) {
+    preface = props.preface;
+  } else {
+    preface = '';
+  }
   return (
     <div className="RichEditor-controls">
-      {BLOCK_TYPES.map(type =>
+      {preface}
+      {blocks.map(type =>
         <StyleButton
           key={type.label}
           active={type.style === blockType}
           label={type.label}
           onToggle={props.onToggle}
           style={type.style}
+          icon={type.icon}
         />
       )}
-      <StyleButton
-        key="Undo"
-        label="Undo"
-        onToggle={props.onUndo}
-      />
-      <StyleButton
-        key="Redo"
-        label="Redo"
-        onToggle={props.onRedo}
-      />
     </div>
   );
 };
@@ -341,12 +352,15 @@ const BlockStyleControls = (props) => {
 // )}
 
 const INLINE_STYLES = [
-  { label: 'Bold', style: 'BOLD' },
-  { label: 'Italic', style: 'ITALIC' },
-  { label: 'Underline', style: 'UNDERLINE' },
-  { label: 'Monospace', style: 'CODE' },
+  { label: 'Bold', style: 'BOLD', icon: 'format_bold' },
+  { label: 'Italic', style: 'ITALIC', icon: 'format_italic' },
+  { label: 'Underline', style: 'UNDERLINE', icon: 'format_underlined' },
+  // { label: 'Monospace', style: 'CODE' },
 ];
-
+const ExtraControlButtons = [
+  { label: 'Undo', func: 'onUndo', icon: 'undo' },
+  { label: 'Redo', func: 'onRedo', icon: 'redo' },
+];
 const InlineStyleControls = (props) => {
   const activeStyles = props.activeStyles;
   return (
@@ -358,8 +372,19 @@ const InlineStyleControls = (props) => {
           label={type.label}
           onToggle={props.onToggle}
           style={type.style}
+          icon={type.icon}
         />
       )}
+      <div className="extra-control-buttons">
+        {ExtraControlButtons.map(type =>
+          <StyleButton
+            key={type.label}
+            label={type.label}
+            onToggle={props[type.func]}
+            icon={type.icon}
+          />
+        )}
+      </div>
     </div>
   );
 };
@@ -367,18 +392,17 @@ const InlineStyleControls = (props) => {
 // COLLABOARD: Proptype validations to prevent unexpected props and to follow AirBnB style
 BlockStyleControls.propTypes = {
   blockType: React.PropTypes.string,
+  preface: React.PropTypes.string,
   onToggle: React.PropTypes.func,
-  onUndo: React.PropTypes.func,
-  onRedo: React.PropTypes.func,
+  blocks: React.PropTypes.array, // eslint-disable-line react/forbid-prop-types
 };
 
 InlineStyleControls.propTypes = {
   activeStyles: React.PropTypes.objectOf(React.PropTypes.bool),
-  onToggle: React.PropTypes.func,
 };
 
 TextEditor.propTypes = {
-  editorState: React.PropTypes.string,   // eslint-disable-line react/forbid-prop-types
+  editorState: React.PropTypes.string,
   socket: React.PropTypes.object,    // eslint-disable-line react/forbid-prop-types
   TEXT_CHANGE: React.PropTypes.func,
 };

@@ -5,3 +5,6 @@ yarn.lock
 *.DS_Store
 npm-debug.log
 .idea
+.sass-cache/
+client/public/assets/main.css
+client/public/assets/main.css.map
