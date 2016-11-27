@@ -128,18 +128,31 @@ a {
     top: 34px;
     right: 0px;
     background-color: rgba(229,229,229,.6);
+  user-select: none;
+  cursor: default;
+}
+
+#close {
+  float: right;
+  padding-right: 5px;
+  color: grey !important;
+}
+
+#close a {
+  color: grey;
 }
 
 #text-chat-feed {
     width: 230px;
-    height: 300px;
-    margin: 10px;
+    height: 290px;
+    margin: 20px 10px 10px 10px;
     background-color: rgba(255,255,255,.6);
     overflow: scroll;
 }
 
 .chatMessage {
   margin: 10px;
+  word-wrap: break-word;
 }
 
 .chatMessageUser {
@@ -157,13 +170,12 @@ a {
 }
 
 #text-chat-input {
-  width: 70%;
+  width: 80%;
 }
 
-.sendbtn {
-  margin-left: 15px;
-  padding: 0 1rem;
-  background-color: #424242;
+#text-chat-input:focus {
+  border-bottom: 1px solid grey;
+  box-shadow: 0 1px 0 0 grey;
 }
 
 #video-container {

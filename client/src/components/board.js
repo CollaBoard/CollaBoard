@@ -37,6 +37,7 @@ class Board extends React.Component {
       flash: false,
     };
     this.submitMessage = this.submitMessage.bind(this);
+    this.closeWindow = this.closeWindow.bind(this);
 
     this.componentDidMount = this.componentWillReceiveProps = (newProps) => {
       if (!this.state.socket) {
@@ -97,6 +98,10 @@ class Board extends React.Component {
 
   submitMessage(message) {
     this.state.socket.emit('chat sent', message);
+  }
+
+  closeWindow() {
+    this.setState({ displayChat: !this.state.displayChat });
   }
 
   render() {
@@ -237,6 +242,7 @@ class Board extends React.Component {
             messages={this.state.messages}
             user={this.state.user}
             submitMessage={this.submitMessage}
+            closeWindow={this.closeWindow}
           /> : undefined }
         </div>
         <div id="modal1" className="modal">
