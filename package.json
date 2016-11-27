@@ -8,7 +8,7 @@
     "node": "6.9.1"
   },
   "scripts": {
-    "start": "sass client/src/scss/app.scss:client/public/assets/main.css && nodemon server/ --ignore client/",
+    "start": "nodemon server/ --ignore client/",
     "test": "./test/run.sh",
     "lint": "./node_modules/.bin/eslint .",
     "migrate": "./node_modules/.bin/knex migrate:latest"
@@ -32,6 +32,7 @@
     "express": "^4.14.0",
     "express-session": "^1.14.2",
     "knex": "^0.12.5",
+    "node-sass": "^3.13.0",
     "nodemon": "^1.11.0",
     "page": "^1.7.1",
     "pg": "^6.1.0",

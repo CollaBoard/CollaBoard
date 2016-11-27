@@ -5,10 +5,11 @@ if (process.env.NODE_ENV !== 'production' && process.env.NODE_ENV !== 'test') {
 }
 /* eslint-enable */
 
+const http = require('http');
 const browserify = require('browserify-middleware');
 const express = require('express');
 const bodyParser = require('body-parser');
-const http = require('http');
+const scssMiddleware = require('./routes/scss');
 
 const socket = require('./socket');
 
@@ -28,6 +29,28 @@ app.use('/app-bundle.js', browserify('./client/src/index.js', {
     ['babelify', { presets: ['es2015', 'react'] }],
   ],
 }));
+
+app.get('/assets/main.css', scssMiddleware({
+  file: './client/src/scss/app.scss',
+  outputStyle: 'compressed',
+}));
+
+
+// app.use('/main.css', browserify('./client/src/scss/app.scss', {
+//   tranform: [
+//     scssify,
+//     {
+//       autoInject: false,
+//       export: false,
+//       sass: {
+//       // See the relevant node-sass documentation
+//         sourceMapEmbed: true,
+//         sourceMapContents: true,
+//         outputStyle: 'compressed',
+//       },
+//     },
+//   ],
+// }));
 
 app.use(bodyParser.json());
 
