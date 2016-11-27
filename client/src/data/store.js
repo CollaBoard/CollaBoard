@@ -3,7 +3,7 @@ import rootReducer from './reducers';
 /* eslint-disable */
 // require redux-logger only in development mode
 let finalCreateStore;
-if (process.env.NODE_ENV === 'production' && process.env.NODE_ENV !== 'test') {
+if (process.env.NODE_ENV !== 'production' && process.env.NODE_ENV !== 'test') {
   const logger = require('redux-logger');
   finalCreateStore = compose(
     applyMiddleware(logger())
