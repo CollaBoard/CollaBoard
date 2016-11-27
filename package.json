@@ -32,7 +32,7 @@
     "express": "^4.14.0",
     "express-session": "^1.14.2",
     "knex": "^0.12.5",
-    "node-sass-middleware": "^0.10.0",
+    "node-sass": "^3.13.0",
     "nodemon": "^1.11.0",
     "page": "^1.7.1",
     "pg": "^6.1.0",
