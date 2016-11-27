@@ -7,14 +7,14 @@ const DashboardLeft = (props) => {
   let teamHeader;
   let boardHeader;
   let teamLink;
-  if (props.view === 'recent') {
+  if (props.view === 'recent' || props.view === 'my') {
     teamHeader = 'My Teams';
-    boardHeader = <a onClick={props.showMy}>My Boards</a>;
     teamLink = <a href="#create-team">Create new team</a>;
-  } else if (props.view === 'my') {
-    teamHeader = 'My Teams';
-    boardHeader = <a onClick={props.showRecent}>Recent Boards</a>;
-    teamLink = <a href="#create-team">Create new team</a>;
+    if (props.view === 'recent') {
+      boardHeader = <a onClick={props.showMy}>My Boards</a>;
+    } else {
+      boardHeader = <a onClick={props.showRecent}>Recent Boards</a>;
+    }
   } else {
     teamHeader = 'Team Members';
     boardHeader = <a onClick={props.showRecent}>My Profile</a>;

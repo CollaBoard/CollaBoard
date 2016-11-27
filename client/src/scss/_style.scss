@@ -125,7 +125,7 @@ a {
     position: absolute;
     width: 250px;
     height: 380px;
-    top: 30px;
+    top: 34px;
     right: 0px;
     background-color: rgba(229,229,229,.6);
 }
@@ -146,6 +146,12 @@ a {
   font-weight: bold;
 }
 
+.chatMessageTime {
+  float: right;
+  font-style: italic;
+  font-size: .7em;
+}
+
 #text-chat-bottom {
   margin: 10px;
 }
@@ -157,6 +163,7 @@ a {
 .sendbtn {
   margin-left: 15px;
   padding: 0 1rem;
+  background-color: #424242;
 }
 
 #video-container {

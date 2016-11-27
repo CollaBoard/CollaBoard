@@ -52,7 +52,7 @@ class TextChat extends React.Component {
 
 TextChat.propTypes = {
   messages: React.PropTypes.arrayOf(React.PropTypes.object),
-  submitMessage: React.PropTypes.function,
+  submitMessage: React.PropTypes.func,
   user: React.PropTypes.string,
 };
 
