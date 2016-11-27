@@ -4,6 +4,7 @@ import rootReducer from './reducers';
 // require redux-logger only in development mode
 let finalCreateStore;
 if (process.env.NODE_ENV !== 'production' && process.env.NODE_ENV !== 'test') {
+  console.log('NODE_ENV: ', process.env.NODE_ENV);
   const logger = require('redux-logger');
   finalCreateStore = compose(
     applyMiddleware(logger())
