@@ -5,6 +5,7 @@ const TextChatFeed = props => (
     { props.messages.map((message, i) =>
            (
              <div className="chatMessage" key={i}>
+               <div className="chatMessageTime">{message.timestamp}</div>
                <div className="chatMessageUser">{message.user}</div>
                <div className="chatMessageText">{message.text}</div>
              </div>
