@@ -11,7 +11,6 @@ authport.createServer({
   id: process.env.GITHUB_CLIENT_ID,
   secret: process.env.GITHUB_CLIENT_SECRET,
   scope: 'user:email',
-  redirect_uri: 'http://localhost:4000/auth/github/callback',
 });
 
 authport.createServer({
@@ -19,7 +18,6 @@ authport.createServer({
   id: `${process.env.GOOGLE_CLIENT_ID}.apps.googleusercontent.com`,
   secret: process.env.GOOGLE_CLIENT_SECRET,
   scope: ['profile', 'email'],
-  redirect_uri: 'http://localhost:4000/auth/google/callback',
 });
 
 authport.on('auth', (req, res, data) => {
