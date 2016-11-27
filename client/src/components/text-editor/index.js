@@ -112,8 +112,8 @@ class TextEditor extends React.Component {
       const newContentState = convertFromRaw(JSON.parse(newProps.editorState.editorState));
       const newState = Draft.EditorState
         .push(this.state.editorState, newContentState, 'update-state');
-      // const focusState = Draft.EditorState.forceSelection(newState, focus);
-      this.setState({ editorState: newState });
+      const focusState = Draft.EditorState.moveSelectionToEnd(newState);
+      this.setState({ editorState: focusState });
     }
   }
 
