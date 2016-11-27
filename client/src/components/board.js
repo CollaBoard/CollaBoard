@@ -54,6 +54,8 @@ class Board extends React.Component {
               if (!this.state.displayChat) {
                 this.setState({ flash: true });
               }
+              const textFeed = document.getElementById('text-chat-feed');
+              textFeed.scrollTop = textFeed.scrollHeight - textFeed.clientHeight;
             });
 
             const canvas = new Canvas();
