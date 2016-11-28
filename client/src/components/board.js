@@ -4,6 +4,7 @@ import page from 'page';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import Canvas from 'collaboard-canvas';
+import Draggable from 'react-draggable';
 
 import WebRTC from '../lib/webrtc';
 import API from '../lib/api';
@@ -254,12 +255,14 @@ class Board extends React.Component {
         <div id="modal1" className="modal">
           <div className="modal-content">
             Copy this link to your clipboard to share:
-            <input readOnly value={`https://localhost:4000/boards/${this.props.uid}`} />
+            <input readOnly value={`${window.location.host}/boards/${this.props.uid}`} />
           </div>
         </div>
-        <div id="video-chat">
-          <video id="video-container" />
-        </div>
+        <Draggable>
+          <div id="video-chat">
+            <video id="video-container" />
+          </div>
+        </Draggable>
       </div>
     );
   }
