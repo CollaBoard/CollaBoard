@@ -29,8 +29,10 @@ Namespace.create = function create(uid) {
     // Text Chat Events
     client.on('chat sent', (message) => {
       // console.log('chat message sent');
-      message.timestamp = new Date().toLocaleTimeString('en-US');
-      socket.emit('incoming chat', message);
+      if (message.text) {
+        message.timestamp = new Date().toLocaleTimeString('en-US');
+        socket.emit('incoming chat', message);
+      }
     });
   });
   return socket;
