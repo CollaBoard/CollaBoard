@@ -2,8 +2,7 @@ import React from 'react';
 
 const DashboardRight = (props) => {
   $(document).ready(() => {
-    $('.modal').modal(() => {
-    });
+    $('.modal').modal();
   });
   let topTitle;
   let createTeamButton;
@@ -34,13 +33,15 @@ const DashboardRight = (props) => {
         {
           props.boards.map((board, i) =>
             (
-              <div key={i} className="col m6 boardImage">
+              <div key={board.uid} className="col m6 boardImage">
                 <div>
-                  <a href="#!"><img
-                    src={board.thumbnail}
-                    alt="board"
-                    className="responsive-img"
-                  /></a>
+                  <a href={`/boards/${board.uid}`}>
+                    <img
+                      src={board.thumbnail}
+                      alt="board"
+                      className="responsive-img"
+                    />
+                  </a>
                 </div>
                 <div>
                   {board.name}
@@ -65,7 +66,7 @@ const DashboardRight = (props) => {
 };
 
 DashboardRight.propTypes = {
-  boards: React.PropTypes.arrayOf(React.PropTypes.objects),
+  boards: React.PropTypes.arrayOf(React.PropTypes.object),
   view: React.PropTypes.string,
   // uid: React.PropTypes.string,
   // createBoard: React.PropTypes.func,

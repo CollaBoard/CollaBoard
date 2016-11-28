@@ -47,7 +47,7 @@ authport.on('auth', (req, res, data) => {
     .then((user) => {
       req.session.userUid = user.uid;
       req.session.recent_boards = [];
-      res.redirect('/boards');
+      res.redirect('/dashboard');
     })
     .catch(util.sendError(res));
 });

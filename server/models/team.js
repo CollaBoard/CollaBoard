@@ -100,6 +100,23 @@ Team.addUser = function addMember(userUid, teamUid, role = 'member') {
     .catch(util.rethrow);
 };
 
+Team.removeUser = function removeUser(userUid, teamUid) {
+  if (!userUid) {
+    return Promise.reject(new util.BadRequest('user_uid is requried'));
+  }
+  if (!teamUid) {
+    return Promise.reject(new util.BadRequest('team_uid is required'));
+  }
+  return db('team_memberships')
+    .where({
+      team_uid: teamUid,
+      user_uid: userUid,
+    })
+    .andWhere('role', '<>', 'creator')
+    .del()
+    .catch(util.rethrow);
+};
+
 Team.prototype.fetchUsers = function fetchUsers() {
   return Team.fetchUsers(this.uid);
 };
@@ -110,6 +127,10 @@ Team.prototype.fetchBoards = function fetchBoards() {
 
 Team.prototype.addUser = function addUser(userUid, role = 'member') {
   return Team.addUser(userUid, this.uid, role);
+};
+
+Team.prototype.removeUser = function removeUser(userUid) {
+  return Team.removeUser(userUid, this.uid);
 };
 
 /**

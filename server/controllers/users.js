@@ -1,4 +1,5 @@
 const User = require('../models/user');
+const Team = require('../models/team');
 const util = require('../lib/util');
 
 const Users = module.exports;
@@ -27,6 +28,32 @@ Users.getUser = (req, res) => {
   }
 
   User.findById(req.params.uid, req.user.uid)
+    .then(util.sendResult(res))
+    .catch(util.sendError(res));
+};
+
+Users.search = (req, res) => {
+  if (!req.user) {
+    return util.sendError(res)(new util.PermissionDenied('not logged in'));
+  }
+
+  if (!req.query.query || !req.query.team_uid) {
+    return util.sendError(res)(new util.BadRequest('a query string and team uid are required'));
+  }
+  Team.fetchUsers(req.query.team_uid)
+    .then(members => User.search(req.query.query, req.user.uid)
+      .then((matchingUsers) => {
+        const existingMembers = members.reduce((obj, mem) => {
+          obj[mem.uid] = 1;
+          return obj;
+        }, {});
+        return matchingUsers.map((user) => {
+          const result = Object.assign({}, user);
+          result.role = existingMembers[user.uid] ? 'member' : null;
+          return result;
+        });
+      })
+    )
     .then(util.sendResult(res))
     .catch(util.sendError(res));
 };

@@ -34,6 +34,7 @@ router.get('/boards', Boards.getForUser);
 router.post('/boards', Boards.createBoard);
 router.get('/boards/:uid', Boards.getBoard);
 
+router.get('/users', Users.search);
 router.get('/users/:uid', Users.getUser);
 router.put('/users/:uid', Users.update);
 

@@ -1,41 +1,10 @@
-.splash-overlay-title {
-	font-weight: 700;
-	font-size: 6vw;
-	font-family: sans-serif;
-	// /*padding*/: 20px auto;
-}
-
 .splash-overlay-subtitle {
-	font-style: italic;
-	font-size: 3vw;
-	font-family: serif;
+	font-size: 1.5rem;
 }
-
 .splash-container {
-	/*background-color: lightgrey;*/
-	background-size: cover;
-	/*background: no-repeat;*/
-	/*: auto;*/
-	width: 100%;
-	position: relative;
-	overflow: hidden;
+  margin-top: 2rem;
+	text-align: center;
 }
-
 .splash-container img {
-	width: 50%;
-	/*position: absolute;*/
-	top: 0;
-	left: 0;
-	overflow: hidden;
-	text-align: center;
-}
-
-.splash-overlay {
-	position: relative;
-	padding-top: 5%;
-	text-align: center;
-}
-
-.title-image {
-
+	max-width: 100%;
 }

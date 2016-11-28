@@ -1,29 +1,22 @@
 import React from 'react';
-import Link from './link';
 import NavBar from './navbar';
 
 const Main = props => (
   <div>
     <NavBar user={props.user} />
-    <div className="splash-container">
-      <div className="splash-overlay">
-        <div className="splash-overlay-title">
-          <span className="title-image">
-            <img src="./assets/img/collaboard-logo.png" alt="collaboard-logo" />
-          </span>
-        </div>
-        <div className="splash-overlay-subtitle">Innovate your teamwork</div>
-      </div>
+    <div className="splash-container container">
+      <img src="./assets/img/collaboard-logo.png" alt="collaboard-logo" />
+      <div className="splash-overlay-subtitle">Innovate your teamwork</div>
     </div>
     <div className="product-select-container">
-      <Link
+      <a
         href="/boards"
-        className="grey darken-3 nav-text product-select-link waves-effect waves-light btn-large"
+        className="grey darken-3 product-select-link waves-effect waves-light btn-large"
       >
         Create a board
-      </Link>
+      </a>
     </div>
-    <div className="feature-blocks">
+    <div className="feature-blocks container">
       <div className="overview-block">
         <h3 className="features-title">
           Start getting more done in less time

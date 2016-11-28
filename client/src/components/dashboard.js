@@ -29,7 +29,7 @@ class Dashboard extends React.Component {
   }
 
   componentDidMount() {
-    API.getMeTest()
+    API.getMe()
     .then((res) => {
       this.setState({
         user: {
@@ -38,7 +38,6 @@ class Dashboard extends React.Component {
           avatar: res.avatar,
           boards: res.boards,
           teams: res.teams,
-          myTeam: res.my_team,
         },
         view: 'recent',
         name: res.name,
@@ -62,21 +61,21 @@ class Dashboard extends React.Component {
   }
 
   showMy() {
-    API.getOneTeamTest(this.state.user.myTeam)
+    API.getMyBoards()
     .then((res) => {
       this.setState({
         view: 'my',
         name: this.state.user.name,
         uid: this.state.user.uid,
         avatar: this.state.user.avatar,
-        boards: res.boards,
+        boards: res,
         teams: this.state.user.teams,
       });
     }).catch(console.err);
   }
 
   selectTeam(uid) {
-    API.getOneTeamTest(uid).then((res) => {
+    API.getOneTeam(uid).then((res) => {
       this.setState({
         view: 'team',
         name: res.name,
@@ -107,7 +106,7 @@ class Dashboard extends React.Component {
         searchResults: [],
       });
     } else {
-      API.searchUsersTest(query, this.state.uid).then((res) => {
+      API.searchUsers(query, this.state.uid).then((res) => {
         this.setState({
           searchResults: res,
         });
@@ -118,12 +117,7 @@ class Dashboard extends React.Component {
   modifyTeam(uid) {
     API.addToTeam(this.state.uid, uid).then((res) => {
       this.setState({
-        view: 'team',
-        name: res.name,
-        uid: res.uid,
-        avatar: res.avatar,
-        boards: res.boards,
-        teams: res.members,
+        teams: res,
       });
     }).catch(console.err);
   }
@@ -137,8 +131,8 @@ class Dashboard extends React.Component {
 
   render() {
     return (
-      <div className="outer">
-        <div className="row topDash">
+      <div className="dashboard-outer">
+        <div className="row">
           <DashboardLeft
             view={this.state.view}
             name={this.state.name}
