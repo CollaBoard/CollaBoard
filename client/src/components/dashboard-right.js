@@ -31,7 +31,7 @@ const DashboardRight = (props) => {
           <a href="#create-board">Create board</a>
         </div>
         {
-          props.boards.map((board, i) =>
+          props.boards.map(board =>
             (
               <div key={board.uid} className="col m6 boardImage">
                 <div>
