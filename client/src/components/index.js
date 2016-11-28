@@ -4,7 +4,7 @@ import page from 'page';
 import LandingPage from './landing-page';
 import Dashboard from './dashboard';
 import Board from './board';
-import API from '../lib/api';
+// import API from '../lib/api';
 
 class App extends React.Component {
   constructor(props) {
@@ -15,23 +15,23 @@ class App extends React.Component {
   }
 
   componentDidMount() {
-    page((ctx, next) => {
-      API.getMe().then((user) => {
-        ctx.user = user;
-        next();
-      }).catch(() => {
-        next();
-      });
-    });
+    // page((ctx, next) => {
+    //   API.getMe().then((user) => {
+    //     ctx.user = user;
+    //     next();
+    //   }).catch(() => {
+    //     next();
+    //   });
+    // });
 
     page('/', (ctx) => {
       this.setState({ component: <LandingPage user={ctx.user} /> });
     });
 
     page('/dashboard', (ctx) => {
-      if (!ctx.user) {
-        return page('/');
-      }
+      // if (!ctx.user) {
+      //   return page('/');
+      // }
       this.setState({ component: <Dashboard user={ctx.user} /> });
       return null;
     });
