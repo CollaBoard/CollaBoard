@@ -21,16 +21,27 @@ Namespace.create = function create(uid) {
     // Whiteboard Events
     client.on('add figure', (figure) => {
       // console.log('sending new shape event:', figure);
-      socket.emit('add figure', figure);
+      client.broadcast.emit('add figure', figure);
     });
 
     // Video Chat Events
+    client.on('video chat started', (user) => {
+      // console.log('new video chat bro');
+      const message = {};
+      message.user = user;
+      message.text = 'I\'ve started a video chat, join me.';
+      message.timestamp = new Date().toLocaleTimeString('en-US');
+      client.broadcast.emit('new video chat');
+      client.broadcast.emit('incoming chat', message);
+    });
 
     // Text Chat Events
     client.on('chat sent', (message) => {
       // console.log('chat message sent');
-      message.timestamp = new Date().toLocaleTimeString('en-US');
-      socket.emit('incoming chat', message);
+      if (message.text) {
+        message.timestamp = new Date().toLocaleTimeString('en-US');
+        socket.emit('incoming chat', message);
+      }
     });
   });
   return socket;

@@ -1,8 +1,7 @@
-const webRTC = function webRTC(uid) {
+const webRTC = function webRTC(uid, socket, user) {
   const connection = new RTCMultiConnection();
   connection.socketURL = 'https://rtcmulticonnection.herokuapp.com:443/';
   // until we set up our own signalling server, we can use this one ^
-  // connection.socketMessageEvent = 'video-broadcast-demo';
 
   connection.session = {
     audio: true,
@@ -17,7 +16,16 @@ const webRTC = function webRTC(uid) {
 
   const socketId = uid;
   document.getElementById('display-video-chat').addEventListener('click', () => {
-    connection.openOrJoin(socketId);
+    connection.openOrJoin(socketId, (joined) => {
+      if (joined) {
+        // joined the video chat
+        console.log('you joined the video chat');
+      } else {
+        // started the video chat
+        console.log('you started the video chat');
+        socket.emit('video chat started', user);
+      }
+    });
   });
 };
 

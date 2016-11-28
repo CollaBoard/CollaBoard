@@ -28,6 +28,10 @@ nav ul a {
   font-size: 2em !important;
 }
 
+#color-dropdown li i {
+  text-shadow: 0px 0px 5px #000
+}
+
 #color-dropdown li:nth-child(1) a i {
   color: red;
 }

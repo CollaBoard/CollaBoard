@@ -2,9 +2,9 @@ import React from 'react';
 import Link from './link';
 import NavBar from './navbar';
 
-const Main = () => (
+const Main = props => (
   <div>
-    <NavBar />
+    <NavBar user={props.user} />
     <div className="splash-container">
       <div className="splash-overlay">
         <div className="splash-overlay-title">
@@ -62,5 +62,9 @@ const Main = () => (
     </div>
   </div>
 );
+
+Main.propTypes = {
+  user: React.PropTypes.objectOf(React.PropTypes.string),
+};
 
 export default Main;

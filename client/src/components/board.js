@@ -4,6 +4,7 @@ import page from 'page';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import Canvas from 'collaboard-canvas';
+import Draggable from 'react-draggable';
 
 import WebRTC from '../lib/webrtc';
 import API from '../lib/api';
@@ -37,6 +38,7 @@ class Board extends React.Component {
       flash: false,
     };
     this.submitMessage = this.submitMessage.bind(this);
+    this.closeWindow = this.closeWindow.bind(this);
 
     this.componentDidMount = this.componentWillReceiveProps = (newProps) => {
       if (!this.state.socket) {
@@ -45,8 +47,13 @@ class Board extends React.Component {
           API.getBoard(uid)
           .then(() => {
             const socket = io(`/${uid}`);
-
-            const user = (Math.floor(Math.random() * 100)).toString();
+            let user;
+            if (props.user) {
+              user = props.user.name;
+            } else {
+              const userChoices = ['Aardvark', 'Chameleon', 'Moose', 'Elephant'];
+              user = `Anonymous ${userChoices[Math.floor(Math.random() * userChoices.length)]}`;
+            }
 
             socket.on('incoming chat', (message) => {
               this.state.messages.push(message);
@@ -81,6 +88,9 @@ class Board extends React.Component {
               // console.log('serving text!!!');
               this.props.SERVE_TEXT(text);
             });
+            socket.on('new video chat', () => {
+              this.setState({ flash: true });
+            });
           })
           .catch(() => {
             // console.err(err);
@@ -97,6 +107,10 @@ class Board extends React.Component {
 
   submitMessage(message) {
     this.state.socket.emit('chat sent', message);
+  }
+
+  closeWindow() {
+    this.setState({ displayChat: !this.state.displayChat });
   }
 
   render() {
@@ -151,14 +165,14 @@ class Board extends React.Component {
     $(document).ready(() => {
       $('.dropdown-button').dropdown();
       $('.modal').modal();
-      WebRTC(this.props.uid);
+      WebRTC(this.props.uid, this.state.socket, this.state.user);
       document.getElementById('export-png').addEventListener('click', function download() {
         this.href = document.getElementById('whiteboard').toDataURL();
         this.download = 'collaboard-export.png';
       }, false);
-      document.getElementById('build-button').addEventListener('click', () => {
+      document.getElementById('build-dropdown-btn').addEventListener('click', () => {
         if (this.state.flash) {
-          this.state.flash = false;
+          this.setState({ flash: false });
         }
       });
     });
@@ -211,7 +225,7 @@ class Board extends React.Component {
                   data-constrainwidth="false"
                 ><i className="material-icons">mode_edit</i></a>
               </li>
-              <li>
+              <li id="build-dropdown-btn">
                 <a
                   className="dropdown-button"
                   id="build-button"
@@ -237,17 +251,20 @@ class Board extends React.Component {
             messages={this.state.messages}
             user={this.state.user}
             submitMessage={this.submitMessage}
+            closeWindow={this.closeWindow}
           /> : undefined }
         </div>
         <div id="modal1" className="modal">
           <div className="modal-content">
             Copy this link to your clipboard to share:
-            <input readOnly value={`https://localhost:4000/boards/${this.props.uid}`} />
+            <input readOnly value={`${window.location.host}/boards/${this.props.uid}`} />
           </div>
         </div>
-        <div id="video-chat">
-          <video id="video-container" />
-        </div>
+        <Draggable>
+          <div id="video-chat">
+            <video id="video-container" />
+          </div>
+        </Draggable>
       </div>
     );
   }
@@ -256,6 +273,7 @@ class Board extends React.Component {
 Board.propTypes = {
   uid: React.PropTypes.string,
   SERVE_TEXT: React.PropTypes.func,
+  user: React.PropTypes.objectOf(React.PropTypes.string),
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Board);

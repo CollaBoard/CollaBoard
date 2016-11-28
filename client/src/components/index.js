@@ -4,6 +4,7 @@ import page from 'page';
 import LandingPage from './landing-page';
 import Dashboard from './dashboard';
 import Board from './board';
+import API from '../lib/api';
 
 class App extends React.Component {
   constructor(props) {
@@ -14,16 +15,29 @@ class App extends React.Component {
   }
 
   componentDidMount() {
-    page('/', () => {
-      this.setState({ component: <LandingPage /> });
+    page((ctx, next) => {
+      API.getMe().then((user) => {
+        ctx.user = user;
+        next();
+      }).catch(() => {
+        next();
+      });
     });
 
-    page('/dashboard', () => {
-      this.setState({ component: <Dashboard /> });
+    page('/', (ctx) => {
+      this.setState({ component: <LandingPage user={ctx.user} /> });
     });
 
-    page('/boards', () => {
-      this.setState({ component: <Board /> });
+    page('/dashboard', (ctx) => {
+      if (!ctx.user) {
+        return page('/');
+      }
+      this.setState({ component: <Dashboard user={ctx.user} /> });
+      return null;
+    });
+
+    page('/boards', (ctx) => {
+      this.setState({ component: <Board user={ctx.user} /> });
     });
 
     page('/boards/:uid', (ctx) => {
@@ -36,5 +50,6 @@ class App extends React.Component {
     return this.state.component;
   }
 }
+
 
 export default App;
