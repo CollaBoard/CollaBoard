@@ -52,8 +52,7 @@ class Board extends React.Component {
               user = props.user.name;
             } else {
               const userChoices = ['Aardvark', 'Chameleon', 'Moose', 'Elephant'];
-              const currentUser = userChoices[Math.floor(Math.random() * userChoices.length)];
-              user = `Anonymous ${currentUser}`;
+              user = `Anonymous ${userChoices[Math.floor(Math.random() * userChoices.length)]}`;
             }
 
             socket.on('incoming chat', (message) => {
@@ -88,6 +87,9 @@ class Board extends React.Component {
             socket.on('serve text', (text) => {
               // console.log('serving text!!!');
               this.props.SERVE_TEXT(text);
+            });
+            socket.on('new video chat', () => {
+              this.setState({ flash: true });
             });
           })
           .catch(() => {
@@ -163,13 +165,14 @@ class Board extends React.Component {
     $(document).ready(() => {
       $('.dropdown-button').dropdown();
       $('.modal').modal();
-      WebRTC(this.props.uid);
+      WebRTC(this.props.uid, this.state.socket);
       document.getElementById('export-png').addEventListener('click', function download() {
         this.href = document.getElementById('whiteboard').toDataURL();
         this.download = 'collaboard-export.png';
       }, false);
-      document.getElementById('build-button').addEventListener('click', () => {
+      document.getElementById('build-dropdown-btn').addEventListener('click', () => {
         if (this.state.flash) {
+          console.log('hi');
           this.state.flash = false;
         }
       });
@@ -223,7 +226,7 @@ class Board extends React.Component {
                   data-constrainwidth="false"
                 ><i className="material-icons">mode_edit</i></a>
               </li>
-              <li>
+              <li id="build-dropdown-btn">
                 <a
                   className="dropdown-button"
                   id="build-button"

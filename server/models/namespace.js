@@ -21,10 +21,14 @@ Namespace.create = function create(uid) {
     // Whiteboard Events
     client.on('add figure', (figure) => {
       // console.log('sending new shape event:', figure);
-      socket.emit('add figure', figure);
+      client.broadcast.emit('add figure', figure);
     });
 
     // Video Chat Events
+    client.on('video chat started', () => {
+      // console.log('new video chat bro');
+      client.broadcast.emit('new video chat');
+    });
 
     // Text Chat Events
     client.on('chat sent', (message) => {
