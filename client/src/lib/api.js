@@ -29,7 +29,23 @@ API.addToTeam = function addToTeam(uidTeam, uidUser) {
 
 API.getMe = function getMe() {
   return $.get('/api/me')
-    .then(res => res.data);
+    .then((res) => {
+      res.data.boards = res.data.boards.map((board) => {
+        if (!board.thumbnail) {
+          return {
+            name: board.name,
+            thumbnail: 'https://i.imgur.com/czZIRPL.png',
+            uid: board.uid,
+          };
+        }
+        return {
+          name: board.name,
+          thumbnail: board.thumbnail,
+          uid: board.uid,
+        };
+      });
+      return res.data;
+    });
 };
 
 API.getMyBoards = function getMyBoards() {
