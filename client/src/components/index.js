@@ -24,8 +24,8 @@ class App extends React.Component {
       });
     });
 
-    page('/', () => {
-      this.setState({ component: <LandingPage /> });
+    page('/', (ctx) => {
+      this.setState({ component: <LandingPage user={ctx.user} /> });
     });
 
     page('/dashboard', (ctx) => {
@@ -33,6 +33,7 @@ class App extends React.Component {
         return page('/');
       }
       this.setState({ component: <Dashboard user={ctx.user} /> });
+      return null;
     });
 
     page('/boards', (ctx) => {
@@ -49,5 +50,6 @@ class App extends React.Component {
     return this.state.component;
   }
 }
+
 
 export default App;
