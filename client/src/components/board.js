@@ -165,15 +165,14 @@ class Board extends React.Component {
     $(document).ready(() => {
       $('.dropdown-button').dropdown();
       $('.modal').modal();
-      WebRTC(this.props.uid, this.state.socket);
+      WebRTC(this.props.uid, this.state.socket, this.state.user);
       document.getElementById('export-png').addEventListener('click', function download() {
         this.href = document.getElementById('whiteboard').toDataURL();
         this.download = 'collaboard-export.png';
       }, false);
       document.getElementById('build-dropdown-btn').addEventListener('click', () => {
         if (this.state.flash) {
-          console.log('hi');
-          this.state.flash = false;
+          this.setState({ flash: false });
         }
       });
     });

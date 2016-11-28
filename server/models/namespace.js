@@ -25,9 +25,14 @@ Namespace.create = function create(uid) {
     });
 
     // Video Chat Events
-    client.on('video chat started', () => {
+    client.on('video chat started', (user) => {
       // console.log('new video chat bro');
+      const message = {};
+      message.user = user;
+      message.text = 'I\'ve started a video chat, join me.';
+      message.timestamp = new Date().toLocaleTimeString('en-US');
       client.broadcast.emit('new video chat');
+      client.broadcast.emit('incoming chat', message);
     });
 
     // Text Chat Events
