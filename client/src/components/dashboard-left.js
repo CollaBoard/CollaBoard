@@ -23,7 +23,7 @@ const DashboardLeft = (props) => {
   return (
     <div className="col offset-s2 s8 m3 boardLeft">
       <div className="center-align">
-        <img src={props.avatar} alt="board" className="responsive-img" />
+        <img src={props.avatar} alt="board" className="avatar responsive-img" />
       </div>
       <div className="name center-align">{props.name}</div>
       <div className="myBoards center-align">
@@ -33,12 +33,12 @@ const DashboardLeft = (props) => {
         <span className="myTeamsHeader">{teamHeader}</span>
         <ul className="myTeamsList">
           {
-          props.teams.map((team, i) =>
+          props.teams.map(team =>
              (
                props.view === 'recent' || props.view === 'my'
-                 ? <li key={i}><a onClick={() => { props.selectTeam(team.uid); }}>
+                 ? <li key={team.uid}><a onClick={() => { props.selectTeam(team.uid); }}>
                    {team.name}</a></li>
-                   : <li key={i}><span>{team.name}</span></li>
+                   : <li key={team.uid}><span>{team.name}</span></li>
              )
           )
         }
@@ -63,9 +63,9 @@ const DashboardLeft = (props) => {
           <div className="row">
             <div className="col s10"><input type="text" id="team-add-input" placeholder="Search for users to add" /></div><div className="col s2"><a onClick={() => { props.searchUsers(document.getElementById('team-add-input').value); }} className="btn"><i className="material-icons">search</i></a></div>
           </div>
-          {props.searchResults.map((result, i) =>
+          {props.searchResults.map(result =>
             (
-              <div className="row valign-wrapper" key={i}>
+              <div className="row valign-wrapper" key={result.uid}>
                 <div className="col s2 valign"><img
                   className="searchPhoto responsive-img"
                   alt="profile"
@@ -77,7 +77,7 @@ const DashboardLeft = (props) => {
                     onClick={() => { props.modifyTeam(result.uid); }}
                     className="btn-floating btn-small waves-effect waves-light red"
                   >
-                    <i className="material-icons">{result.display}</i></a>
+                    <i className="material-icons">{result.role ? 'remove' : 'add'}</i></a>
                 </div>
               </div>
           )
@@ -93,14 +93,14 @@ const DashboardLeft = (props) => {
 DashboardLeft.propTypes = {
   avatar: React.PropTypes.string,
   name: React.PropTypes.string,
-  teams: React.PropTypes.arrayOf(React.PropTypes.objects),
+  teams: React.PropTypes.arrayOf(React.PropTypes.object),
   view: React.PropTypes.string,
   showMy: React.PropTypes.func,
   showRecent: React.PropTypes.func,
   // createTeam: React.PropTypes.func,
   // modifyTeam: React.PropTypes.func,
   // searchUsers: React.PropTypes.func,
-  searchResults: React.PropTypes.arrayOf(React.PropTypes.objects),
+  searchResults: React.PropTypes.arrayOf(React.PropTypes.object),
 };
 
 export default DashboardLeft;

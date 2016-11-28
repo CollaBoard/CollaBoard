@@ -15,6 +15,16 @@ Teams.getTeam = (req, res) => {
       }
       util.throwNotFound('team was not found');
     })
+    .then(team => team.fetchUsers()
+      .then((users) => {
+        team.members = users;
+        return team.fetchBoards();
+      })
+      .then((boards) => {
+        team.boards = boards;
+        return team;
+      })
+    )
     .then(util.sendResult(res))
     .catch(util.sendError(res));
 };
@@ -37,6 +47,16 @@ Teams.createTeam = (req, res) => {
     name: req.body.name,
     avatar: req.body.avatar,
   }).save()
+    .then(team => team.fetchUsers()
+      .then((users) => {
+        team.members = users;
+        return team.fetchBoards();
+      })
+      .then((boards) => {
+        team.boards = boards;
+        return team;
+      })
+    )
     .then(util.sendResult(res, 201))
     .catch(util.sendError(res));
 };
@@ -51,13 +71,14 @@ Teams.update = (req, res) => {
         .then(user => team.fetchUsers()
           .then((users) => {
             if (users.find(u => u.uid === user.uid)) {
-              return;
+              return team.removeUser(user.uid);
             }
             return team.addUser(user.uid);
           })
         )
+        .then(() => team.fetchUsers())
       )
-      .then(() => util.sendResult(res, 201)({}))
+      .then(util.sendResult(res, 201))
       .catch(util.sendError(res));
   }
 
@@ -73,3 +94,4 @@ Teams.update = (req, res) => {
     .then(util.sendResult(res, 201))
     .catch(util.sendError(res));
 };
+
