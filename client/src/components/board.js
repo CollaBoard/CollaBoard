@@ -46,8 +46,14 @@ class Board extends React.Component {
           API.getBoard(uid)
           .then(() => {
             const socket = io(`/${uid}`);
-
-            const user = (Math.floor(Math.random() * 100)).toString();
+            let user;
+            if (props.user) {
+              user = props.user.name;
+            } else {
+              const userChoices = ['Aardvark', 'Chameleon', 'Moose', 'Elephant'];
+              const currentUser = userChoices[Math.floor(Math.random() * userChoices.length)];
+              user = `Anonymous ${currentUser}`;
+            }
 
             socket.on('incoming chat', (message) => {
               this.state.messages.push(message);
@@ -262,6 +268,7 @@ class Board extends React.Component {
 Board.propTypes = {
   uid: React.PropTypes.string,
   SERVE_TEXT: React.PropTypes.func,
+  user: React.PropTypes.objectOf(React.PropTypes.string),
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Board);
