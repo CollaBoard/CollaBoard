@@ -25,6 +25,9 @@ const Main = props => (
           Manage tasks and projects anywhere with CollaBoard.
           At home. At school. At work. On virtually any device
         </p>
+        <p className="features-subtitle">
+          A brief tutorial can be found <a href="http://www.slideshare.net/JChristianStraubhaar/collaboard-onboarding">here</a>
+        </p>
         <div className="productivity-icons row">
           <div className="icon-access-anywhere col s12 m4">
             <img
