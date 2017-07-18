@@ -68,8 +68,8 @@ const DashboardRight = (props) => {
 DashboardRight.propTypes = {
   boards: React.PropTypes.arrayOf(React.PropTypes.object),
   view: React.PropTypes.string,
-  // uid: React.PropTypes.string,
-  // createBoard: React.PropTypes.func,
+  uid: React.PropTypes.string,
+  createBoard: React.PropTypes.func,
 };
 
 export default DashboardRight;
