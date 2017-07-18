@@ -97,9 +97,8 @@ DashboardLeft.propTypes = {
   view: React.PropTypes.string,
   showMy: React.PropTypes.func,
   showRecent: React.PropTypes.func,
-  // createTeam: React.PropTypes.func,
-  // modifyTeam: React.PropTypes.func,
-  // searchUsers: React.PropTypes.func,
+  createTeam: React.PropTypes.func,
+  searchUsers: React.PropTypes.func,
   searchResults: React.PropTypes.arrayOf(React.PropTypes.object),
 };
 
